@@ -1,0 +1,22 @@
+- Book, BookItem, Library, LibraryCard, Member, Account endpointlerini yaz.
+- reserve metodu
+- Eğer reservation due date'den sonraya kalısa otomatikman rezervasyon cancel olmalı!
+- Kitap iade edildiğinde due date setlenmeli bookreserving için
+- BookItem için renew metodunu ekle.
+- UML update
+- MapStruct integration
+- MySQL repositories
+- LoanedAndReserved & AvailableButReserved ile ilgili bir state daha ekle
+- Reserved'in return checkout metotlarını güncelle
+- Search implementation
+
+
+- UML update
+- Fine ve transaction implementation
+- Notification implementation
+- UML update
+- Unit testler (JUnit5, Mockito)
+- Spring Security integration (JWT)
+- Logging (Log4J)
+- Exception handling mekanizması
+- Spring validation ekleme
