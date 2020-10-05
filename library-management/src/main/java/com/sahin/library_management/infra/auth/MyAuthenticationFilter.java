@@ -1,6 +1,7 @@
 package com.sahin.library_management.infra.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sahin.library_management.infra.model.auth.LoginModel;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,9 +30,9 @@ public class MyAuthenticationFilter extends AbstractAuthenticationProcessingFilt
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        String barcode = objectMapper.readValue(request.getInputStream(), String.class);
+        LoginModel loginModel = objectMapper.readValue(request.getInputStream(), LoginModel.class);
         return this.getAuthenticationManager()
-                .authenticate(new UsernamePasswordAuthenticationToken(null, barcode));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginModel.getBarcode(), loginModel.getPassword()));
     }
 
     @Override

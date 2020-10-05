@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/librarians")
 public class LibrarianController {
@@ -41,4 +43,8 @@ public class LibrarianController {
         return ResponseEntity.ok(librarianService.getLibrarianByBarcode(barcode));
     }
 
+    @GetMapping("getAll")
+    public ResponseEntity<List<Librarian>> getAll() {
+        return ResponseEntity.ok(librarianService.getAll());
+    }
 }

@@ -9,7 +9,11 @@
 - LoanedAndReserved & AvailableButReserved ile ilgili bir state daha ekle
 - Reserved'in return checkout metotlarını güncelle
 - Search implementation
+- h2 database kurulumu
+- bootstrap data
 
+- librarycard password field'ı
+- join fetch getall'da
 - Spring security authentication integration
 - LibraryCard accountFor entegrasyonu (Library card kullanan bütün controller'lar için)
 - antmatchers ayarı (iki config için)

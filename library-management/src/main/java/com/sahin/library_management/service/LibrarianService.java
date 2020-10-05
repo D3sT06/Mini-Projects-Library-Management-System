@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,5 +71,13 @@ public class LibrarianService {
                 .orElseThrow(()-> new MyRuntimeException("Librarian with card barcode " + barcode + " not exist!", HttpStatus.BAD_REQUEST));
 
         return librarianMapper.toModel(entity);
+    }
+
+    @Transactional
+    public List<Librarian> getAll() {
+        List<LibrarianEntity> entities = librarianRepository
+                .findAll();
+
+        return librarianMapper.toModels(entities);
     }
 }

@@ -66,10 +66,9 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                    .anyRequest().authenticated();
+                    .antMatchers(HttpMethod.POST, loginUrl).authenticated();
         }
     }
-
 
     @Configuration
     @Order(2)
@@ -77,6 +76,9 @@ public class SecurityConfig {
             prePostEnabled = true
     )
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Value("${app.security.url.login}")
+        private String loginUrl;
 
         @Autowired
         private JwtTokenDecoderService jwtTokenDecoderService;
@@ -95,13 +97,11 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
+                    .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                    .antMatchers(HttpMethod.POST, loginUrl).denyAll()
                     .anyRequest().authenticated().and()
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         }
     }
-
-
-
-
 }

@@ -1,5 +1,6 @@
 /etc/
 /target/
+/library-management/target/
 /.idea/
 *.iml
 

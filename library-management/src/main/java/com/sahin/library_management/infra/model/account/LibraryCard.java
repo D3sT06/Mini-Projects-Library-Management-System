@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class LibraryCard implements UserDetails {
     private String barcode;
+    private String password;
     private Long issuedAt;
     private Boolean active;
     private AccountFor accountFor;
@@ -41,7 +42,7 @@ public class LibraryCard implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
