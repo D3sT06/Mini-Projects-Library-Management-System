@@ -1,43 +1,107 @@
 package com.sahin.library_management.config;
 
-import com.sahin.library_management.infra.auth.JwtAuthenticationEntryPoint;
-import com.sahin.library_management.infra.auth.JwtTokenDecoderService;
-import com.sahin.library_management.infra.auth.TokenValidationFilter;
+import com.sahin.library_management.infra.auth.*;
 import com.sahin.library_management.service.LibraryCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true
-)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Autowired
-    private JwtTokenDecoderService jwtTokenDecoderService;
+    @Configuration
+    @Order(1)
+    public static class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private LibraryCardService libraryCardService;
+        @Value("${app.security.url.login}")
+        private String loginUrl;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+        private final JwtTokenGenerationService jwtTokenGenerationService;
+        private final LibraryCardService libraryCardService;
+        private final PasswordEncoder passwordEncoder;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
-                .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .anyRequest().authenticated().and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+        public AuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
+                              LibraryCardService libraryCardService, PasswordEncoder passwordEncoder) {
+            this.jwtTokenGenerationService = jwtTokenService;
+            this.libraryCardService = libraryCardService;
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        @Bean
+        public AbstractAuthenticationProcessingFilter authenticationFilter() throws Exception {
+            return new MyAuthenticationFilter(this.loginUrl, super.authenticationManagerBean(), this.jwtTokenGenerationService);
+        }
+
+        @Bean
+        public AuthenticationProvider authenticationProvider() {
+            MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.passwordEncoder);
+            myAuthenticationProvider.setUserDetailsService(this.libraryCardService);
+            return myAuthenticationProvider;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .cors()
+                    .and().csrf().disable()
+                    .logout().disable()
+                    .formLogin().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
+                    .authenticationProvider(this.authenticationProvider())
+                    .addFilterBefore(this.authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                    .anyRequest().authenticated();
+        }
     }
+
+
+    @Configuration
+    @Order(2)
+    @EnableGlobalMethodSecurity(
+            prePostEnabled = true
+    )
+    public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private JwtTokenDecoderService jwtTokenDecoderService;
+
+        @Autowired
+        private LibraryCardService libraryCardService;
+
+        @Autowired
+        private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .cors()
+                    .and().csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
+                    .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService), UsernamePasswordAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                    .anyRequest().authenticated().and()
+                    .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+        }
+    }
+
+
+
+
 }

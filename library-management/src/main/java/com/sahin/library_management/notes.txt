@@ -10,13 +10,17 @@
 - Reserved'in return checkout metotlarını güncelle
 - Search implementation
 
+- Spring security authentication integration
+- LibraryCard accountFor entegrasyonu (Library card kullanan bütün controller'lar için)
+- antmatchers ayarı (iki config için)
 
+
+- Spring Security integration (JWT)
 - UML update
 - Fine ve transaction implementation
 - Notification implementation
 - UML update
 - Unit testler (JUnit5, Mockito)
-- Spring Security integration (JWT)
 - Logging (Log4J)
 - Exception handling mekanizması
 - Spring validation ekleme
