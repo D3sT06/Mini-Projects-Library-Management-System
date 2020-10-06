@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,5 +74,12 @@ public class MemberService {
                 .orElseThrow(()-> new MyRuntimeException("Member with card barcode " + barcode + " not exist!", HttpStatus.BAD_REQUEST));
 
         return memberMapper.toModel(entity);
+    }
+
+    public List<Member> getAll() {
+        List<MemberEntity> entities = memberRepository
+                .findAll();
+
+        return memberMapper.toModels(entities);
     }
 }

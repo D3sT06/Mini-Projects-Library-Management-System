@@ -29,7 +29,6 @@ public class MyAuthenticationFilter extends AbstractAuthenticationProcessingFilt
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
         LoginModel loginModel = objectMapper.readValue(request.getInputStream(), LoginModel.class);
         return this.getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(loginModel.getBarcode(), loginModel.getPassword()));

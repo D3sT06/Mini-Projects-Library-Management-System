@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.entity_model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.Setter;

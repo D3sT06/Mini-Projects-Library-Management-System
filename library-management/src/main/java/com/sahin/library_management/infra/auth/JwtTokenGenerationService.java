@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.auth;
 
+import com.sahin.library_management.infra.model.account.LibraryCard;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ public class JwtTokenGenerationService {
 
         String token = Jwts.builder()
                 .setClaims(claims)
-                .setSubject(authentication.getPrincipal().toString())
+                .setSubject(((LibraryCard) authentication.getPrincipal()).getBarcode())
                 .setIssuedAt(issuedAt)
                 .setExpiration(expiresAt)
                 .signWith(SignatureAlgorithm.HS512, this.privateKey).compact();

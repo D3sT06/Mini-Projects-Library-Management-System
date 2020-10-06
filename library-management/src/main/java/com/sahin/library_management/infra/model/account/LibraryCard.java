@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.model.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,10 @@ import java.util.List;
 @Setter
 public class LibraryCard implements UserDetails {
     private String barcode;
+
+    @JsonIgnore
     private String password;
+
     private Long issuedAt;
     private Boolean active;
     private AccountFor accountFor;

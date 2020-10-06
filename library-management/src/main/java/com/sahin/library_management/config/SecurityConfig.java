@@ -2,14 +2,12 @@ package com.sahin.library_management.config;
 
 import com.sahin.library_management.infra.auth.*;
 import com.sahin.library_management.service.LibraryCardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +18,9 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true
+)
 public class SecurityConfig {
 
     @Configuration
@@ -32,12 +33,14 @@ public class SecurityConfig {
         private final JwtTokenGenerationService jwtTokenGenerationService;
         private final LibraryCardService libraryCardService;
         private final PasswordEncoder passwordEncoder;
+        private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
         public AuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
-                              LibraryCardService libraryCardService, PasswordEncoder passwordEncoder) {
+                                            LibraryCardService libraryCardService, PasswordEncoder passwordEncoder, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
             this.jwtTokenGenerationService = jwtTokenService;
             this.libraryCardService = libraryCardService;
             this.passwordEncoder = passwordEncoder;
+            this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         }
 
         @Bean
@@ -55,51 +58,50 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    .cors()
+                    .antMatcher("/api/auth/**")
+                    .authorizeRequests().anyRequest().authenticated()
+                    .and().cors()
                     .and().csrf().disable()
                     .logout().disable()
                     .formLogin().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .authenticationProvider(this.authenticationProvider())
                     .addFilterBefore(this.authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                    .antMatchers(HttpMethod.POST, loginUrl).authenticated();
+                    .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         }
     }
 
     @Configuration
     @Order(2)
-    @EnableGlobalMethodSecurity(
-            prePostEnabled = true
-    )
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Value("${app.security.url.login}")
-        private String loginUrl;
+        private final JwtTokenDecoderService jwtTokenDecoderService;
+        private final LibraryCardService libraryCardService;
+        private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-        @Autowired
-        private JwtTokenDecoderService jwtTokenDecoderService;
-
-        @Autowired
-        private LibraryCardService libraryCardService;
-
-        @Autowired
-        private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+        public AuthorizationSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+            this.jwtTokenDecoderService = jwtTokenDecoderService;
+            this.libraryCardService = libraryCardService;
+            this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .cors()
                     .and().csrf().disable()
+
+                    // By default Spring Security disables rendering within an iframe because allowing a webpage to be
+                    // added to a frame can be a security issue, for example Clickjacking. Since H2 console runs within
+                    // a frame so while Spring security is enabled, frame options has to be disabled explicitly,
+                    // in order to get the H2 console working.
+                    .headers().frameOptions().disable().and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
+                    .antMatchers("/api/librarians/getAll").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                    .antMatchers(HttpMethod.POST, loginUrl).denyAll()
                     .anyRequest().authenticated().and()
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         }

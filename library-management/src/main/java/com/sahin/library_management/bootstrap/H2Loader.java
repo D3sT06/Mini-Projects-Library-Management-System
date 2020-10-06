@@ -1,16 +1,12 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.LibrarianEntity;
-import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
-import com.sahin.library_management.infra.entity_model.MemberEntity;
+import com.sahin.library_management.infra.entity_model.*;
 import com.sahin.library_management.infra.enums.AccountFor;
-import com.sahin.library_management.repository.LibrarianRepository;
-import com.sahin.library_management.repository.LibraryCardRepository;
-import com.sahin.library_management.repository.MemberRepository;
+import com.sahin.library_management.infra.enums.BookStatus;
+import com.sahin.library_management.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -30,14 +26,180 @@ public class H2Loader implements CommandLineRunner {
     private MemberRepository memberRepository;
 
     @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private BookItemRepository bookItemRepository;
+
+    @Autowired
+    private BookCategoryRepository bookCategoryRepository;
+
+    @Autowired
+    private RackRepository rackRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
-          loadLibraryCards();
+          loadAccounts();
+          loadBooks();
     }
 
-    private void loadLibraryCards() {
+
+    private void loadBooks() {
+        if (bookItemRepository.count() == 0) {
+
+            BookCategoryEntity category1 = new BookCategoryEntity();
+            category1.setName("Edebiyat");
+
+            BookCategoryEntity category2 = new BookCategoryEntity();
+            category2.setName("Çocuk ve Gençlik");
+
+            BookCategoryEntity category3 = new BookCategoryEntity();
+            category3.setName("Araştırma / Tarih");
+
+            BookCategoryEntity category4 = new BookCategoryEntity();
+            category4.setName("Felsefe");
+
+            BookCategoryEntity category5 = new BookCategoryEntity();
+            category5.setName("Bilim");
+
+            AuthorEntity author1 = new AuthorEntity();
+            author1.setName("Jose");
+            author1.setSurname("Saramago");
+
+            AuthorEntity author2 = new AuthorEntity();
+            author2.setName("John");
+            author2.setSurname("Steinbeck");
+
+            AuthorEntity author3 = new AuthorEntity();
+            author3.setName("George");
+            author3.setSurname("Orwell");
+
+            AuthorEntity author4 = new AuthorEntity();
+            author4.setName("Stephen");
+            author4.setSurname("Hawking");
+
+            BookEntity book1 = new BookEntity();
+            book1.setAuthor(author1);
+            book1.setTitle("Körlük");
+            book1.setCategory(category1);
+            book1.setPublicationDate(Instant.now().getEpochSecond());
+
+            BookEntity book2 = new BookEntity();
+            book2.setAuthor(author2);
+            book2.setTitle("Fareler ve İnsanlar");
+            book2.setCategory(category1);
+            book2.setPublicationDate(Instant.now().getEpochSecond());
+
+            BookEntity book3 = new BookEntity();
+            book3.setAuthor(author3);
+            book3.setTitle("Hayvan Çiftliği");
+            book3.setCategory(category1);
+            book3.setPublicationDate(Instant.now().getEpochSecond());
+
+            BookEntity book4 = new BookEntity();
+            book4.setAuthor(author3);
+            book4.setTitle("1984");
+            book4.setCategory(category1);
+            book4.setPublicationDate(Instant.now().getEpochSecond());
+
+            BookEntity book5 = new BookEntity();
+            book5.setAuthor(author4);
+            book5.setTitle("Zamanın Kısa Tarihi");
+            book5.setCategory(category5);
+            book5.setPublicationDate(Instant.now().getEpochSecond());
+
+            RackEntity rack1 = new RackEntity();
+            rack1.setLocation("A-1");
+
+            BookItemEntity bookItem1 = new BookItemEntity();
+            bookItem1.setBook(book1);
+            bookItem1.setRack(rack1);
+            bookItem1.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem2 = new BookItemEntity();
+            bookItem2.setBook(book1);
+            bookItem2.setRack(rack1);
+            bookItem2.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem3 = new BookItemEntity();
+            bookItem3.setBook(book2);
+            bookItem3.setRack(rack1);
+            bookItem3.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem4 = new BookItemEntity();
+            bookItem4.setBook(book2);
+            bookItem4.setRack(rack1);
+            bookItem4.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem5 = new BookItemEntity();
+            bookItem5.setBook(book3);
+            bookItem5.setRack(rack1);
+            bookItem5.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem6 = new BookItemEntity();
+            bookItem6.setBook(book4);
+            bookItem6.setRack(rack1);
+            bookItem6.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem7 = new BookItemEntity();
+            bookItem7.setBook(book5);
+            bookItem7.setRack(rack1);
+            bookItem7.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem8 = new BookItemEntity();
+            bookItem8.setBook(book5);
+            bookItem8.setRack(rack1);
+            bookItem8.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem9 = new BookItemEntity();
+            bookItem9.setBook(book5);
+            bookItem9.setRack(rack1);
+            bookItem9.setStatus(BookStatus.AVAILABLE);
+
+            BookItemEntity bookItem10 = new BookItemEntity();
+            bookItem10.setBook(book5);
+            bookItem10.setRack(rack1);
+            bookItem10.setStatus(BookStatus.AVAILABLE);
+
+            rackRepository.save(rack1);
+
+            bookCategoryRepository.save(category1);
+            bookCategoryRepository.save(category2);
+            bookCategoryRepository.save(category3);
+            bookCategoryRepository.save(category4);
+            bookCategoryRepository.save(category5);
+
+            authorRepository.save(author1);
+            authorRepository.save(author2);
+            authorRepository.save(author3);
+            authorRepository.save(author4);
+
+            bookRepository.save(book1);
+            bookRepository.save(book2);
+            bookRepository.save(book3);
+            bookRepository.save(book4);
+            bookRepository.save(book5);
+
+            bookItemRepository.save(bookItem1);
+            bookItemRepository.save(bookItem2);
+            bookItemRepository.save(bookItem3);
+            bookItemRepository.save(bookItem4);
+            bookItemRepository.save(bookItem5);
+            bookItemRepository.save(bookItem6);
+            bookItemRepository.save(bookItem7);
+            bookItemRepository.save(bookItem8);
+            bookItemRepository.save(bookItem9);
+            bookItemRepository.save(bookItem10);
+        }
+    }
+
+    private void loadAccounts() {
         if (libraryCardRepository.count() == 0) {
             LibraryCardEntity libraryCardEntity1 = new LibraryCardEntity();
             libraryCardEntity1.setAccountFor(AccountFor.LIBRARIAN);

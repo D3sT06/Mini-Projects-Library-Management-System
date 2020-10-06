@@ -20,7 +20,6 @@ public class BookFilter {
     public Optional<List<AuthorEntity>> getAuthors() {
         return Optional.ofNullable(authors);
     }
-
     public Optional<List<BookCategoryEntity>> getCategories() {
         return Optional.ofNullable(categories);
     }

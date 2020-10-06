@@ -11,20 +11,19 @@
 - Search implementation
 - h2 database kurulumu
 - bootstrap data
-
+- Spring Security integration (JWT)
 - librarycard password field'ı
 - join fetch getall'da
-- Spring security authentication integration
 - LibraryCard accountFor entegrasyonu (Library card kullanan bütün controller'lar için)
-- antmatchers ayarı (iki config için)
+- h2 db console
 
-
-- Spring Security integration (JWT)
-- UML update
+- h2 book, book item, book loan, book reserve loader
 - Fine ve transaction implementation
+- UML update
 - Notification implementation
 - UML update
 - Unit testler (JUnit5, Mockito)
 - Logging (Log4J)
 - Exception handling mekanizması
 - Spring validation ekleme
+- Spring boot actuator ekleme
