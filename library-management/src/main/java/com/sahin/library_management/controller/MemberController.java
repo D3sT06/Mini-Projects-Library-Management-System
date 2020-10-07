@@ -16,34 +16,34 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
     public ResponseEntity<Void> createMember(@RequestBody Member member) {
         memberService.createMember(member);
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
     public ResponseEntity<Void> updateMember(@RequestBody Member member) {
         memberService.updateMember(member);
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @DeleteMapping("delete/{barcode}")
     public ResponseEntity<Void> deleteMemberByBarcode(@PathVariable String barcode) {
         memberService.deleteMemberByBarcode(barcode);
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("get/{barcode}")
     public ResponseEntity<Member> getMemberByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(memberService.getMemberByBarcode(barcode));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("getAll")
     public ResponseEntity<List<Member>> getAll() {
         return ResponseEntity.ok(memberService.getAll());

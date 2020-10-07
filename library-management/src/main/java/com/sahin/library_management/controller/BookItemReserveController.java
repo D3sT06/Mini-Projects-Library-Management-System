@@ -1,10 +1,12 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookReserving;
 import com.sahin.library_management.service.BookReservingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +18,8 @@ public class BookItemReserveController {
 
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     @PostMapping
-    public ResponseEntity<BookReserving> reserveBookItem(@RequestParam("memberId") String memberBarcode, @RequestParam("itemId") String bookItemBarcode) {
-        BookReserving bookReserving = bookReservingService.reserveBookItem(bookItemBarcode, memberBarcode);
+    public ResponseEntity<BookReserving> reserveBookItem(@AuthenticationPrincipal LibraryCard libraryCard, @RequestParam("itemId") String bookItemBarcode) {
+        BookReserving bookReserving = bookReservingService.reserveBookItem(bookItemBarcode, libraryCard.getBarcode());
         return ResponseEntity.ok(bookReserving);
     }
 

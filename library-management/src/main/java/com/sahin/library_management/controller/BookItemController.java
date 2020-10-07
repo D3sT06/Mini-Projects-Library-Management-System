@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/book-items")
 public class BookItemController {
@@ -16,9 +18,9 @@ public class BookItemController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
-    public ResponseEntity<Void> createBookItem(@RequestBody BookItem bookItem) {
-        bookItemService.createBookItem(bookItem);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<BookItem> createBookItem(@RequestBody BookItem bookItem) {
+        BookItem createdItem = bookItemService.createBookItem(bookItem);
+        return ResponseEntity.ok(createdItem);
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
@@ -40,5 +42,12 @@ public class BookItemController {
     public ResponseEntity<BookItem> getBookItemByBarcode(@PathVariable String barcode) {
         BookItem bookItem = bookItemService.getBookItemByBarcode(barcode);
         return ResponseEntity.ok(bookItem);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
+    @GetMapping("get-by-book/{bookId}")
+    public ResponseEntity<List<BookItem>> getBookItemsByBook(@PathVariable Long bookId) {
+        List<BookItem> bookItems = bookItemService.getBookItemByBookId(bookId);
+        return ResponseEntity.ok(bookItems);
     }
 }

@@ -2,7 +2,9 @@ package com.sahin.library_management.infra.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sahin.library_management.infra.enums.AccountFor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class LibraryCard implements UserDetails {
     private String barcode;
 

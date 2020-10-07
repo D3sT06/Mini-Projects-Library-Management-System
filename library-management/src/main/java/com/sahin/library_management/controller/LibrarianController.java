@@ -37,13 +37,13 @@ public class LibrarianController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("get/{barcode}")
     public ResponseEntity<Librarian> getLibrarianByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(librarianService.getLibrarianByBarcode(barcode));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN')")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("getAll")
     public ResponseEntity<List<Librarian>> getAll() {
         return ResponseEntity.ok(librarianService.getAll());

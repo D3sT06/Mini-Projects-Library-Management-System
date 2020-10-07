@@ -35,7 +35,7 @@ public class BookService {
     @Transactional
     public Book createBook(Book book) {
         if (book.getId() != null)
-            throw new MyRuntimeException("Book to be created cannot have an id.", HttpStatus.BAD_REQUEST);
+            throw new MyRuntimeException("NOT CREATED", "Book to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
         BookEntity entity = bookMapper.toEntity(book);
         entity = bookRepository.save(entity);
@@ -45,7 +45,7 @@ public class BookService {
     @Transactional
     public void updateBook(Book book) {
         if (book.getId() == null)
-            throw new MyRuntimeException("Book to be updated must have an id.", HttpStatus.BAD_REQUEST);
+            throw new MyRuntimeException("NOT UPDATED", "Book to be updated must have an id.", HttpStatus.BAD_REQUEST);
 
         if (!bookRepository.findById(book.getId()).isPresent())
             throw setExceptionWhenBookNotExist(book.getId());
@@ -74,6 +74,6 @@ public class BookService {
     }
 
     private MyRuntimeException setExceptionWhenBookNotExist(Long bookId) {
-        return new MyRuntimeException("Book with id \"" + bookId + "\" not exist!", HttpStatus.BAD_REQUEST);
+        return new MyRuntimeException("NOT FOUND", "Book with id \"" + bookId + "\" not exist!", HttpStatus.BAD_REQUEST);
     }
 }

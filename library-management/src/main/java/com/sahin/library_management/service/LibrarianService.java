@@ -2,18 +2,21 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity_model.LibrarianEntity;
 import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
+import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.mapper.LibrarianMapper;
 import com.sahin.library_management.repository.LibrarianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class LibrarianService {
@@ -23,6 +26,9 @@ public class LibrarianService {
 
     @Autowired
     private LibrarianMapper librarianMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void createLibrarian(Librarian librarian) {
@@ -34,6 +40,10 @@ public class LibrarianService {
         entity.setLibraryCard(new LibraryCardEntity());
         entity.getLibraryCard().setIssuedAt(Instant.now().toEpochMilli());
         entity.getLibraryCard().setActive(true);
+        entity.getLibraryCard().setAccountFor(AccountFor.LIBRARIAN);
+
+        String password = createRandomPassword();
+        entity.getLibraryCard().setPassword(passwordEncoder.encode(password));
 
         librarianRepository.save(entity);
     }
@@ -79,5 +89,18 @@ public class LibrarianService {
                 .findAll();
 
         return librarianMapper.toModels(entities);
+    }
+
+    private String createRandomPassword() {
+
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 6;
+
+        return new Random().ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 }
