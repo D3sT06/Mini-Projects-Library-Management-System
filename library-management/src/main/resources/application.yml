@@ -12,3 +12,8 @@ app:
 spring:
   jpa:
     show-sql: true
+
+
+logging:
+  level:
+    root: debug

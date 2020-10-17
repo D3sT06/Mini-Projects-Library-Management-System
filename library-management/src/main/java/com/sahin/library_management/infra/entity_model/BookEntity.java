@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Entity
@@ -21,7 +22,7 @@ public class BookEntity {
     private String title;
 
     @Column(name = "publication_date")
-    private Long publicationDate;
+    private LocalDate publicationDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

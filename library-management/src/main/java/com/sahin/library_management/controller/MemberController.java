@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,14 +19,14 @@ public class MemberController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
-    public ResponseEntity<Void> createMember(@RequestBody Member member) {
+    public ResponseEntity<Void> createMember(@RequestBody @Valid Member member) {
         memberService.createMember(member);
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
-    public ResponseEntity<Void> updateMember(@RequestBody Member member) {
+    public ResponseEntity<Void> updateMember(@RequestBody @Valid Member member) {
         memberService.updateMember(member);
         return ResponseEntity.ok().build();
     }

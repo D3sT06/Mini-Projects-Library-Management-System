@@ -4,7 +4,7 @@ import com.sahin.library_management.infra.entity_model.BookEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;
-import com.sahin.library_management.infra.model.search.BookSpecifications;
+import com.sahin.library_management.infra.model.search.BookSpecification;
 import com.sahin.library_management.mapper.BookMapper;
 import com.sahin.library_management.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class BookService {
 
     @Transactional
     public List<Book> searchBook(BookFilter bookFilter) {
-        Specification<BookEntity> specification = BookSpecifications.create(bookFilter);
+        Specification<BookEntity> specification = BookSpecification.create(bookFilter);
         List<BookEntity> entities = bookRepository.findAll(specification);
         return bookMapper.toModels(entities);
     }

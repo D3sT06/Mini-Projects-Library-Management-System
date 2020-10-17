@@ -11,9 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
-@Profile("test")
+@Profile({"test", "dev"})
 public class H2Loader implements CommandLineRunner {
 
     @Autowired
@@ -88,31 +89,32 @@ public class H2Loader implements CommandLineRunner {
             book1.setAuthor(author1);
             book1.setTitle("Körlük");
             book1.setCategory(category1);
-            book1.setPublicationDate(Instant.now().getEpochSecond());
+            book1.setPublicationDate(LocalDate.of(1990, 10, 1));
 
             BookEntity book2 = new BookEntity();
             book2.setAuthor(author2);
             book2.setTitle("Fareler ve İnsanlar");
             book2.setCategory(category1);
-            book2.setPublicationDate(Instant.now().getEpochSecond());
+            book2.setPublicationDate(LocalDate.of(1990, 10, 1));
 
             BookEntity book3 = new BookEntity();
             book3.setAuthor(author3);
             book3.setTitle("Hayvan Çiftliği");
             book3.setCategory(category1);
-            book3.setPublicationDate(Instant.now().getEpochSecond());
+            book3.setPublicationDate(LocalDate.of(1995, 9, 1));
 
             BookEntity book4 = new BookEntity();
             book4.setAuthor(author3);
             book4.setTitle("1984");
             book4.setCategory(category1);
-            book4.setPublicationDate(Instant.now().getEpochSecond());
+            book4.setPublicationDate(LocalDate.of(1985, 3, 1));
 
             BookEntity book5 = new BookEntity();
             book5.setAuthor(author4);
             book5.setTitle("Zamanın Kısa Tarihi");
             book5.setCategory(category5);
-            book5.setPublicationDate(Instant.now().getEpochSecond());
+            book5.setPublicationDate(LocalDate.of(2010, 7, 1));
+
 
             RackEntity rack1 = new RackEntity();
             rack1.setLocation("A-1");
