@@ -16,4 +16,4 @@ spring:
 
 logging:
   level:
-    root: debug
+    com.sahin.library_management: debug

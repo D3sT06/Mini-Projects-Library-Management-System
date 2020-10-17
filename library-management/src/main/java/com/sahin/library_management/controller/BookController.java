@@ -59,7 +59,7 @@ public class BookController {
 
     @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
     @PostMapping("search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestBody @Valid BookFilter bookFilter) {
+    public ResponseEntity<List<Book>> getAll(@RequestBody @Valid BookFilter bookFilter) {
         return ResponseEntity.ok(bookService.searchBook(bookFilter));
     }
 }

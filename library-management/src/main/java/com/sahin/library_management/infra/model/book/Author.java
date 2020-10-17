@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 public class Author {
@@ -14,9 +16,11 @@ public class Author {
     private Long id;
 
     @JsonIgnore
+    @NotNull
     private String name;
 
     @JsonIgnore
+    @NotNull
     private String surname;
 
     @JsonProperty("full name")
