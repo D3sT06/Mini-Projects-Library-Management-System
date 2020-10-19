@@ -2,21 +2,25 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
 import com.sahin.library_management.infra.entity_model.MemberEntity;
+import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.mapper.MemberMapper;
 import com.sahin.library_management.repository.MemberRepository;
+import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class MemberService {
@@ -26,6 +30,9 @@ public class MemberService {
 
     @Autowired
     private MemberMapper memberMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void createMember(Member member) {
@@ -37,6 +44,10 @@ public class MemberService {
         entity.setLibraryCard(new LibraryCardEntity());
         entity.getLibraryCard().setIssuedAt(Instant.now().toEpochMilli());
         entity.getLibraryCard().setActive(true);
+        entity.getLibraryCard().setAccountFor(AccountFor.LIBRARIAN);
+
+        String password = PasswordUtil.createRandomPassword();
+        entity.getLibraryCard().setPassword(passwordEncoder.encode(password));
 
         memberRepository.save(entity);
     }

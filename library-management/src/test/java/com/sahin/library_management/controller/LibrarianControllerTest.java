@@ -2,37 +2,21 @@ package com.sahin.library_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
+import com.sahin.library_management.bootstrap.TestLoader;
 import com.sahin.library_management.infra.entity_model.LibrarianEntity;
 import com.sahin.library_management.infra.model.account.Librarian;
-import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.repository.LibrarianRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.config.BootstrapMode;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
@@ -45,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @DisplayName("Librarian Endpoints:")
-@Disabled
 class LibrarianControllerTest {
 
     @Autowired
@@ -57,19 +40,50 @@ class LibrarianControllerTest {
     @Autowired
     protected LibrarianRepository librarianRepository;
 
+    @Autowired
+    @Qualifier("librarianTestLoader")
+    protected TestLoader testLoader;
+
     @Nested
-    @DisplayName("When the librarian is valid")
+    @DisplayName("When the librarian object is valid")
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class ValidLibrarian {
 
-        @AfterEach
-        void afterEach() {
-            //System.out.println(librarianRepository.count());
+        @BeforeAll
+        void setup() {
+            testLoader.loadDb();
+        }
+
+        @AfterAll
+        void clear() {
+            testLoader.clearDb();
+        }
+
+        @Test
+        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
+        @DisplayName("Then a librarian can get all")
+        @Order(1)
+        void getAll() throws Exception {
+
+            long expectedResult = librarianRepository.count();
+
+            mockMvc
+                    .perform(
+                            get("/api/librarians/getAll")
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Librarian[] librarians = objectMapper.readValue(result.getResponse().getContentAsString(), Librarian[].class);
+                        assertNotNull(librarians);
+                        assertEquals(expectedResult, librarians.length);
+                    });
         }
 
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can create it")
-        @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+        @Order(2)
         void createLibrarian() throws Exception {
             mockMvc
                     .perform(
@@ -85,6 +99,7 @@ class LibrarianControllerTest {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can update it")
+        @Order(3)
         void updateLibrarian() throws Exception {
 
             List<LibrarianEntity> entities = librarianRepository.findAll();
@@ -104,7 +119,7 @@ class LibrarianControllerTest {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can delete it by barcode")
-        @Rollback
+        @Order(4)
         void deleteLibrarianByBarcode() throws Exception {
 
             List<LibrarianEntity> entities = librarianRepository.findAll();
@@ -119,6 +134,7 @@ class LibrarianControllerTest {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can get it by barcode")
+        @Order(5)
         void getLibrarianByBarcode() throws Exception {
 
             List<LibrarianEntity> entities = librarianRepository.findAll();
@@ -131,22 +147,6 @@ class LibrarianControllerTest {
                     .andExpect(mvcResult -> {
                         Librarian librarian = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Librarian.class);
                         assertNotNull(librarian);
-                    });
-        }
-
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
-        @DisplayName("Then a librarian can get all")
-        void getAll() throws Exception {
-            mockMvc
-                    .perform(
-                            get("/api/librarians/getAll")
-                                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-                        Librarian[] librarians = objectMapper.readValue(result.getResponse().getContentAsString(), Librarian[].class);
-                        assertNotNull(librarians);
-                        assertEquals(librarianRepository.count(), librarians.length);
                     });
         }
     }

@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Component
-@Profile({"test", "dev"})
+@Profile("dev")
 public class H2Loader implements CommandLineRunner {
 
     @Autowired

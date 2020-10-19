@@ -7,6 +7,7 @@ import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.mapper.LibrarianMapper;
 import com.sahin.library_management.repository.LibrarianRepository;
+import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +43,7 @@ public class LibrarianService {
         entity.getLibraryCard().setActive(true);
         entity.getLibraryCard().setAccountFor(AccountFor.LIBRARIAN);
 
-        String password = createRandomPassword();
+        String password = PasswordUtil.createRandomPassword();
         entity.getLibraryCard().setPassword(passwordEncoder.encode(password));
 
         librarianRepository.save(entity);
@@ -91,16 +92,5 @@ public class LibrarianService {
         return librarianMapper.toModels(entities);
     }
 
-    private String createRandomPassword() {
 
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 6;
-
-        return new Random().ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
 }
