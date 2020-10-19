@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,14 +19,14 @@ public class BookItemController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
-    public ResponseEntity<BookItem> createBookItem(@RequestBody BookItem bookItem) {
+    public ResponseEntity<BookItem> createBookItem(@RequestBody @Valid BookItem bookItem) {
         BookItem createdItem = bookItemService.createBookItem(bookItem);
         return ResponseEntity.ok(createdItem);
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
-    public ResponseEntity<Void> updateBookItem(@RequestBody BookItem bookItem) {
+    public ResponseEntity<Void> updateBookItem(@RequestBody @Valid BookItem bookItem) {
         bookItemService.updateBookItem(bookItem);
         return ResponseEntity.ok().build();
     }

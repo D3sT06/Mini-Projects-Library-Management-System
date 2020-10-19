@@ -1,12 +1,12 @@
 package com.sahin.library_management.infra.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.sahin.library_management.infra.auth.CustomAuthorityDeserializer;
 import com.sahin.library_management.infra.enums.AccountFor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +28,7 @@ public class LibraryCard implements UserDetails {
     private Boolean active;
     private AccountFor accountFor;
 
+    @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

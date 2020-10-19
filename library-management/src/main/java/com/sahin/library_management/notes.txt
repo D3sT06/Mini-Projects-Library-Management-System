@@ -18,20 +18,23 @@
 - h2 db console
 - h2 book, book item, book loan, book reserve loader
 - Member'ı kaldırıp Auth objesinden member library card id'yi çözümleme
+- Basic auth ekleme
+- Spring validation ekleme
+- Exception handling mekanizması
+- Logging (Log4J)
 
+
+- book category, author, rack için controller ekleme
+- datajpatest? (rollback yapmıyor ve testler patlıyor)
 - Integration testler (JUnit5, Mockito)
     - librarian controller
     - member controller
     - authorization testleri
     - book item loan controller
     - book item reserve controller
+    - author, category, rack
 - rest docs
-- book category, author, rack için controller ekleme
-- Logging (Log4J)
-- Exception handling mekanizması
 - UML update
-- Spring validation ekleme
-- Spring boot actuator ekleme
 - Fine ve transaction implementation
 - Notification implementation
 - UML update

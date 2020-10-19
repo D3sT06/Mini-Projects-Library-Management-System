@@ -6,6 +6,7 @@ import com.sahin.library_management.infra.exception.ErrorResponse;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.service.BookItemService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @DisplayName("Book Item Endpoints:")
+@Disabled
 class BookItemControllerTest {
 
     @Autowired

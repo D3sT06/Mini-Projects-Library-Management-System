@@ -5,9 +5,11 @@ import com.sahin.library_management.service.LibraryCardService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +26,50 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Configuration
+    @Profile("dev")
+    public static class BasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+        private final PasswordEncoder passwordEncoder;
+
+        public BasicAuthSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint, PasswordEncoder passwordEncoder) {
+            this.authenticationEntryPoint = authenticationEntryPoint;
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                    .inMemoryAuthentication()
+                    .withUser("librarian").password(passwordEncoder.encode("1234")).roles("LIBRARIAN")
+                    .and()
+                    .withUser("member").password(passwordEncoder.encode("1234")).roles("MEMBER");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .cors()
+                    .and().csrf().disable()
+
+                    // By default Spring Security disables rendering within an iframe because allowing a webpage to be
+                    // added to a frame can be a security issue, for example Clickjacking. Since H2 console runs within
+                    // a frame so while Spring security is enabled, frame options has to be disabled explicitly,
+                    // in order to get the H2 console working.
+                    .headers().frameOptions().disable().and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
+                    .authorizeRequests()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                    .anyRequest().authenticated().and()
+                    .httpBasic().and()
+                    .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+        }
+    }
+
+
+    @Configuration
+    @Profile("!dev")
     @Order(1)
     public static class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -72,6 +118,7 @@ public class SecurityConfig {
     }
 
     @Configuration
+    @Profile("!dev")
     @Order(2)
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -99,7 +146,6 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
-                    .antMatchers("/api/librarians/getAll").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                     .anyRequest().authenticated().and()

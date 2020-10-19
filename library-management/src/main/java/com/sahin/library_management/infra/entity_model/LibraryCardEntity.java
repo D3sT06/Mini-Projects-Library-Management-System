@@ -23,7 +23,7 @@ public class LibraryCardEntity {
     @Column(name = "issued_at")
     private Long issuedAt;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "active", nullable = false)
