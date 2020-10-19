@@ -10,9 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
 
 @Component
-public class LibrarianTestLoader implements TestLoader {
+public class LibrarianLoader implements Loader<LibrarianEntity> {
 
     @Autowired
     private LibrarianRepository librarianRepository;
@@ -66,5 +67,10 @@ public class LibrarianTestLoader implements TestLoader {
     @Override
     public void clearDb() {
         librarianRepository.deleteAll();
+    }
+
+    @Override
+    public List<LibrarianEntity> getAll() {
+        return librarianRepository.findAll();
     }
 }

@@ -2,12 +2,9 @@ package com.sahin.library_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
-import com.sahin.library_management.bootstrap.TestLoader;
-import com.sahin.library_management.infra.entity_model.LibrarianEntity;
+import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity_model.MemberEntity;
-import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.Member;
-import com.sahin.library_management.repository.LibrarianRepository;
 import com.sahin.library_management.repository.MemberRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @DisplayName("Member Endpoints:")
-class MemberControllerTest {
+class MemberIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -41,11 +38,8 @@ class MemberControllerTest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected MemberRepository memberRepository;
-
-    @Autowired
-    @Qualifier("memberTestLoader")
-    protected TestLoader testLoader;
+    @Qualifier("memberLoader")
+    protected Loader<?> loader;
 
     @Nested
     @DisplayName("When the member object is valid")
@@ -55,12 +49,12 @@ class MemberControllerTest {
 
         @BeforeAll
         void setup() {
-            testLoader.loadDb();
+            loader.loadDb();
         }
 
         @AfterAll
         void clear() {
-            testLoader.clearDb();
+            loader.clearDb();
         }
 
         @Test
@@ -69,7 +63,7 @@ class MemberControllerTest {
         @Order(1)
         void getAll() throws Exception {
 
-            long expectedResult = memberRepository.count();
+            long expectedResult = loader.getAll().size();
 
             mockMvc
                     .perform(
@@ -105,7 +99,7 @@ class MemberControllerTest {
         @Order(3)
         void updateMember() throws Exception {
 
-            List<MemberEntity> entities = memberRepository.findAll();
+            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
 
             mockMvc
                     .perform(
@@ -125,7 +119,7 @@ class MemberControllerTest {
         @Order(4)
         void deleteMemberByBarcode() throws Exception {
 
-            List<MemberEntity> entities = memberRepository.findAll();
+            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
 
             mockMvc
                     .perform(
@@ -140,7 +134,7 @@ class MemberControllerTest {
         @Order(5)
         void getMemberByBarcode() throws Exception {
 
-            List<MemberEntity> entities = memberRepository.findAll();
+            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
 
             mockMvc
                     .perform(

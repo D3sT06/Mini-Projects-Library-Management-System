@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class EncryptionConfig {
 
-
     @Bean
     @ConditionalOnMissingBean
     public PasswordEncoder passwordEncoder() {

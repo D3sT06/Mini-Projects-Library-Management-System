@@ -1,6 +1,7 @@
 package com.sahin.library_management.infra.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sahin.library_management.infra.auth.CustomAuthorityDeserializer;
 import com.sahin.library_management.infra.enums.AccountFor;
@@ -21,7 +22,7 @@ import java.util.List;
 public class LibraryCard implements UserDetails {
     private String barcode;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private Long issuedAt;
@@ -30,6 +31,7 @@ public class LibraryCard implements UserDetails {
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -54,26 +56,31 @@ public class LibraryCard implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return getBarcode();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return getActive();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return getActive();
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return getActive();
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return getActive();
     }

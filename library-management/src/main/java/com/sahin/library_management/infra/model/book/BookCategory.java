@@ -1,6 +1,5 @@
 package com.sahin.library_management.infra.model.book;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,7 +2,7 @@ package com.sahin.library_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
-import com.sahin.library_management.bootstrap.TestLoader;
+import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity_model.LibrarianEntity;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.repository.LibrarianRepository;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @DisplayName("Librarian Endpoints:")
-class LibrarianControllerTest {
+class LibrarianIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -38,11 +38,8 @@ class LibrarianControllerTest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected LibrarianRepository librarianRepository;
-
-    @Autowired
-    @Qualifier("librarianTestLoader")
-    protected TestLoader testLoader;
+    @Qualifier("librarianLoader")
+    protected Loader<?> loader;
 
     @Nested
     @DisplayName("When the librarian object is valid")
@@ -52,12 +49,12 @@ class LibrarianControllerTest {
 
         @BeforeAll
         void setup() {
-            testLoader.loadDb();
+            loader.loadDb();
         }
 
         @AfterAll
         void clear() {
-            testLoader.clearDb();
+            loader.clearDb();
         }
 
         @Test
@@ -66,7 +63,7 @@ class LibrarianControllerTest {
         @Order(1)
         void getAll() throws Exception {
 
-            long expectedResult = librarianRepository.count();
+            long expectedResult = loader.getAll().size();
 
             mockMvc
                     .perform(
@@ -102,7 +99,7 @@ class LibrarianControllerTest {
         @Order(3)
         void updateLibrarian() throws Exception {
 
-            List<LibrarianEntity> entities = librarianRepository.findAll();
+            List<LibrarianEntity> entities = (List<LibrarianEntity>) loader.getAll();
 
             mockMvc
                     .perform(
@@ -122,7 +119,7 @@ class LibrarianControllerTest {
         @Order(4)
         void deleteLibrarianByBarcode() throws Exception {
 
-            List<LibrarianEntity> entities = librarianRepository.findAll();
+            List<LibrarianEntity> entities = (List<LibrarianEntity>) loader.getAll();
 
             mockMvc
                     .perform(
@@ -137,7 +134,7 @@ class LibrarianControllerTest {
         @Order(5)
         void getLibrarianByBarcode() throws Exception {
 
-            List<LibrarianEntity> entities = librarianRepository.findAll();
+            List<LibrarianEntity> entities = (List<LibrarianEntity>) loader.getAll();
 
             mockMvc
                     .perform(

@@ -2,46 +2,32 @@ package com.sahin.library_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
-import com.sahin.library_management.bootstrap.H2Loader;
-import com.sahin.library_management.infra.auth.JwtTokenDecoderService;
-import com.sahin.library_management.infra.auth.TokenValidationFilter;
+import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity_model.AuthorEntity;
 import com.sahin.library_management.infra.entity_model.BookCategoryEntity;
 import com.sahin.library_management.infra.entity_model.BookEntity;
-import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.exception.MyRuntimeException;
-import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.repository.AuthorRepository;
 import com.sahin.library_management.repository.BookCategoryRepository;
 import com.sahin.library_management.repository.BookRepository;
-import com.sahin.library_management.service.LibraryCardService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = LibraryManagementApp.class)
@@ -49,8 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @DisplayName("Book Endpoints:")
-@Disabled
-class BookControllerTest {
+class BookIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -59,105 +44,45 @@ class BookControllerTest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    private BookRepository bookRepository;
+    @Qualifier("bookLoader")
+    protected Loader<?> bookLoader;
 
     @Autowired
-    private BookCategoryRepository categoryRepository;
+    @Qualifier("categoryLoader")
+    protected Loader<?> categoryLoader;
 
     @Autowired
-    private AuthorRepository authorRepository;
+    @Qualifier("authorLoader")
+    protected Loader<?> authorLoader;
 
     @Nested
     @DisplayName("When the book is valid")
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class ValidBook {
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
-        @DisplayName("Then a librarian can create a book")
-        void createBook() throws Exception {
 
-            BookCategoryEntity category = categoryRepository.findAll().get(0);
-            AuthorEntity author = authorRepository.findAll().get(0);
-
-            mockMvc
-                    .perform(
-                            post("/api/books/create")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content("{\n" +
-                                            "    \"title\": \"Boğulmamak İçin\",\n" +
-                                            "    \"publicationDate\": 1444462452,\n" +
-                                            "    \"category\": {\n" +
-                                            "        \"id\": " + author.getId() + ",\n" +
-                                            "    },\n" +
-                                            "    \"author\": {\n" +
-                                            "        \"id\": 3\n" +
-                                            "    }\n" +
-                                            "}"))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-                        Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
-                        assertNotNull(book);
-                        assertNotNull(book.getId());
-                    });
+        @BeforeAll
+        void setup() {
+            authorLoader.loadDb();
+            categoryLoader.loadDb();
+            bookLoader.loadDb();
         }
 
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
-        @DisplayName("Then a librarian can update a book")
-        void updateBook() throws Exception {
-
-            BookEntity bookEntity = bookRepository.findAll().get(0);
-
-            mockMvc
-                    .perform(
-                            put("/api/books/update")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content("{\n" +
-                                            "    \"id\": " + bookEntity.getId() + ",\n" +
-                                            "    \"title\": \"Test\",\n" +
-                                            "    \"publicationDate\": 1444462452,\n" +
-                                            "    \"category\": {\n" +
-                                            "        \"id\": " + bookEntity.getCategory().getId() + ",\n" +
-                                            "    },\n" +
-                                            "    \"author\": {\n" +
-                                            "        \"id\": " + bookEntity.getAuthor().getId() + ",\n" +
-                                            "    }\n" +
-                                            "}"))
-                    .andExpect(status().isOk());
-        }
-
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
-        @DisplayName("Then a librarian can delete a book")
-        void deleteBookById() throws Exception {
-
-            BookEntity bookEntity = bookRepository.findAll().get(0);
-
-            mockMvc
-                    .perform(
-                            delete("/api/books/delete/" + bookEntity.getId())
-                                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk());
-        }
-
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
-        @DisplayName("Then user can get a book")
-        void getBookById() throws Exception {
-            mockMvc
-                    .perform(
-                            get("/api/books/get/1")
-                                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-                        Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
-                        assertNotNull(book);
-                    });
+        @AfterAll
+        void clear() {
+            bookLoader.clearDb();
+            authorLoader.clearDb();
+            categoryLoader.clearDb();
         }
 
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then user can find all the books without using any filter")
+        @Order(1)
         void searchBooksWithNoFilter() throws Exception {
+
+            long expectedResult = bookLoader.getAll().size();
+
             mockMvc
                     .perform(
                             post("/api/books/search")
@@ -166,14 +91,22 @@ class BookControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(result -> {
                         Book[] books = objectMapper.readValue(result.getResponse().getContentAsString(), Book[].class);
-                        assertEquals(5, books.length);
+                        assertEquals(expectedResult, books.length);
                     });
         }
 
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then user can find the book he wants by using filters")
+        @Order(2)
         void searchBooksWithFilter() throws Exception {
+
+            long expectedResult = ((List<BookEntity>) bookLoader.getAll()).stream()
+                    .filter(entity -> entity.getTitle().contains("19"))
+                    .filter(entity -> entity.getCategory().getId().equals(1L))
+                    .filter(entity -> entity.getAuthor().getId().equals(3L))
+                    .count();
+
             mockMvc
                     .perform(
                             post("/api/books/search")
@@ -195,14 +128,122 @@ class BookControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(result -> {
                         Book[] books = objectMapper.readValue(result.getResponse().getContentAsString(), Book[].class);
-                        assertEquals(1, books.length);
+                        assertEquals(expectedResult, books.length);
                     });
         }
+
+        @Test
+        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
+        @DisplayName("Then a librarian can create a book")
+        @Order(3)
+        void createBook() throws Exception {
+
+            BookCategoryEntity category = (BookCategoryEntity) categoryLoader.getAll().get(0);
+            AuthorEntity author = (AuthorEntity) authorLoader.getAll().get(0);
+
+            mockMvc
+                    .perform(
+                            post("/api/books/create")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content("{\n" +
+                                            "    \"title\": \"Boğulmamak İçin\",\n" +
+                                            "    \"publicationDate\": \"12/10/1990\",\n" +
+                                            "    \"category\": {\n" +
+                                            "        \"id\": " + category.getId() + "\n" +
+                                            "    },\n" +
+                                            "    \"author\": {\n" +
+                                            "        \"id\": " + author.getId() + "\n" +
+                                            "    }\n" +
+                                            "}"))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
+                        assertNotNull(book);
+                        assertNotNull(book.getId());
+                    });
+        }
+
+        @Test
+        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
+        @DisplayName("Then a librarian can update a book")
+        @Order(4)
+        void updateBook() throws Exception {
+
+            BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
+
+            mockMvc
+                    .perform(
+                            put("/api/books/update")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content("{\n" +
+                                            "    \"id\": " + bookEntity.getId() + ",\n" +
+                                            "    \"title\": \"Test\",\n" +
+                                            "    \"publicationDate\": \"12/10/1990\",\n" +
+                                            "    \"category\": {\n" +
+                                            "        \"id\": " + bookEntity.getCategory().getId() + "\n" +
+                                            "    },\n" +
+                                            "    \"author\": {\n" +
+                                            "        \"id\": " + bookEntity.getAuthor().getId() + "\n" +
+                                            "    }\n" +
+                                            "}"))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
+        @DisplayName("Then a librarian can delete a book")
+        @Order(5)
+        void deleteBookById() throws Exception {
+
+            BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
+
+            mockMvc
+                    .perform(
+                            delete("/api/books/delete/" + bookEntity.getId())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
+        @DisplayName("Then user can get a book")
+        @Order(6)
+        void getBookById() throws Exception {
+            BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
+
+            mockMvc
+                    .perform(
+                            get("/api/books/get/" + bookEntity.getId())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
+                        assertNotNull(book);
+                    });
+        }
+
+
     }
 
     @Nested
     @DisplayName("When the book is invalid")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class InvalidBook {
+
+        @BeforeAll
+        void setup() {
+            authorLoader.loadDb();
+            categoryLoader.loadDb();
+            bookLoader.loadDb();
+        }
+
+        @AfterAll
+        void clear() {
+            bookLoader.clearDb();
+            authorLoader.clearDb();
+            categoryLoader.clearDb();
+        }
+
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot create it with id")
@@ -214,7 +255,7 @@ class BookControllerTest {
                                     .content("{\n" +
                                             "    \"id\": 1,\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
-                                            "    \"publicationDate\": 1444462452,\n" +
+                                            "    \"publicationDate\": \"12/10/1990\",\n" +
                                             "    \"category\": {\n" +
                                             "        \"id\": 1\n" +
                                             "    },\n" +
@@ -240,7 +281,7 @@ class BookControllerTest {
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
-                                            "    \"publicationDate\": 1444462452,\n" +
+                                            "    \"publicationDate\": \"12/10/1990\",\n" +
                                             "    \"category\": {\n" +
                                             "        \"id\": 1\n" +
                                             "    },\n" +
@@ -267,7 +308,7 @@ class BookControllerTest {
                                     .content("{\n" +
                                             "    \"id\": 1000,\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
-                                            "    \"publicationDate\": 1444462452,\n" +
+                                            "    \"publicationDate\": \"12/10/1990\",\n" +
                                             "    \"category\": {\n" +
                                             "        \"id\": 1\n" +
                                             "    },\n" +

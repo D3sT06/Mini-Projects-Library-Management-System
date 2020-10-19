@@ -3,16 +3,16 @@ package com.sahin.library_management.bootstrap;
 import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
 import com.sahin.library_management.infra.entity_model.MemberEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
-import com.sahin.library_management.repository.LibrarianRepository;
 import com.sahin.library_management.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
 
 @Component
-public class MemberTestLoader implements TestLoader {
+public class MemberLoader implements Loader<MemberEntity> {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -53,5 +53,10 @@ public class MemberTestLoader implements TestLoader {
     @Override
     public void clearDb() {
         memberRepository.deleteAll();
+    }
+
+    @Override
+    public List<MemberEntity> getAll() {
+        return memberRepository.findAll();
     }
 }

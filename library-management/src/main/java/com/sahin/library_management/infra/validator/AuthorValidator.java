@@ -19,7 +19,7 @@ public class AuthorValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return Book.class.equals(aClass);
+        return Author.class.equals(aClass);
     }
 
     @Override

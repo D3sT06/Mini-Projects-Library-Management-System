@@ -1,8 +1,9 @@
 package com.sahin.library_management.bootstrap;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
 
-public interface TestLoader {
+public interface Loader<T> {
     void loadDb();
     void clearDb();
+    List<T> getAll();
 }

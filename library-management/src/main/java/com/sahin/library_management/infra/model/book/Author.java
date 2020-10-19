@@ -1,29 +1,26 @@
 package com.sahin.library_management.infra.model.book;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
 @Setter
+@Getter
 public class Author {
 
     private Long id;
 
-    @JsonIgnore
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    @JsonIgnore
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String surname;
 
-    @JsonProperty("full name")
+    @JsonProperty(value = "full name", access = JsonProperty.Access.READ_ONLY)
     public String fullName() {
         return getName() + " " + getSurname();
     }

@@ -22,17 +22,13 @@
 - Spring validation ekleme
 - Exception handling mekanizması
 - Logging (Log4J)
-
-
 - book category, author, rack için controller ekleme
-- datajpatest? (rollback yapmıyor ve testler patlıyor)
+
 - Integration testler (JUnit5, Mockito)
-    - librarian controller
-    - member controller
     - authorization testleri
     - book item loan controller
     - book item reserve controller
-    - author, category, rack
+    - maven fail-safe plugin
 - rest docs
 - UML update
 - Fine ve transaction implementation
