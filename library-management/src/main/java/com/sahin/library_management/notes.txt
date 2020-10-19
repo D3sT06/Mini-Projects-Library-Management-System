@@ -35,3 +35,4 @@
 - Fine ve transaction implementation
 - Notification implementation
 - UML update
+- Docker
