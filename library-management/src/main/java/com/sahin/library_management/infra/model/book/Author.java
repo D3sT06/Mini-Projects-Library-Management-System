@@ -20,7 +20,7 @@ public class Author {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String surname;
 
-    @JsonProperty(value = "full name", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "fullname", access = JsonProperty.Access.READ_ONLY)
     public String fullName() {
         return getName() + " " + getSurname();
     }

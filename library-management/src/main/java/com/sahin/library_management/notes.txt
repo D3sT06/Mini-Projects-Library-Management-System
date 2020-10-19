@@ -25,7 +25,6 @@
 - book category, author, rack için controller ekleme
 
 - Integration testler (JUnit5, Mockito)
-    - authorization testleri
     - book item loan controller
     - book item reserve controller
     - maven fail-safe plugin
