@@ -28,6 +28,7 @@
     - book item loan controller
     - book item reserve controller
     - maven fail-safe plugin
+- zamanla state'in kendiliğinden değişmesi (?)
 - rest docs
 - UML update
 - Fine ve transaction implementation

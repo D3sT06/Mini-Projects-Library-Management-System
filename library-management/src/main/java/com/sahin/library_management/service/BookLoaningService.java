@@ -135,7 +135,7 @@ public class BookLoaningService {
         Optional<BookLoaning> bookLoaning = findLastByItem(bookItem);
 
         if (!bookLoaning.isPresent())
-            throw new MyRuntimeException("Book item has not loaned before.", HttpStatus.BAD_REQUEST);
+            throw new MyRuntimeException("NOT FOUND", "Book item has not loaned before.", HttpStatus.BAD_REQUEST);
 
         return bookLoaning.get();
     }
