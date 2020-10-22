@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity_model.AuthorEntity;
 import com.sahin.library_management.infra.entity_model.RackEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@LogExecutionTime
 public class RackService {
     @Autowired
     private RackRepository rackRepository;

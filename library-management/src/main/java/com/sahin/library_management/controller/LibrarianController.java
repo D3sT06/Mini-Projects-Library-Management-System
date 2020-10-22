@@ -1,5 +1,6 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/librarians")
+@LogExecutionTime
 public class LibrarianController {
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.validator.BookValidator;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/books")
+@LogExecutionTime
 public class BookController {
 
     @Autowired

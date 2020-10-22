@@ -29,6 +29,11 @@
     - book item reserve controller
     - maven fail-safe plugin
 - zamanla state'in kendiliğinden değişmesi (?)
+- caching
+- unit tests
+- aspect oriented programming
+- scheduling
+- internationalization
 - rest docs
 - UML update
 - Fine ve transaction implementation

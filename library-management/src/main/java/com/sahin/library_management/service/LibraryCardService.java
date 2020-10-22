@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.LibraryCard;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@LogExecutionTime
 public class LibraryCardService implements UserDetailsService {
 
     @Autowired

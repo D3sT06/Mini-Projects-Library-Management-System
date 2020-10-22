@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity_model.BookItemEntity;
 import com.sahin.library_management.infra.entity_model.BookLoaningEntity;
 import com.sahin.library_management.infra.entity_model.MemberEntity;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@LogExecutionTime
 public class BookLoaningService {
 
     @Autowired

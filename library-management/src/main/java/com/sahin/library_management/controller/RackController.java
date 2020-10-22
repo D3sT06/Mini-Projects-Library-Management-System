@@ -1,5 +1,6 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Rack;
 import com.sahin.library_management.infra.validator.RackValidator;
 import com.sahin.library_management.service.RackService;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/racks")
+@LogExecutionTime
 public class RackController {
 
     @Autowired

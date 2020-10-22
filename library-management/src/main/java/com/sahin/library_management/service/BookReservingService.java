@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity_model.BookItemEntity;
 import com.sahin.library_management.infra.entity_model.BookReservingEntity;
 import com.sahin.library_management.infra.enums.BookStatus;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@LogExecutionTime
 public class BookReservingService {
 
     @Autowired

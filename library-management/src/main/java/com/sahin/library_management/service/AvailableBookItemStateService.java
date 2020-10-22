@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Member;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
+@LogExecutionTime
 public class AvailableBookItemStateService extends BookItemStateService {
 
     @Transactional

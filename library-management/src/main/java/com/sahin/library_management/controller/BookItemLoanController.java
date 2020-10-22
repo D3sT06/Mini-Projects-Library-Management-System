@@ -1,5 +1,6 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.service.BookLoaningService;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/book-items/loan")
+@LogExecutionTime
 public class BookItemLoanController {
 
     @Autowired

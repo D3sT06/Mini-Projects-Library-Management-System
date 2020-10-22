@@ -1,5 +1,6 @@
 package com.sahin.library_management.service;
 
+import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
 import com.sahin.library_management.infra.entity_model.MemberEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@LogExecutionTime
 public class MemberService {
 
     @Autowired
