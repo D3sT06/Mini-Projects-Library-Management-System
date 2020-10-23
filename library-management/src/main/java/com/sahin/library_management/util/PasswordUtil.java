@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class PasswordUtil {
 
-
-
     static public String createRandomPassword() {
 
         int leftLimit = 48; // numeral '0'

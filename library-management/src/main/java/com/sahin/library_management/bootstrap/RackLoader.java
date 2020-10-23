@@ -1,6 +1,6 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.RackEntity;
+import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.repository.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

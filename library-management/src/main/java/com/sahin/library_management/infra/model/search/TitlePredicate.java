@@ -1,6 +1,6 @@
 package com.sahin.library_management.infra.model.search;
 
-import com.sahin.library_management.infra.entity_model.BookEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;

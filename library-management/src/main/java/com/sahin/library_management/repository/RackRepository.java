@@ -1,6 +1,6 @@
 package com.sahin.library_management.repository;
 
-import com.sahin.library_management.infra.entity_model.RackEntity;
+import com.sahin.library_management.infra.entity.RackEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

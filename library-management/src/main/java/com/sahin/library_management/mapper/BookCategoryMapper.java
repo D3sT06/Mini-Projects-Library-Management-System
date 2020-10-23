@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity_model.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import org.mapstruct.Mapper;
 

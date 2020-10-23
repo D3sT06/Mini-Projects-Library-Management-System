@@ -1,6 +1,6 @@
 package com.sahin.library_management.infra.validator;
 
-import com.sahin.library_management.infra.entity_model.BookEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;

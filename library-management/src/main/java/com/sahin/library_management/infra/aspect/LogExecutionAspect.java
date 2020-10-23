@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 @Aspect
 @Component
 @Slf4j
+@ConditionalOnExpression("${aspect.enabled.log-execution-time}")
 public class LogExecutionAspect {
 
     @Pointcut("execution(public * *(..))")
@@ -29,10 +31,17 @@ public class LogExecutionAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        log.debug(method.getDeclaringClass().getSimpleName() + "." + method.getName() + " executed at " + LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + " in local time."
-        );
+        long startTime = System.currentTimeMillis();
 
-        return joinPoint.proceed();
+        log.debug(method.getDeclaringClass().getSimpleName() + "." + method.getName() + " executed at " + LocalDateTime.now().format(
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + " in local time.");
+
+        Object object = joinPoint.proceed();
+
+        long endTime = System.currentTimeMillis();
+
+        log.debug(method.getDeclaringClass().getSimpleName() + "." + method.getName() + " took " + (endTime-startTime) + "ms for execution");
+
+        return object;
     }
 }

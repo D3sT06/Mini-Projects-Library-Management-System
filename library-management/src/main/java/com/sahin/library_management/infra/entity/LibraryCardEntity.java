@@ -1,4 +1,4 @@
-package com.sahin.library_management.infra.entity_model;
+package com.sahin.library_management.infra.entity;
 
 import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;

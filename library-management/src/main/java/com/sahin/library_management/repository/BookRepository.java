@@ -1,6 +1,6 @@
 package com.sahin.library_management.repository;
 
-import com.sahin.library_management.infra.entity_model.BookEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

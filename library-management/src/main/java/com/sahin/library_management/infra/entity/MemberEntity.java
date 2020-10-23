@@ -1,4 +1,4 @@
-package com.sahin.library_management.infra.entity_model;
+package com.sahin.library_management.infra.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "librarian", schema = "library_management")
+@Table(name = "library_member", schema = "library_management")
 @Getter
 @Setter
-public class LibrarianEntity {
+public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

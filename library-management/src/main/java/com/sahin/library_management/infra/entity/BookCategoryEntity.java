@@ -1,4 +1,4 @@
-package com.sahin.library_management.infra.entity_model;
+package com.sahin.library_management.infra.entity;
 
 import lombok.Getter;
 import lombok.Setter;

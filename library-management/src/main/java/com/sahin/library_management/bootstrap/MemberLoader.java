@@ -1,7 +1,7 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
-import com.sahin.library_management.infra.entity_model.MemberEntity;
+import com.sahin.library_management.infra.entity.LibraryCardEntity;
+import com.sahin.library_management.infra.entity.MemberEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;

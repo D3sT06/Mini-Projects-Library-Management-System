@@ -1,6 +1,6 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.repository.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

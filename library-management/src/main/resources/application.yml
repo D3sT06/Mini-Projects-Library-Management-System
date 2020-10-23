@@ -13,6 +13,10 @@ spring:
   jpa:
     show-sql: true
 
+aspect:
+  enabled:
+    log-execution-time: true
+    log-null-parameters: true
 
 logging:
   level:

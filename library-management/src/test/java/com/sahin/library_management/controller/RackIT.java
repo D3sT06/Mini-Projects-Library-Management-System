@@ -3,7 +3,7 @@ package com.sahin.library_management.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity_model.RackEntity;
+import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
 import com.sahin.library_management.infra.model.book.Rack;
 import org.junit.jupiter.api.*;

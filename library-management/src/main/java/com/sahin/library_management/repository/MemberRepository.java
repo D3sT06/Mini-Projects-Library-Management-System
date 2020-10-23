@@ -1,7 +1,6 @@
 package com.sahin.library_management.repository;
 
-import com.sahin.library_management.infra.entity_model.LibrarianEntity;
-import com.sahin.library_management.infra.entity_model.MemberEntity;
+import com.sahin.library_management.infra.entity.MemberEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

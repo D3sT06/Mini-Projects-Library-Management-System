@@ -1,8 +1,8 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.BookEntity;
-import com.sahin.library_management.infra.entity_model.BookItemEntity;
-import com.sahin.library_management.infra.entity_model.RackEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.entity.BookItemEntity;
+import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.repository.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;

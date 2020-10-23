@@ -1,10 +1,9 @@
 package com.sahin.library_management.infra.model.search;
 
-import com.sahin.library_management.infra.entity_model.AuthorEntity;
-import com.sahin.library_management.infra.entity_model.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 

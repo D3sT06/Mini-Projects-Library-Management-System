@@ -1,14 +1,10 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity_model.BookItemEntity;
-import com.sahin.library_management.infra.entity_model.BookLoaningEntity;
-import com.sahin.library_management.infra.entity_model.MemberEntity;
+import com.sahin.library_management.infra.entity.BookLoaningEntity;
 import com.sahin.library_management.repository.BookLoaningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component

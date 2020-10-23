@@ -1,8 +1,8 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity_model.LibrarianEntity;
-import com.sahin.library_management.infra.entity_model.LibraryCardEntity;
+import com.sahin.library_management.infra.entity.LibrarianEntity;
+import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Librarian;
@@ -18,7 +18,6 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @LogExecutionTime
