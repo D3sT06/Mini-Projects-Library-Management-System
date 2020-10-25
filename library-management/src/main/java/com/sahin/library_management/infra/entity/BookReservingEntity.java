@@ -22,7 +22,7 @@ public class BookReservingEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
-    private MemberEntity member;
+    private AccountEntity member;
 
     @Column(name = "reserved_at")
     private Long reservedAt;

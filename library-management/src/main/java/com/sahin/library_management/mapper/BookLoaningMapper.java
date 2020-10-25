@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {BookItemMapper.class, MemberMapper.class})
+@Mapper(componentModel = "spring", uses = {BookItemMapper.class, AccountMapper.class})
 public interface BookLoaningMapper {
 
     BookLoaning toModel(BookLoaningEntity entity);

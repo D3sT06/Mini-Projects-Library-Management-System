@@ -3,7 +3,6 @@ package com.sahin.library_management.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.MemberEntity;
 import com.sahin.library_management.infra.model.account.Member;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @DisplayName("Member Endpoints:")
 class MemberIT {
-
+/*
     @Autowired
     protected MockMvc mockMvc;
 
@@ -146,5 +145,5 @@ class MemberIT {
                     });
         }
     }
-
+*/
 }

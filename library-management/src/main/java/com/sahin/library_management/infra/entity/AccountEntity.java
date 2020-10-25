@@ -1,15 +1,16 @@
 package com.sahin.library_management.infra.entity;
 
+import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "library_member", schema = "library_management")
+@Table(name = "account", schema = "library_management")
 @Getter
 @Setter
-public class MemberEntity {
+public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,8 @@ public class MemberEntity {
 
     @Column(name = "phone")
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private AccountFor type;
 }

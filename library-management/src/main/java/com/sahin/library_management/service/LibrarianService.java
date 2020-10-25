@@ -1,13 +1,15 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.LibrarianEntity;
+import com.sahin.library_management.infra.entity.AccountEntity;
 import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
+import com.sahin.library_management.infra.model.account.Account;
 import com.sahin.library_management.infra.model.account.Librarian;
-import com.sahin.library_management.mapper.LibrarianMapper;
-import com.sahin.library_management.repository.LibrarianRepository;
+import com.sahin.library_management.infra.model.account.LibraryCard;
+import com.sahin.library_management.mapper.AccountMapper;
+import com.sahin.library_management.repository.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +26,10 @@ import java.util.Optional;
 public class LibrarianService {
 
     @Autowired
-    private LibrarianRepository librarianRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    private LibrarianMapper librarianMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -37,17 +39,17 @@ public class LibrarianService {
         if (librarian.getLibraryCard() != null || librarian.getId() != null)
             throw new MyRuntimeException("Librarian to be created cannot have a library card or an id.", HttpStatus.BAD_REQUEST);
 
-        LibrarianEntity entity = librarianMapper.toEntity(librarian);
-
-        entity.setLibraryCard(new LibraryCardEntity());
-        entity.getLibraryCard().setIssuedAt(Instant.now().toEpochMilli());
-        entity.getLibraryCard().setActive(true);
-        entity.getLibraryCard().setAccountFor(AccountFor.LIBRARIAN);
-
         String password = PasswordUtil.createRandomPassword();
-        entity.getLibraryCard().setPassword(passwordEncoder.encode(password));
 
-        librarianRepository.save(entity);
+        LibraryCard card = new LibraryCard();
+        card.setIssuedAt(Instant.now().toEpochMilli());
+        card.setActive(true);
+        card.setAccountFor(AccountFor.LIBRARIAN);
+        card.setPassword(passwordEncoder.encode(password));
+        librarian.setLibraryCard(card);
+
+        AccountEntity entity = accountMapper.toEntity(librarian);
+        accountRepository.save(entity);
     }
 
     @Transactional
@@ -55,42 +57,51 @@ public class LibrarianService {
         if (librarian.getId() == null)
             throw new MyRuntimeException("Librarian to be created must have an id.", HttpStatus.BAD_REQUEST);
 
-        Optional<LibrarianEntity> optionalEntity = librarianRepository.findById(librarian.getId());
+        Optional<AccountEntity> optionalEntity = accountRepository.findById(librarian.getId());
 
         if (!optionalEntity.isPresent())
             throw new MyRuntimeException("Librarian with id \"" + librarian.getId() + "\" not exist!", HttpStatus.BAD_REQUEST);
 
-        LibrarianEntity entity = librarianMapper.toEntity(librarian);
+        if (!optionalEntity.get().getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+            throw new MyRuntimeException("The account is not for a librarian", HttpStatus.BAD_REQUEST);
+
+        AccountEntity entity = accountMapper.toEntity(librarian);
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
 
-        librarianRepository.save(entity);
+        accountRepository.save(entity);
     }
 
     @Transactional
     public void deleteLibrarianByBarcode(String barcode) {
-        Optional<LibrarianEntity> optionalEntity = librarianRepository.findByLibraryCardBarcode(barcode);
+        Optional<AccountEntity> optionalEntity = accountRepository.findByLibraryCardBarcode(barcode);
 
         if (!optionalEntity.isPresent())
             throw new MyRuntimeException("Librarian with card barcode \"" + barcode + "\" not exist!", HttpStatus.BAD_REQUEST);
 
-        librarianRepository.deleteByLibraryCardBarcode(barcode);
+        if (!optionalEntity.get().getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+            throw new MyRuntimeException("The account is not for a librarian", HttpStatus.BAD_REQUEST);
+
+        accountRepository.deleteByLibraryCardBarcode(barcode);
     }
 
     @Transactional
     public Librarian getLibrarianByBarcode(String barcode) {
-        LibrarianEntity entity = librarianRepository
+        AccountEntity entity = accountRepository
                 .findByLibraryCardBarcode(barcode)
                 .orElseThrow(()-> new MyRuntimeException("Librarian with card barcode " + barcode + " not exist!", HttpStatus.BAD_REQUEST));
 
-        return librarianMapper.toModel(entity);
+        if (!(accountMapper.toModel(entity) instanceof Librarian))
+            throw new MyRuntimeException("The account is not for a librarian", HttpStatus.BAD_REQUEST);
+
+        return (Librarian) accountMapper.toModel(entity);
     }
 
     @Transactional
     public List<Librarian> getAll() {
-        List<LibrarianEntity> entities = librarianRepository
-                .findAll();
+        List<AccountEntity> entities = accountRepository
+                .getAllLibrarians();
 
-        return librarianMapper.toModels(entities);
+        return accountMapper.toLibrarianModels(entities);
     }
 
 

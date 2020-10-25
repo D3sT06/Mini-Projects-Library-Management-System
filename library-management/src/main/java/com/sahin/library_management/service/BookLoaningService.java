@@ -1,17 +1,17 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
+import com.sahin.library_management.infra.entity.AccountEntity;
 import com.sahin.library_management.infra.entity.BookItemEntity;
 import com.sahin.library_management.infra.entity.BookLoaningEntity;
-import com.sahin.library_management.infra.entity.MemberEntity;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.infra.model.book.BookLoaning;
+import com.sahin.library_management.mapper.AccountMapper;
 import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.BookLoaningMapper;
-import com.sahin.library_management.mapper.MemberMapper;
 import com.sahin.library_management.repository.BookLoaningRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class BookLoaningService {
     private BookItemMapper bookItemMapper;
 
     @Autowired
-    private MemberMapper memberMapper;
+    private AccountMapper accountMapper;
 
     @Getter
     private Map<BookStatus, BookItemStateService> serviceMap;
@@ -128,7 +128,7 @@ public class BookLoaningService {
 
     @Transactional
     public int countActiveLoansByMember(Member member) {
-        MemberEntity entity = memberMapper.toEntity(member);
+        AccountEntity entity = accountMapper.toEntity(member);
         return bookLoaningRepository.countByMemberAndReturnedAtIsNull(entity);
     }
 

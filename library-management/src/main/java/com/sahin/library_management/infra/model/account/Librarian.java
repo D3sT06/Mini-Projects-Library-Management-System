@@ -9,4 +9,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Librarian extends Account {
+
 }

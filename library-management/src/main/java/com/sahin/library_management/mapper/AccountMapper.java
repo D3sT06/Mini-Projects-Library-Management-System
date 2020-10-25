@@ -1,0 +1,56 @@
+package com.sahin.library_management.mapper;
+
+import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.library_management.infra.model.account.Account;
+import com.sahin.library_management.infra.model.account.Librarian;
+import com.sahin.library_management.infra.model.account.Member;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = {LibraryCardMapper.class})
+public interface AccountMapper {
+
+    default Account toModel(@MappingTarget AccountEntity entity) {
+        if (entity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+            return toLibrarianModel(entity);
+        else if (entity.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+            return toMemberModel(entity);
+        else
+            throw new IllegalStateException("Not a valid account entity");
+    }
+
+    default List<Member> toMemberModels(@MappingTarget List<AccountEntity> entities) {
+        List<Member> members = new ArrayList<>();
+
+        for (AccountEntity entity : entities)
+            if (entity.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                members.add(toMemberModel(entity));
+            else
+                throw new IllegalStateException("Not a valid member entity");
+
+        return members;
+    }
+
+    default List<Librarian> toLibrarianModels(@MappingTarget List<AccountEntity> entities) {
+        List<Librarian> librarians = new ArrayList<>();
+
+        for (AccountEntity entity : entities)
+            if (entity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                librarians.add(toLibrarianModel(entity));
+            else
+                throw new IllegalStateException("Not a valid librarian entity");
+
+        return librarians;
+    }
+
+    @Mapping(source = "libraryCard.accountFor", target = "type")
+    AccountEntity toEntity(Account model);
+
+    Librarian toLibrarianModel(AccountEntity entity);
+    Member toMemberModel(AccountEntity entity);
+}
