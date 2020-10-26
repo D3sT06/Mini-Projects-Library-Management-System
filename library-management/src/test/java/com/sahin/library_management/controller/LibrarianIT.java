@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Librarian;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -29,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @DisplayName("Librarian Endpoints:")
 class LibrarianIT {
-/*
+
     @Autowired
     protected MockMvc mockMvc;
 
@@ -62,7 +64,9 @@ class LibrarianIT {
         @Order(1)
         void getAll() throws Exception {
 
-            long expectedResult = loader.getAll().size();
+            long expectedResult = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .count();
 
             mockMvc
                     .perform(
@@ -98,7 +102,9 @@ class LibrarianIT {
         @Order(3)
         void updateLibrarian() throws Exception {
 
-            List<AccountEntity> entities = (List<AccountEntity>) loader.getAll();
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .collect(Collectors.toList());
 
             mockMvc
                     .perform(
@@ -118,7 +124,9 @@ class LibrarianIT {
         @Order(4)
         void deleteLibrarianByBarcode() throws Exception {
 
-            List<AccountEntity> entities = (List<AccountEntity>) loader.getAll();
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .collect(Collectors.toList());
 
             mockMvc
                     .perform(
@@ -133,7 +141,9 @@ class LibrarianIT {
         @Order(5)
         void getLibrarianByBarcode() throws Exception {
 
-            List<AccountEntity> entities = (List<AccountEntity>) loader.getAll();
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .collect(Collectors.toList());
 
             mockMvc
                     .perform(
@@ -145,5 +155,5 @@ class LibrarianIT {
                         assertNotNull(librarian);
                     });
         }
-    }*/
+    }
 }

@@ -3,6 +3,8 @@ package com.sahin.library_management.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
+import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Member;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @DisplayName("Member Endpoints:")
 class MemberIT {
-/*
+
     @Autowired
     protected MockMvc mockMvc;
 
@@ -36,7 +39,7 @@ class MemberIT {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    @Qualifier("memberLoader")
+    @Qualifier("accountLoader")
     protected Loader<?> loader;
 
     @Nested
@@ -61,7 +64,9 @@ class MemberIT {
         @Order(1)
         void getAll() throws Exception {
 
-            long expectedResult = loader.getAll().size();
+            long expectedResult = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .count();
 
             mockMvc
                     .perform(
@@ -97,8 +102,9 @@ class MemberIT {
         @Order(3)
         void updateMember() throws Exception {
 
-            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
-
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
             mockMvc
                     .perform(
                             put("/api/members/update")
@@ -117,7 +123,9 @@ class MemberIT {
         @Order(4)
         void deleteMemberByBarcode() throws Exception {
 
-            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
 
             mockMvc
                     .perform(
@@ -132,7 +140,9 @@ class MemberIT {
         @Order(5)
         void getMemberByBarcode() throws Exception {
 
-            List<MemberEntity> entities = (List<MemberEntity>) loader.getAll();
+            List<AccountEntity> entities = ((List<AccountEntity>) loader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
 
             mockMvc
                     .perform(
@@ -145,5 +155,5 @@ class MemberIT {
                     });
         }
     }
-*/
+
 }

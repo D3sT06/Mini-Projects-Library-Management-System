@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.model.book;
 
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sahin.library_management.infra.serializer.LocalDateDeserializer;
@@ -28,5 +29,8 @@ public class Book {
     private BookCategory category;
 
     @NotNull
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     private Author author;
 }

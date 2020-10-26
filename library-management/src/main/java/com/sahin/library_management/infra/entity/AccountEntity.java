@@ -3,14 +3,18 @@ package com.sahin.library_management.infra.entity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "account", schema = "library_management")
 @Getter
 @Setter
-public class AccountEntity {
+public class AccountEntity extends Auditable<String> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.mapper.AuthorMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class AuthorService {
         if (author.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Author to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
-        AuthorEntity entity = authorMapper.toEntity(author);
+        AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         entity = authorRepository.save(entity);
-        return authorMapper.toModel(entity);
+        return authorMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class AuthorService {
         if (!authorRepository.findById(author.getId()).isPresent())
             throw setExceptionWhenAuthorNotExist(author.getId());
 
-        AuthorEntity entity = authorMapper.toEntity(author);
+        AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         authorRepository.save(entity);
     }
 
@@ -61,7 +62,7 @@ public class AuthorService {
                 .findById(authorId)
                 .orElseThrow(()-> setExceptionWhenAuthorNotExist(authorId));
 
-        return authorMapper.toModel(entity);
+        return authorMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -69,7 +70,7 @@ public class AuthorService {
         List<AuthorEntity> entities = authorRepository
                 .findAll();
 
-        return authorMapper.toModels(entities);
+        return authorMapper.toModels(entities, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenAuthorNotExist(Long authorId) {

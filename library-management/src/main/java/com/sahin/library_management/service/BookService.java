@@ -7,6 +7,7 @@ import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.model.search.BookSpecification;
 import com.sahin.library_management.mapper.BookMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,7 +32,7 @@ public class BookService {
     public List<Book> searchBook(BookFilter bookFilter) {
         Specification<BookEntity> specification = BookSpecification.create(bookFilter);
         List<BookEntity> entities = bookRepository.findAll(specification);
-        return bookMapper.toModels(entities);
+        return bookMapper.toModels(entities, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -39,9 +40,9 @@ public class BookService {
         if (book.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Book to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
-        BookEntity entity = bookMapper.toEntity(book);
+        BookEntity entity = bookMapper.toEntity(book, new CyclePreventiveContext());
         entity = bookRepository.save(entity);
-        return bookMapper.toModel(entity);
+        return bookMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -52,7 +53,7 @@ public class BookService {
         if (!bookRepository.findById(book.getId()).isPresent())
             throw setExceptionWhenBookNotExist(book.getId());
 
-        BookEntity entity = bookMapper.toEntity(book);
+        BookEntity entity = bookMapper.toEntity(book, new CyclePreventiveContext());
         bookRepository.save(entity);
     }
 
@@ -72,7 +73,7 @@ public class BookService {
                 .findById(bookId)
                 .orElseThrow(()-> setExceptionWhenBookNotExist(bookId));
 
-        return bookMapper.toModel(entity);
+        return bookMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenBookNotExist(Long bookId) {

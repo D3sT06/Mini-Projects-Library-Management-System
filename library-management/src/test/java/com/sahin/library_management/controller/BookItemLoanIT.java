@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity.*;
+import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.ErrorResponse;
 import com.sahin.library_management.infra.model.book.BookLoaning;
@@ -31,6 +32,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @DisplayName("Book Item Loan Endpoints:")
 public class BookItemLoanIT {
-/*
+
     @Autowired
     protected MockMvc mockMvc;
 
@@ -77,11 +79,7 @@ public class BookItemLoanIT {
 
     @Autowired
     @Qualifier("accountLoader")
-    protected Loader<?> librarianLoader;
-
-    @Autowired
-    @Qualifier("memberLoader")
-    protected Loader<?> memberLoader;
+    protected Loader<?> accountLoader;
 
     @Autowired
     @Qualifier("bookLoanLoader")
@@ -119,12 +117,22 @@ public class BookItemLoanIT {
                 categoryLoader.loadDb();
                 bookLoader.loadDb();
                 rackLoader.loadDb();
-                librarianLoader.loadDb();
-                memberLoader.loadDb();
+                accountLoader.loadDb();
             }
 
-            LibraryCardEntity memberCard = ((MemberEntity) memberLoader.getAll().get(0)).getLibraryCard();
-            LibraryCardEntity librarianCard = ((AccountEntity) librarianLoader.getAll().get(0)).getLibraryCard();
+            List<AccountEntity> accountEntities = (List<AccountEntity>) accountLoader.getAll();
+
+            LibraryCardEntity memberCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            LibraryCardEntity librarianCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
 
             given(libraryCardRepository.findById("member")).willReturn(
                     Optional.of(memberCard));
@@ -134,8 +142,7 @@ public class BookItemLoanIT {
 
         @AfterAll
         void clear() {
-            librarianLoader.clearDb();
-            memberLoader.clearDb();
+            accountLoader.clearDb();
             rackLoader.clearDb();
             bookLoader.clearDb();
             authorLoader.clearDb();
@@ -147,7 +154,9 @@ public class BookItemLoanIT {
             itemLoader.loadDb();
 
             List<BookItemEntity> bookItems = (List<BookItemEntity>) itemLoader.getAll();
-            List<MemberEntity> members = (List<MemberEntity>) memberLoader.getAll();
+            List<AccountEntity> members = ((List<AccountEntity>) accountLoader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
 
             // the book item has returned yesterday.
             BookLoaningEntity loaning = new BookLoaningEntity();
@@ -336,12 +345,22 @@ public class BookItemLoanIT {
                 categoryLoader.loadDb();
                 bookLoader.loadDb();
                 rackLoader.loadDb();
-                librarianLoader.loadDb();
-                memberLoader.loadDb();
+                accountLoader.loadDb();
             }
 
-            LibraryCardEntity memberCard = ((MemberEntity) memberLoader.getAll().get(0)).getLibraryCard();
-            LibraryCardEntity librarianCard = ((AccountEntity) librarianLoader.getAll().get(0)).getLibraryCard();
+            List<AccountEntity> accountEntities = (List<AccountEntity>) accountLoader.getAll();
+
+            LibraryCardEntity memberCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            LibraryCardEntity librarianCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
 
             given(libraryCardRepository.findById("member")).willReturn(
                     Optional.of(memberCard));
@@ -351,8 +370,7 @@ public class BookItemLoanIT {
 
         @AfterAll
         void clear() {
-            librarianLoader.clearDb();
-            memberLoader.clearDb();
+            accountLoader.clearDb();
             rackLoader.clearDb();
             bookLoader.clearDb();
             authorLoader.clearDb();
@@ -364,7 +382,9 @@ public class BookItemLoanIT {
             itemLoader.loadDb();
 
             List<BookItemEntity> bookItems = (List<BookItemEntity>) itemLoader.getAll();
-            List<MemberEntity> members = (List<MemberEntity>) memberLoader.getAll();
+            List<AccountEntity> members = ((List<AccountEntity>) accountLoader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
 
             // the book item has returned yesterday.
             BookLoaningEntity loaning = new BookLoaningEntity();
@@ -461,13 +481,18 @@ public class BookItemLoanIT {
         @Order(4)
         void returnBookItemWhenBelongsToMember() throws Exception {
             BookLoaningEntity loaningEntity = (BookLoaningEntity) bookLoanLoader.getAll().get(0);
-            loaningEntity.setMember((MemberEntity) memberLoader.getAll().get(0));
+
+            List<AccountEntity> members = ((List<AccountEntity>) accountLoader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
+
+            loaningEntity.setMember(members.get(0));
             loaningRepository.save(loaningEntity);
 
             BookItemEntity itemEntity = loaningEntity.getBookItem();
 
             BookReservingEntity reservingEntity = new BookReservingEntity();
-            reservingEntity.setMember((MemberEntity) memberLoader.getAll().get(memberLoader.getAll().size()-1));
+            reservingEntity.setMember(members.get(members.size()-1));
             reservingEntity.setBookItem(itemEntity);
             reservingRepository.save(reservingEntity);
 
@@ -519,5 +544,5 @@ public class BookItemLoanIT {
         void updateBookItem() {
 
         }
-    }*/
+    }
 }
