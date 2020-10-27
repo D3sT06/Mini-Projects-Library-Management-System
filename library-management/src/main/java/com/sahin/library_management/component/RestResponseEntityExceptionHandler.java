@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,17 +23,17 @@ public class RestResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
-    protected ResponseEntity<ErrorResponse> handle(AccessDeniedException ex) {
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected ErrorResponse handle(AccessDeniedException ex) {
         log.error("Access: " + ex.getMessage(), ex);
-        ErrorResponse errorResponse = new ErrorResponse("Access", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+        return new ErrorResponse("Access", ex.getMessage());
     }
 
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<ErrorResponse> handle(Exception ex) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse handle(Exception ex) {
         log.error("General" + ": " + ex.getMessage(), ex);
-        ErrorResponse errorResponse = new ErrorResponse("General", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ErrorResponse("General", ex.getMessage());
     }
 
 

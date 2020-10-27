@@ -31,7 +31,7 @@ public class Book {
     private LocalDate publicationDate;
 
     @NotNull
-    @JsonManagedReference
+    @JsonIdentityReference
     private Set<BookCategory> categories;
 
     @NotNull

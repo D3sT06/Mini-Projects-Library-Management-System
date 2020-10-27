@@ -2,6 +2,8 @@ package com.sahin.library_management.infra.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
