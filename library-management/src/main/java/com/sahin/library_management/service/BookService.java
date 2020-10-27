@@ -10,12 +10,13 @@ import com.sahin.library_management.mapper.BookMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,10 +30,10 @@ public class BookService {
     private BookMapper bookMapper;
 
     @Transactional
-    public List<Book> searchBook(BookFilter bookFilter) {
+    public Page<Book> searchBook(Pageable pageable, BookFilter bookFilter) {
         Specification<BookEntity> specification = BookSpecification.create(bookFilter);
-        List<BookEntity> entities = bookRepository.findAll(specification);
-        return bookMapper.toModels(entities, new CyclePreventiveContext());
+        Page<BookEntity> entities = bookRepository.findAll(specification, pageable);
+        return bookMapper.toPages(entities, new CyclePreventiveContext());
     }
 
     @Transactional

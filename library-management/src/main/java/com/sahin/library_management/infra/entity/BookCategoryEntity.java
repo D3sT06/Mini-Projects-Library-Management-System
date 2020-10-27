@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "book_category", schema = "library_management")
+@Table(name = "category", schema = "library_management")
 @Getter
 @Setter
 public class BookCategoryEntity {
@@ -18,4 +19,7 @@ public class BookCategoryEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<BookEntity> books;
 }

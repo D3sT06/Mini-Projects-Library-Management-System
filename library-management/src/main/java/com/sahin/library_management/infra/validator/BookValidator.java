@@ -26,11 +26,11 @@ public class BookValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Book book = (Book) o;
 
-        Optional<BookEntity> queryResult = bookRepository.findByTitleAndAuthorIdAndCategoryId(
-                book.getTitle(), book.getAuthor().getId(), book.getCategory().getId());
+        Optional<BookEntity> queryResult = bookRepository.findByTitleAndAuthorId(
+                book.getTitle(), book.getAuthor().getId());
 
         if (queryResult.isPresent()) {
-            errors.reject("ALREADY EXIST", "The book with same title, author and category already exists!");
+            errors.reject("ALREADY EXIST", "The book with same title and author already exists!");
         }
     }
 }

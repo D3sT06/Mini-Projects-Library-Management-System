@@ -6,12 +6,15 @@ import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.validator.BookValidator;
 import com.sahin.library_management.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -61,7 +64,7 @@ public class BookController {
 
     @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
     @PostMapping("search")
-    public ResponseEntity<List<Book>> getAll(@RequestBody @Valid BookFilter bookFilter) {
-        return ResponseEntity.ok(bookService.searchBook(bookFilter));
+    public ResponseEntity<Page<Book>> getAll(@RequestBody @Valid BookFilter bookFilter, Pageable pageable) {
+        return ResponseEntity.ok(bookService.searchBook(pageable, bookFilter));
     }
 }

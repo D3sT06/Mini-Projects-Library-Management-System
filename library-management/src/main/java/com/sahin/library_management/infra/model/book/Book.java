@@ -11,9 +11,14 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Book.class)
 public class Book {
     private Long id;
 
@@ -26,11 +31,10 @@ public class Book {
     private LocalDate publicationDate;
 
     @NotNull
-    private BookCategory category;
+    @JsonManagedReference
+    private Set<BookCategory> categories;
 
     @NotNull
-    @JsonIdentityInfo(
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+    @JsonIdentityReference
     private Author author;
 }

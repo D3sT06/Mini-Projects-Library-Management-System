@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long>, JpaSpecificationExecutor<BookEntity> {
 
-    @EntityGraph(attributePaths = {"author", "category"})
-    Optional<BookEntity> findByTitleAndAuthorIdAndCategoryId(String title, Long authorId, Long categoryId);
+    @EntityGraph(attributePaths = {"author"})
+    Optional<BookEntity> findByTitleAndAuthorId(String title, Long authorId);
 
 }

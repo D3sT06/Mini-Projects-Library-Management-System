@@ -7,6 +7,7 @@ import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.BookEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
+import com.sahin.library_management.infra.helper.PageHelper;
 import com.sahin.library_management.infra.model.book.Book;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,13 +84,13 @@ class BookIT {
 
             mockMvc
                     .perform(
-                            post("/api/books/search")
+                            post("/api/books/search?page=0&size=10&sort=title,ASC")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{}"))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Book[] books = objectMapper.readValue(result.getResponse().getContentAsString(), Book[].class);
-                        assertEquals(expectedResult, books.length);
+                        PageHelper<Book> page = objectMapper.readValue(result.getResponse().getContentAsString(), PageHelper.class);
+                        assertEquals(expectedResult, page.getContent().size());
                     });
         }
 
@@ -100,13 +102,13 @@ class BookIT {
 
             long expectedResult = ((List<BookEntity>) bookLoader.getAll()).stream()
                     .filter(entity -> entity.getTitle().contains("19"))
-                    .filter(entity -> entity.getCategory().getId().equals(1L))
+                    .filter(entity -> entity.getCategories().contains(1L))
                     .filter(entity -> entity.getAuthor().getId().equals(3L))
                     .count();
 
             mockMvc
                     .perform(
-                            post("/api/books/search")
+                            post("/api/books/search?page=0&size=10&sort=title,ASC")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(
                                             "{\n" +
@@ -124,8 +126,9 @@ class BookIT {
                                                     "}"))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Book[] books = objectMapper.readValue(result.getResponse().getContentAsString(), Book[].class);
-                        assertEquals(expectedResult, books.length);
+
+                        PageHelper<Book> page = objectMapper.readValue(result.getResponse().getContentAsString(), PageHelper.class);
+                        assertEquals(expectedResult, page.getContent().size());
                     });
         }
 
@@ -145,9 +148,9 @@ class BookIT {
                                     .content("{\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
-                                            "    \"category\": {\n" +
+                                            "    \"categories\": [{\n" +
                                             "        \"id\": " + category.getId() + "\n" +
-                                            "    },\n" +
+                                            "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": " + author.getId() + "\n" +
                                             "    }\n" +
@@ -176,9 +179,9 @@ class BookIT {
                                             "    \"id\": " + bookEntity.getId() + ",\n" +
                                             "    \"title\": \"Test\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
-                                            "    \"category\": {\n" +
-                                            "        \"id\": " + bookEntity.getCategory().getId() + "\n" +
-                                            "    },\n" +
+                                            "    \"categories\": [{\n" +
+                                            "        \"id\": " + bookEntity.getCategories().iterator().next().getId() + "\n" +
+                                            "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": " + bookEntity.getAuthor().getId() + "\n" +
                                             "    }\n" +
@@ -214,6 +217,7 @@ class BookIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
+                        System.out.println(result.getResponse().getContentAsString());
                         Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
                         assertNotNull(book);
                     });
@@ -253,9 +257,9 @@ class BookIT {
                                             "    \"id\": 1,\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
-                                            "    \"category\": {\n" +
+                                            "    \"categories\": [{\n" +
                                             "        \"id\": 1\n" +
-                                            "    },\n" +
+                                            "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": 3\n" +
                                             "    }\n" +
@@ -279,9 +283,9 @@ class BookIT {
                                     .content("{\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
-                                            "    \"category\": {\n" +
+                                            "    \"categories\": [{\n" +
                                             "        \"id\": 1\n" +
-                                            "    },\n" +
+                                            "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": 3\n" +
                                             "    }\n" +
@@ -306,9 +310,9 @@ class BookIT {
                                             "    \"id\": 1000,\n" +
                                             "    \"title\": \"Boğulmamak İçin\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
-                                            "    \"category\": {\n" +
+                                            "    \"categories\": [{\n" +
                                             "        \"id\": 1\n" +
-                                            "    },\n" +
+                                            "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": 3\n" +
                                             "    }\n" +

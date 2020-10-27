@@ -11,6 +11,10 @@ import java.util.List;
 
 @Setter
 @Getter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Author.class)
 public class Author {
 
     private Long id;
@@ -23,10 +27,8 @@ public class Author {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String surname;
 
-    @JsonIdentityInfo(
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
     @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("bookIds")
     private List<Book> books;
 
     @JsonProperty(value = "fullname", access = JsonProperty.Access.READ_ONLY)

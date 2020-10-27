@@ -5,6 +5,7 @@ import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.mapper.BookCategoryMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class BookCategoryService {
         if (category.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Category to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
-        BookCategoryEntity entity = categoryMapper.toEntity(category);
+        BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
         entity = categoryRepository.save(entity);
-        return categoryMapper.toModel(entity);
+        return categoryMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class BookCategoryService {
         if (!categoryRepository.findById(category.getId()).isPresent())
             throw setExceptionWhenCategoryNotExist(category.getId());
 
-        BookCategoryEntity entity = categoryMapper.toEntity(category);
+        BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
         categoryRepository.save(entity);
     }
 
@@ -61,7 +62,7 @@ public class BookCategoryService {
                 .findById(categoryId)
                 .orElseThrow(()-> setExceptionWhenCategoryNotExist(categoryId));
 
-        return categoryMapper.toModel(entity);
+        return categoryMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -69,7 +70,7 @@ public class BookCategoryService {
         List<BookCategoryEntity> entities = categoryRepository
                 .findAll();
 
-        return categoryMapper.toModels(entities);
+        return categoryMapper.toModels(entities, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenCategoryNotExist(Long categoryId) {
