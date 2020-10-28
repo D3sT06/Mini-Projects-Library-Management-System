@@ -1,4 +1,4 @@
-package com.sahin.library_management.infra.util;
+package com.sahin.library_management.util;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

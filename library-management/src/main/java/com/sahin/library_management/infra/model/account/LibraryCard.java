@@ -3,6 +3,7 @@ package com.sahin.library_management.infra.model.account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.sahin.library_management.infra.annotation.NullableUUIDFormat;
 import com.sahin.library_management.infra.auth.CustomAuthorityDeserializer;
 import com.sahin.library_management.infra.enums.AccountFor;
 import lombok.Getter;
@@ -20,6 +21,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class LibraryCard implements UserDetails {
+
+    @NullableUUIDFormat
     private String barcode;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

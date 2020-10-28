@@ -12,6 +12,7 @@ import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.mapper.AccountMapper;
 import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.BookLoaningMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookLoaningRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,14 +122,14 @@ public class BookLoaningService {
 
     @Transactional
     public Optional<BookLoaning> findLastByItem(BookItem bookItem) {
-        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem);
+        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
         Optional<BookLoaningEntity> bookLoaningEntity = bookLoaningRepository.findTopByBookItemOrderByLoanedAtDesc(bookItemEntity);
         return Optional.ofNullable(bookLoaningMapper.toModel(bookLoaningEntity.orElse(null)));
     }
 
     @Transactional
     public int countActiveLoansByMember(Member member) {
-        AccountEntity entity = accountMapper.toEntity(member);
+        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         return bookLoaningRepository.countByMemberAndReturnedAtIsNull(entity);
     }
 

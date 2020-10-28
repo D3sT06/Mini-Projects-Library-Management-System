@@ -70,11 +70,11 @@ public class BookService {
 
     @Transactional
     public Book getBookById(Long bookId) {
-        BookEntity entity = bookRepository
+        BookEntity bookEntity = bookRepository
                 .findById(bookId)
                 .orElseThrow(()-> setExceptionWhenBookNotExist(bookId));
 
-        return bookMapper.toModel(entity, new CyclePreventiveContext());
+        return bookMapper.toModel(bookEntity, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenBookNotExist(Long bookId) {

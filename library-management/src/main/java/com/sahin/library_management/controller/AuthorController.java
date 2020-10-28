@@ -2,6 +2,7 @@ package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.infra.validator.AuthorValidator;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,14 @@ public class AuthorController {
 
     @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN')")
     @GetMapping("get/{authorId}")
-    public ResponseEntity<Author> getAuthorById(@PathVariable Long authorId) {
+    public ResponseEntity<AuthorProjections.AuthorView> getAuthorById(@PathVariable Long authorId) {
         return ResponseEntity.ok(authorService.getAuthorById(authorId));
     }
 
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("getAll")
-    public ResponseEntity<List<Author>> getAll() {
+    public ResponseEntity<List<AuthorProjections.AuthorView>> getAll() {
         return ResponseEntity.ok(authorService.getAll());
     }
 }

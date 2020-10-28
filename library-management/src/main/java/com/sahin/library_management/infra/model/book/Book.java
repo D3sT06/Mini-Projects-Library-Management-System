@@ -15,10 +15,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope = Book.class)
 public class Book {
     private Long id;
 
@@ -31,10 +27,8 @@ public class Book {
     private LocalDate publicationDate;
 
     @NotNull
-    @JsonIdentityReference
     private Set<BookCategory> categories;
 
     @NotNull
-    @JsonIdentityReference
     private Author author;
 }

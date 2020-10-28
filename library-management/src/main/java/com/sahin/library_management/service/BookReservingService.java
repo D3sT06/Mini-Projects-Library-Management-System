@@ -10,6 +10,7 @@ import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.infra.model.book.BookReserving;
 import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.BookReservingMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookReservingRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,7 @@ public class BookReservingService {
     @Transactional
     public Optional<BookReserving> findLastByItem(BookItem bookItem) {
 
-        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem);
+        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
         Optional<BookReservingEntity> bookReservingEntity = bookReservingRepository.findTopByBookItemOrderByReservedAtDesc(bookItemEntity);
         return Optional.ofNullable(bookReservingMapper.toModel(bookReservingEntity.orElse(null)));
     }

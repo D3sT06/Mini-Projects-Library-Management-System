@@ -5,6 +5,7 @@ import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Account;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.Member;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -17,9 +18,9 @@ public interface AccountMapper {
 
     default Account toModel(@MappingTarget AccountEntity entity) {
         if (entity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
-            return toLibrarianModel(entity);
+            return toLibrarianModel(entity, new CyclePreventiveContext());
         else if (entity.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
-            return toMemberModel(entity);
+            return toMemberModel(entity, new CyclePreventiveContext());
         else
             throw new IllegalStateException("Not a valid account entity");
     }
@@ -29,7 +30,7 @@ public interface AccountMapper {
 
         for (AccountEntity entity : entities)
             if (entity.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
-                members.add(toMemberModel(entity));
+                members.add(toMemberModel(entity, new CyclePreventiveContext()));
             else
                 throw new IllegalStateException("Not a valid member entity");
 
@@ -41,7 +42,7 @@ public interface AccountMapper {
 
         for (AccountEntity entity : entities)
             if (entity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
-                librarians.add(toLibrarianModel(entity));
+                librarians.add(toLibrarianModel(entity, new CyclePreventiveContext()));
             else
                 throw new IllegalStateException("Not a valid librarian entity");
 
@@ -49,8 +50,8 @@ public interface AccountMapper {
     }
 
     @Mapping(source = "libraryCard.accountFor", target = "type")
-    AccountEntity toEntity(Account model);
+    AccountEntity toEntity(Account model, @Context CyclePreventiveContext context);
 
-    Librarian toLibrarianModel(AccountEntity entity);
-    Member toMemberModel(AccountEntity entity);
+    Librarian toLibrarianModel(AccountEntity entity, @Context CyclePreventiveContext context);
+    Member toMemberModel(AccountEntity entity, @Context CyclePreventiveContext context);
 }

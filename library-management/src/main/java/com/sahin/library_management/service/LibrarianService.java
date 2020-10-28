@@ -2,13 +2,12 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.AccountEntity;
-import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
-import com.sahin.library_management.infra.model.account.Account;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.mapper.AccountMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class LibrarianService {
         card.setPassword(passwordEncoder.encode(password));
         librarian.setLibraryCard(card);
 
-        AccountEntity entity = accountMapper.toEntity(librarian);
+        AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
         accountRepository.save(entity);
     }
 
@@ -65,7 +64,7 @@ public class LibrarianService {
         if (!optionalEntity.get().getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
             throw new MyRuntimeException("The account is not for a librarian", HttpStatus.BAD_REQUEST);
 
-        AccountEntity entity = accountMapper.toEntity(librarian);
+        AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
 
         accountRepository.save(entity);
@@ -99,7 +98,7 @@ public class LibrarianService {
     @Transactional
     public List<Librarian> getAll() {
         List<AccountEntity> entities = accountRepository
-                .getAllLibrarians();
+                .getAll(AccountFor.LIBRARIAN);
 
         return accountMapper.toLibrarianModels(entities);
     }

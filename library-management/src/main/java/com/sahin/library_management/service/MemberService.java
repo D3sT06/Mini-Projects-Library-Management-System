@@ -2,14 +2,12 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.AccountEntity;
-import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
-import com.sahin.library_management.infra.model.account.Account;
-import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.mapper.AccountMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,7 @@ public class MemberService {
         card.setPassword(passwordEncoder.encode(password));
         member.setLibraryCard(card);
 
-        AccountEntity entity = accountMapper.toEntity(member);
+        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         accountRepository.save(entity);
     }
 
@@ -66,7 +64,7 @@ public class MemberService {
         if (!optionalEntity.get().getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
             throw new MyRuntimeException("The account is not for a member", HttpStatus.BAD_REQUEST);
 
-        AccountEntity entity = accountMapper.toEntity(member);
+        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
 
         accountRepository.save(entity);
@@ -99,7 +97,7 @@ public class MemberService {
 
     public List<Member> getAll() {
         List<AccountEntity> entities = accountRepository
-                .getAllMembers();
+                .getAll(AccountFor.MEMBER);
 
         return accountMapper.toMemberModels(entities);
     }

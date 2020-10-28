@@ -4,6 +4,7 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.mapper.AuthorMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AuthorRepository;
@@ -57,20 +58,15 @@ public class AuthorService {
     }
 
     @Transactional
-    public Author getAuthorById(Long authorId) {
-        AuthorEntity entity = authorRepository
-                .findById(authorId)
+    public AuthorProjections.AuthorView getAuthorById(Long authorId) {
+        return authorRepository
+                .findProjectedById(authorId)
                 .orElseThrow(()-> setExceptionWhenAuthorNotExist(authorId));
-
-        return authorMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
-    public List<Author> getAll() {
-        List<AuthorEntity> entities = authorRepository
-                .findAll();
-
-        return authorMapper.toModels(entities, new CyclePreventiveContext());
+    public List<AuthorProjections.AuthorView> getAll() {
+        return authorRepository.findAllProjectedBy();
     }
 
     private MyRuntimeException setExceptionWhenAuthorNotExist(Long authorId) {

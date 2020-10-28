@@ -2,6 +2,7 @@ package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.infra.validator.BookCategoryValidator;
 import com.sahin.library_management.service.BookCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,14 @@ public class BookCategoryController {
 
     @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN')")
     @GetMapping("get/{categoryId}")
-    public ResponseEntity<BookCategory> getCategoryById(@PathVariable Long categoryId) {
+    public ResponseEntity<CategoryProjections.CategoryView> getCategoryById(@PathVariable Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("getAll")
-    public ResponseEntity<List<BookCategory>> getAll() {
+    public ResponseEntity<List<CategoryProjections.CategoryView>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 }

@@ -4,6 +4,7 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Rack;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.mapper.RackMapper;
 import com.sahin.library_management.repository.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class RackService {
         if (rack.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Rack to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
-        RackEntity entity = rackMapper.toEntity(rack);
+        RackEntity entity = rackMapper.toEntity(rack, new CyclePreventiveContext());
         entity = rackRepository.save(entity);
-        return rackMapper.toModel(entity);
+        return rackMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class RackService {
         if (!rackRepository.findById(rack.getId()).isPresent())
             throw setExceptionWhenRackNotExist(rack.getId());
 
-        RackEntity entity = rackMapper.toEntity(rack);
+        RackEntity entity = rackMapper.toEntity(rack, new CyclePreventiveContext());
         rackRepository.save(entity);
     }
 
@@ -61,7 +62,7 @@ public class RackService {
                 .findById(rackId)
                 .orElseThrow(()-> setExceptionWhenRackNotExist(rackId));
 
-        return rackMapper.toModel(entity);
+        return rackMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
@@ -69,7 +70,7 @@ public class RackService {
         List<RackEntity> entities = rackRepository
                 .findAll();
 
-        return rackMapper.toModels(entities);
+        return rackMapper.toModels(entities, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenRackNotExist(Long rackId) {

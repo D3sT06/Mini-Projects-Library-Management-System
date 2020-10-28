@@ -6,10 +6,8 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {BookCategoryMapper.class, AuthorMapper.class})
 public interface BookMapper {
@@ -18,7 +16,6 @@ public interface BookMapper {
     BookEntity toEntity(Book model, @Context CyclePreventiveContext context);
 
     List<Book> toModels(List<BookEntity> entities, @Context CyclePreventiveContext context);
-    Set<Book> toModelsSet(Set<BookEntity> entities, @Context CyclePreventiveContext context);
 
     default Page<Book> toPages(Page<BookEntity> entities, @Context CyclePreventiveContext context) {
             return new PageImpl<>(toModels(entities.getContent(), context), entities.getPageable(), entities.getTotalElements());

@@ -6,6 +6,7 @@ import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.mapper.BookItemMapper;
+import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class BookItemService {
             throw new MyRuntimeException("NOT CREATED", "Book item to be created cannot have a barcode or a state.", HttpStatus.BAD_REQUEST);
 
         bookItem.setStatus(BookStatus.AVAILABLE);
-        BookItemEntity entity = bookItemMapper.toEntity(bookItem);
+        BookItemEntity entity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
         BookItemEntity createdEntity = bookItemRepository.save(entity);
-        return bookItemMapper.toModel(createdEntity);
+        return bookItemMapper.toModel(createdEntity, new CyclePreventiveContext());
     }
 
     public void updateBookItem(BookItem bookItem) {
@@ -42,7 +43,7 @@ public class BookItemService {
         if (!oldEntity.isPresent())
             throw new MyRuntimeException("NOT FOUND", "Book item with barcode \"" + bookItem.getBarcode() + "\" not exist!", HttpStatus.BAD_REQUEST);
 
-        BookItemEntity entity = bookItemMapper.toEntity(bookItem);
+        BookItemEntity entity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
         bookItemRepository.save(entity);
     }
 
@@ -60,13 +61,13 @@ public class BookItemService {
                 .findById(barcode)
                 .orElseThrow(()-> new MyRuntimeException("NOT FOUND", "Book item with barcode " + barcode + " not exist!", HttpStatus.BAD_REQUEST));
 
-        return bookItemMapper.toModel(entity);
+        return bookItemMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     public List<BookItem> getBookItemByBookId(Long bookId) {
         List<BookItemEntity> entities = bookItemRepository
                 .findByBookId(bookId);
 
-        return bookItemMapper.toModels(entities);
+        return bookItemMapper.toModels(entities, new CyclePreventiveContext());
     }
 }

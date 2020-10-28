@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class BookLoader implements Loader<BookEntity> {
@@ -74,6 +71,6 @@ public class BookLoader implements Loader<BookEntity> {
 
     @Override
     public List<BookEntity> getAll() {
-        return bookRepository.findAll();
+        return (ArrayList<BookEntity>) bookRepository.findAll();
     }
 }
