@@ -11,6 +11,7 @@ import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,7 @@ public class MemberService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "barcode_libraryCard", key = "#barcode")
     public void deleteMemberByBarcode(String barcode) {
         Optional<AccountEntity> optionalEntity = accountRepository.findByLibraryCardBarcode(barcode);
 

@@ -8,12 +8,6 @@ import java.util.UUID;
 
 public class UuidValidator implements ConstraintValidator<NullableUUIDFormat, String> {
 
-
-    @Override
-    public void initialize(NullableUUIDFormat constraintAnnotation) {
-        return;
-    }
-
     @Override
     public boolean isValid(String uuid, ConstraintValidatorContext context) {
         if (uuid == null)

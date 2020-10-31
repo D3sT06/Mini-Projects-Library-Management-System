@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "sim"})
 @ConditionalOnProperty(name = "spring.datasource.platform", matchIfMissing = true, havingValue = "value_that_never_appears")
 @AllArgsConstructor
 public class DatabaseLoader implements CommandLineRunner {

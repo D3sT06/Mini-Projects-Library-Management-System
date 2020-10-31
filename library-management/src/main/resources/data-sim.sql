@@ -1,0 +1,5 @@
+insert into library_management.library_card (account_for, active, issued_at, password, barcode) values ('LIBRARIAN', true, 1603612066000, '$2a$10$3iCwKwH2y92i.pokPMg9kenuM7IdptPP8KiBLfxN7d9N.0MYuT7Gy', '364b5a08-9d74-4cdc-8293-3e0906e153a3')
+insert into library_management.account (id, created_by, created_at, last_modified_by, last_modified_at, email, library_card_id, name, phone, surname, type) values (1, null, 1603612066000, null, 1603612066000, 'serkans@sahin.com', '364b5a08-9d74-4cdc-8293-3e0906e153a3', 'Serkan', null, 'Sahin', 'LIBRARIAN')
+
+insert into library_management.library_card (account_for, active, issued_at, password, barcode) values ('LIBRARIAN', true, 1603612066000, '$2a$10$3iCwKwH2y92i.pokPMg9kenuM7IdptPP8KiBLfxN7d9N.0MYuT7Gy', '11111111-1111-1111-1111-111111111111')
+insert into library_management.account (id, created_by, created_at, last_modified_by, last_modified_at, email, library_card_id, name, phone, surname, type) values (2, null, 1603612066000, null, 1603612066000, 'joewall@mail.com', '11111111-1111-1111-1111-111111111111', 'Joe', null, 'Wall', 'LIBRARIAN')

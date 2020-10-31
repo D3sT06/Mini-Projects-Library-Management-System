@@ -7,11 +7,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -33,8 +35,14 @@ public class LogExecutionAspect {
 
         long startTime = System.currentTimeMillis();
 
-        log.debug(method.getDeclaringClass().getSimpleName() + "." + method.getName() + " executed at " + LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + " in local time.");
+        String authenticatedBy = "NULL AUTH";
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+            authenticatedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+        }
+
+        log.debug(method.getDeclaringClass().getSimpleName() + "." + method.getName() + " executed" +
+                " by " + authenticatedBy +
+                " at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + " in local time.");
 
         Object object = joinPoint.proceed();
 
