@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
@@ -39,6 +40,9 @@ public class LibrarianService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Resource
+    private LibrarianService self;
+
     @Transactional
     public void createLibrarian(Librarian librarian) {
         if (librarian.getLibraryCard() != null || librarian.getId() != null)
@@ -55,7 +59,7 @@ public class LibrarianService {
 
         AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
         entity = accountRepository.save(entity);
-        this.cache(entity);
+        self.cache(entity);
     }
 
     @Transactional
@@ -74,7 +78,7 @@ public class LibrarianService {
         AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
         entity = accountRepository.save(entity);
-        this.cache(entity);
+        self.cache(entity);
     }
 
     @Transactional
@@ -112,7 +116,7 @@ public class LibrarianService {
         List<Librarian> models = accountMapper.toLibrarianModels(entities);
 
         for (Librarian model : models)
-            this.cache(model);
+            self.cache(model);
 
         return models;
     }

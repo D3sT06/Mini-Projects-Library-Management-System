@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,9 @@ public class RackService {
 
     @Autowired
     private RackMapper rackMapper;
+
+    @Resource
+    private RackService self;
 
     @Transactional
     @CachePut(key = "#rack.id")
@@ -82,7 +86,7 @@ public class RackService {
         List<Rack> models = rackMapper.toModels(entities, new CyclePreventiveContext());
 
         for (Rack model : models)
-            this.cache(model);
+            self.cache(model);
 
         return models;
     }

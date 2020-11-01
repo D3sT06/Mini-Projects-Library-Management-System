@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,9 @@ public class AuthorService {
 
     @Autowired
     private AuthorMapper authorMapper;
+
+    @Resource
+    private AuthorService self;
 
     @Transactional
     public Author createAuthor(Author author) {
@@ -51,7 +55,7 @@ public class AuthorService {
 
         AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         entity = authorRepository.save(entity);
-        this.cacheEvict(entity);
+        self.cacheEvict(entity);
     }
 
     @Transactional
@@ -78,7 +82,7 @@ public class AuthorService {
         List<AuthorProjections.AuthorView> authorViews = authorRepository.findAllProjectedBy();
 
         for (AuthorProjections.AuthorView view : authorViews)
-            this.cache(view);
+            self.cache(view);
 
         return authorViews;
     }

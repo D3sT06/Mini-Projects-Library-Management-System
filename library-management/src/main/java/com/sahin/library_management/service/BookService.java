@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,9 @@ public class BookService {
     @Autowired
     private BookMapper bookMapper;
 
+    @Resource
+    private BookService self;
+
     @Transactional
     public Page<Book> searchBook(Pageable pageable, BookFilter bookFilter) {
         Specification<BookEntity> specification = BookSpecification.create(bookFilter);
@@ -41,7 +45,7 @@ public class BookService {
         Page<Book> books = bookMapper.toPages(entities, new CyclePreventiveContext());
 
         for (Book book : books.getContent()) {
-            this.cache(book);
+            self.cache(book);
         }
 
         return books;

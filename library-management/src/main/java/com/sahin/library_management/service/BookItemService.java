@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,9 @@ public class BookItemService {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Resource
+    private BookItemService self;
 
     @CachePut(key = "#bookItem.barcode")
     public BookItem createBookItem(BookItem bookItem) {
@@ -83,12 +87,11 @@ public class BookItemService {
         List<BookItemEntity> entities = bookItemRepository
                 .findByBookId(bookId);
 
-        List<BookItem> items = bookItemMapper.toModels(entities, new CyclePreventiveContext());
+        List<BookItem> bookItems = bookItemMapper.toModels(entities, new CyclePreventiveContext());
+        for (BookItem item : bookItems)
+            self.cache(item);
 
-        for (BookItem item : items)
-            this.cache(item);
-
-        return bookItemMapper.toModels(entities, new CyclePreventiveContext());
+        return bookItems;
     }
 
     @CachePut(key = "#bookItem.barcode")

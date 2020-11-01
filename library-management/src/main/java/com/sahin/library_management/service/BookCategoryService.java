@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,9 @@ public class BookCategoryService {
 
     @Autowired
     private BookCategoryMapper categoryMapper;
+
+    @Resource
+    private BookCategoryService self;
 
     @Transactional
     public BookCategory createCategory(BookCategory category) {
@@ -52,7 +56,7 @@ public class BookCategoryService {
 
         BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
         entity = categoryRepository.save(entity);
-        this.cacheEvict(entity);
+        self.cacheEvict(entity);
     }
 
     @Transactional
@@ -80,7 +84,7 @@ public class BookCategoryService {
         List<CategoryProjections.CategoryView> categoryViews = categoryRepository.findAllProjectedBy();
 
         for (CategoryProjections.CategoryView view : categoryViews)
-            this.cache(view);
+            self.cache(view);
 
         return categoryViews;
     }

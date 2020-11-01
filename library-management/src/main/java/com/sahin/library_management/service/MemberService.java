@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
@@ -38,6 +39,9 @@ public class MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Resource
+    private MemberService self;
+
     @Transactional
     public void createMember(Member member) {
         if (member.getLibraryCard() != null || member.getId() != null)
@@ -54,7 +58,7 @@ public class MemberService {
 
         AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         entity = accountRepository.save(entity);
-        this.cache(entity);
+        self.cache(entity);
     }
 
     @Transactional
@@ -73,7 +77,7 @@ public class MemberService {
         AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
         entity = accountRepository.save(entity);
-        this.cache(entity);
+        self.cache(entity);
     }
 
     @Transactional
@@ -110,7 +114,7 @@ public class MemberService {
         List<Member> models = accountMapper.toMemberModels(entities);
 
         for (Member model : models)
-            this.cache(model);
+            self.cache(model);
 
         return models;
     }
