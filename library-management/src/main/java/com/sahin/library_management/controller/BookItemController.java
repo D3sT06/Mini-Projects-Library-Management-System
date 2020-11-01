@@ -28,9 +28,9 @@ public class BookItemController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
-    public ResponseEntity<Void> updateBookItem(@RequestBody @Valid BookItem bookItem) {
-        bookItemService.updateBookItem(bookItem);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<BookItem> updateBookItem(@RequestBody @Valid BookItem bookItem) {
+        BookItem updatedItem = bookItemService.updateBookItem(bookItem);
+        return ResponseEntity.ok(updatedItem);
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")

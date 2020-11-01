@@ -41,9 +41,9 @@ public class BookController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
-    public ResponseEntity<Void> updateBook(@RequestBody @Valid Book book) {
-        bookService.updateBook(book);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Book> updateBook(@RequestBody @Valid Book book) {
+        Book updatedBook = bookService.updateBook(book);
+        return ResponseEntity.ok(updatedBook);
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")

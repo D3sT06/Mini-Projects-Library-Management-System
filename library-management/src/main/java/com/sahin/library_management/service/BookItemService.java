@@ -4,11 +4,16 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.BookItemEntity;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
+import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @LogExecutionTime
+@CacheConfig(cacheNames = "bookItems")
 public class BookItemService {
 
     @Autowired
@@ -25,6 +31,7 @@ public class BookItemService {
     @Autowired
     private BookItemMapper bookItemMapper;
 
+    @CachePut(key = "#bookItem.barcode")
     public BookItem createBookItem(BookItem bookItem) {
         if (bookItem.getBarcode() != null || bookItem.getStatus() != null)
             throw new MyRuntimeException("NOT CREATED", "Book item to be created cannot have a barcode or a state.", HttpStatus.BAD_REQUEST);
@@ -35,7 +42,8 @@ public class BookItemService {
         return bookItemMapper.toModel(createdEntity, new CyclePreventiveContext());
     }
 
-    public void updateBookItem(BookItem bookItem) {
+    @CachePut(key = "#bookItem.barcode")
+    public BookItem updateBookItem(BookItem bookItem) {
         if (bookItem.getBarcode() == null)
             throw new MyRuntimeException("NOT UPDATED", "Book item to be created must have a barcode.", HttpStatus.BAD_REQUEST);
 
@@ -44,9 +52,11 @@ public class BookItemService {
             throw new MyRuntimeException("NOT FOUND", "Book item with barcode \"" + bookItem.getBarcode() + "\" not exist!", HttpStatus.BAD_REQUEST);
 
         BookItemEntity entity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
-        bookItemRepository.save(entity);
+        BookItemEntity updatedEntity = bookItemRepository.save(entity);
+        return bookItemMapper.toModel(updatedEntity, new CyclePreventiveContext());
     }
 
+    @CacheEvict(key = "#barcode")
     public void deleteBookItemByBarcode(String barcode) {
         Optional<BookItemEntity> optionalEntity = bookItemRepository.findById(barcode);
 
@@ -56,6 +66,7 @@ public class BookItemService {
         bookItemRepository.deleteById(barcode);
     }
 
+    @Cacheable(key = "#barcode")
     public BookItem getBookItemByBarcode(String barcode) {
         BookItemEntity entity = bookItemRepository
                 .findById(barcode)
@@ -68,6 +79,16 @@ public class BookItemService {
         List<BookItemEntity> entities = bookItemRepository
                 .findByBookId(bookId);
 
+        List<BookItem> items = bookItemMapper.toModels(entities, new CyclePreventiveContext());
+
+        for (BookItem item : items)
+            this.cache(item);
+
         return bookItemMapper.toModels(entities, new CyclePreventiveContext());
+    }
+
+    @CachePut(key = "#bookItem.barcode")
+    public BookItem cache(BookItem bookItem) {
+        return bookItem;
     }
 }

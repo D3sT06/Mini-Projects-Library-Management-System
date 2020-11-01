@@ -19,13 +19,19 @@ public class CacheConfig {
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
-                new ConcurrentMapCache("barcode_libraryCard")
+                new ConcurrentMapCache("libraryCards"),
+                new ConcurrentMapCache("books"),
+                new ConcurrentMapCache("bookItems"),
+                new ConcurrentMapCache("authors"),
+                new ConcurrentMapCache("categories"),
+                new ConcurrentMapCache("accounts"),
+                new ConcurrentMapCache("racks")
         ));
         return cacheManager;
     }
 
     @Bean
     public UserCache userCache() {
-        return new SpringCacheBasedUserCache(cacheManager().getCache("barcode_libraryCard"));
+        return new SpringCacheBasedUserCache(cacheManager().getCache("libraryCards"));
     }
 }

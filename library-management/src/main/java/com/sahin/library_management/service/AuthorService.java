@@ -9,6 +9,10 @@ import com.sahin.library_management.mapper.AuthorMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @LogExecutionTime
+@CacheConfig(cacheNames = "authors")
 public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
@@ -32,6 +37,8 @@ public class AuthorService {
 
         AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         entity = authorRepository.save(entity);
+        this.cache(entity);
+
         return authorMapper.toModel(entity, new CyclePreventiveContext());
     }
 
@@ -44,10 +51,12 @@ public class AuthorService {
             throw setExceptionWhenAuthorNotExist(author.getId());
 
         AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
-        authorRepository.save(entity);
+        entity = authorRepository.save(entity);
+        this.cache(entity);
     }
 
     @Transactional
+    @CacheEvict(key = "#authorId")
     public void deleteAuthorById(Long authorId) {
         Optional<AuthorEntity> optionalEntity = authorRepository.findById(authorId);
 
@@ -58,6 +67,7 @@ public class AuthorService {
     }
 
     @Transactional
+    @Cacheable(key = "#authorId")
     public AuthorProjections.AuthorView getAuthorById(Long authorId) {
         return authorRepository
                 .findProjectedById(authorId)
@@ -66,7 +76,22 @@ public class AuthorService {
 
     @Transactional
     public List<AuthorProjections.AuthorView> getAll() {
-        return authorRepository.findAllProjectedBy();
+        List<AuthorProjections.AuthorView> authorViews = authorRepository.findAllProjectedBy();
+
+        for (AuthorProjections.AuthorView view : authorViews)
+            this.cache(view);
+
+        return authorViews;
+    }
+
+    @CachePut(key = "#view.id")
+    public AuthorProjections.AuthorView cache(AuthorProjections.AuthorView view) {
+        return view;
+    }
+
+    @CachePut(key = "#entity.id")
+    public AuthorProjections.AuthorView cache(AuthorEntity entity) {
+        return authorMapper.toView(entity, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenAuthorNotExist(Long authorId) {

@@ -38,9 +38,9 @@ public class RackController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PutMapping("update")
-    public ResponseEntity<Void> updateRack(@RequestBody @Valid Rack rack) {
-        rackService.updateRack(rack);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Rack> updateRack(@RequestBody @Valid Rack rack) {
+        Rack updatedRack = rackService.updateRack(rack);
+        return ResponseEntity.ok(updatedRack);
     }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")

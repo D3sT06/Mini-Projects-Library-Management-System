@@ -10,6 +10,10 @@ import com.sahin.library_management.mapper.BookMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,6 +25,7 @@ import java.util.Optional;
 
 @Service
 @LogExecutionTime
+@CacheConfig(cacheNames = "books")
 public class BookService {
 
     @Autowired
@@ -33,10 +38,17 @@ public class BookService {
     public Page<Book> searchBook(Pageable pageable, BookFilter bookFilter) {
         Specification<BookEntity> specification = BookSpecification.create(bookFilter);
         Page<BookEntity> entities = bookRepository.findAll(specification, pageable);
-        return bookMapper.toPages(entities, new CyclePreventiveContext());
+        Page<Book> books = bookMapper.toPages(entities, new CyclePreventiveContext());
+
+        for (Book book : books.getContent()) {
+            this.cache(book);
+        }
+
+        return books;
     }
 
     @Transactional
+    @CachePut(key = "#book.id")
     public Book createBook(Book book) {
         if (book.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Book to be created cannot have an id.", HttpStatus.BAD_REQUEST);
@@ -47,7 +59,8 @@ public class BookService {
     }
 
     @Transactional
-    public void updateBook(Book book) {
+    @CachePut(key = "#book.id")
+    public Book updateBook(Book book) {
         if (book.getId() == null)
             throw new MyRuntimeException("NOT UPDATED", "Book to be updated must have an id.", HttpStatus.BAD_REQUEST);
 
@@ -55,10 +68,12 @@ public class BookService {
             throw setExceptionWhenBookNotExist(book.getId());
 
         BookEntity entity = bookMapper.toEntity(book, new CyclePreventiveContext());
-        bookRepository.save(entity);
+        entity = bookRepository.save(entity);
+        return bookMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
+    @CacheEvict(key = "#bookId")
     public void deleteBookById(Long bookId) {
         Optional<BookEntity> optionalEntity = bookRepository.findById(bookId);
 
@@ -69,12 +84,18 @@ public class BookService {
     }
 
     @Transactional
+    @Cacheable(key = "#bookId")
     public Book getBookById(Long bookId) {
         BookEntity bookEntity = bookRepository
                 .findById(bookId)
                 .orElseThrow(()-> setExceptionWhenBookNotExist(bookId));
 
         return bookMapper.toModel(bookEntity, new CyclePreventiveContext());
+    }
+
+    @CachePut(key = "#book.id")
+    public Book cache(Book book) {
+        return book;
     }
 
     private MyRuntimeException setExceptionWhenBookNotExist(Long bookId) {
