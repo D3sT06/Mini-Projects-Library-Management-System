@@ -10,6 +10,7 @@ import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -30,6 +31,9 @@ public class BookItemService {
 
     @Autowired
     private BookItemMapper bookItemMapper;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @CachePut(key = "#bookItem.barcode")
     public BookItem createBookItem(BookItem bookItem) {

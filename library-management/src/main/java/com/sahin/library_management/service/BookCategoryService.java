@@ -39,7 +39,6 @@ public class BookCategoryService {
 
         BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
         entity = categoryRepository.save(entity);
-        this.cache(entity);
         return categoryMapper.toModel(entity, new CyclePreventiveContext());
     }
 
@@ -53,7 +52,7 @@ public class BookCategoryService {
 
         BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
         entity = categoryRepository.save(entity);
-        this.cache(entity);
+        this.cacheEvict(entity);
     }
 
     @Transactional
@@ -91,10 +90,8 @@ public class BookCategoryService {
         return view;
     }
 
-    @CachePut(key = "#entity.id")
-    public CategoryProjections.CategoryView cache(BookCategoryEntity entity) {
-        return categoryMapper.toView(entity, new CyclePreventiveContext());
-    }
+    @CacheEvict(key = "#entity.id")
+    public void cacheEvict(BookCategoryEntity entity) {}
 
     private MyRuntimeException setExceptionWhenCategoryNotExist(Long categoryId) {
         return new MyRuntimeException("NOT FOUND", "Category with id \"" + categoryId + "\" not exist!", HttpStatus.BAD_REQUEST);

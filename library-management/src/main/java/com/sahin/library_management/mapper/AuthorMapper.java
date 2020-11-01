@@ -10,7 +10,5 @@ import org.mapstruct.Mapper;
 public interface AuthorMapper {
     Author toModel(AuthorEntity entity, @Context CyclePreventiveContext context);
     AuthorEntity toEntity(Author model, @Context CyclePreventiveContext context);
-
-    AuthorProjections.AuthorView toView(AuthorEntity entity, @Context CyclePreventiveContext context);
 }
 

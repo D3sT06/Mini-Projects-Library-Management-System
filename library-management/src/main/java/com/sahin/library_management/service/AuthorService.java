@@ -15,8 +15,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +37,6 @@ public class AuthorService {
 
         AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         entity = authorRepository.save(entity);
-        this.cache(entity);
 
         return authorMapper.toModel(entity, new CyclePreventiveContext());
     }
@@ -52,7 +51,7 @@ public class AuthorService {
 
         AuthorEntity entity = authorMapper.toEntity(author, new CyclePreventiveContext());
         entity = authorRepository.save(entity);
-        this.cache(entity);
+        this.cacheEvict(entity);
     }
 
     @Transactional
@@ -84,15 +83,13 @@ public class AuthorService {
         return authorViews;
     }
 
-    @CachePut(key = "#view.id")
+    @CachePut
     public AuthorProjections.AuthorView cache(AuthorProjections.AuthorView view) {
         return view;
     }
 
-    @CachePut(key = "#entity.id")
-    public AuthorProjections.AuthorView cache(AuthorEntity entity) {
-        return authorMapper.toView(entity, new CyclePreventiveContext());
-    }
+    @CacheEvict(key = "#entity.id")
+    public void cacheEvict(AuthorEntity entity) {}
 
     private MyRuntimeException setExceptionWhenAuthorNotExist(Long authorId) {
         return new MyRuntimeException("NOT FOUND", "Author with id \"" + authorId + "\" not exist!", HttpStatus.BAD_REQUEST);

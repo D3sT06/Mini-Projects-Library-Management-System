@@ -14,6 +14,4 @@ public interface BookCategoryMapper {
     BookCategoryEntity toEntity(BookCategory model, @Context CyclePreventiveContext context);
 
     Set<BookCategory> toModelsSet(Set<BookCategoryEntity> entities, @Context CyclePreventiveContext context);
-
-    CategoryProjections.CategoryView toView(BookCategoryEntity entity, CyclePreventiveContext context);
 }
