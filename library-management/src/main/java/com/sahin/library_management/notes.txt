@@ -24,15 +24,15 @@
 - Logging (Log4J)
 - book category, author, rack için controller ekleme
 - aspect oriented programming
+- caching
+- scheduling
 
 
 - Integration testler (JUnit5, Mockito)
     - book item loan controller
     - book item reserve controller
     - maven fail-safe plugin
-- caching
 - unit tests
-- scheduling
 - internationalization
 - rest docs
 - UML update
@@ -40,12 +40,3 @@
 - Notification implementation
 - UML update
 - Docker
-
-EKLENEBİLECEKLER
-1. spring data jpa
-2. spring core
-3. spring boot
-4. mapstruct
-5. lombok
-6. junit5, mockito
-7. exception handling

@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/library_management
     username: root
-    password: sql622763
+    password: sql1234
   hibernate:
     ddl-auto: validate
     naming:
