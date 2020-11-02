@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends PagingAndSortingRepository<BookEntity, Long>, JpaSpecificationExecutor<BookEntity> {
 
+    Optional<BookEntity> findByTitleAndAuthorIdAndIdIsNot(String title, Long authorId, Long bookId);
     Optional<BookEntity> findByTitleAndAuthorId(String title, Long authorId);
 
     @EntityGraph(attributePaths = {"author", "categories"})

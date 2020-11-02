@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.validator;
 
+import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.repository.BookCategoryRepository;
@@ -25,7 +26,11 @@ public class BookCategoryValidator implements Validator {
     public void validate(Object o, Errors errors) {
         BookCategory category = (BookCategory) o;
 
-        Optional<BookCategoryEntity> queryResult = categoryRepository.findByName(category.getName());
+        Optional<BookCategoryEntity> queryResult;
+        if (category.getId() == null)
+            queryResult = categoryRepository.findByName(category.getName());
+        else
+            queryResult = categoryRepository.findByNameAndIdIsNot(category.getName(), category.getId());
 
         if (queryResult.isPresent()) {
             errors.rejectValue("name", "ALREADY EXIST", "The book category with same title already exists!");

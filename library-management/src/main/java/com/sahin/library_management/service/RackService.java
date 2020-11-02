@@ -35,7 +35,7 @@ public class RackService {
     private RackService self;
 
     @Transactional
-    @CachePut(key = "#rack.id")
+    @CachePut(key = "#result.id")
     public Rack createRack(Rack rack) {
         if (rack.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Rack to be created cannot have an id.", HttpStatus.BAD_REQUEST);

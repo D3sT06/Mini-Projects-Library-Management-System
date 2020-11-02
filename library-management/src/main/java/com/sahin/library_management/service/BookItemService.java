@@ -33,13 +33,9 @@ public class BookItemService {
     @Autowired
     private BookItemMapper bookItemMapper;
 
-    @Autowired
-    private CacheManager cacheManager;
-
     @Resource
     private BookItemService self;
 
-    @CachePut(key = "#bookItem.barcode")
     public BookItem createBookItem(BookItem bookItem) {
         if (bookItem.getBarcode() != null || bookItem.getStatus() != null)
             throw new MyRuntimeException("NOT CREATED", "Book item to be created cannot have a barcode or a state.", HttpStatus.BAD_REQUEST);

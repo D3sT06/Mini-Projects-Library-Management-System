@@ -52,7 +52,6 @@ public class BookService {
     }
 
     @Transactional
-    @CachePut(key = "#book.id")
     public Book createBook(Book book) {
         if (book.getId() != null)
             throw new MyRuntimeException("NOT CREATED", "Book to be created cannot have an id.", HttpStatus.BAD_REQUEST);

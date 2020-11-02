@@ -1,5 +1,6 @@
 package com.sahin.library_management.infra.validator;
 
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.infra.model.book.Rack;
 import com.sahin.library_management.repository.RackRepository;
@@ -25,7 +26,11 @@ public class RackValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Rack rack = (Rack) o;
 
-        Optional<RackEntity> queryResult = rackRepository.findByLocation(rack.getLocation());
+        Optional<RackEntity> queryResult;
+        if (rack.getId() == null)
+            queryResult = rackRepository.findByLocation(rack.getLocation());
+        else
+            queryResult = rackRepository.findByLocationAndIdIsNot(rack.getLocation(), rack.getId());
 
         if (queryResult.isPresent()) {
             errors.rejectValue("location", "ALREADY EXIST", "The rack with same location already exists!");

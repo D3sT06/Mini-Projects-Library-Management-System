@@ -11,10 +11,12 @@ import java.util.Optional;
 public interface BookCategoryRepository extends JpaRepository<BookCategoryEntity, Long> {
 
     Optional<BookCategoryEntity> findByName(String name);
+    Optional<BookCategoryEntity> findByNameAndIdIsNot(String name, Long id);
 
     @EntityGraph(attributePaths = {"books"})
     List<CategoryProjections.CategoryView> findAllProjectedBy();
 
     @EntityGraph(attributePaths = {"books"})
     Optional<CategoryProjections.CategoryView> findProjectedById(Long id);
+
 }

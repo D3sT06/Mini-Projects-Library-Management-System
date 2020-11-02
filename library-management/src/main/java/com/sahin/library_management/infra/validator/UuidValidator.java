@@ -13,6 +13,11 @@ public class UuidValidator implements ConstraintValidator<NullableUUIDFormat, St
         if (uuid == null)
             return true;
 
-        return uuid.equals(new UUID(0,0).toString());
+        try {
+            UUID uuidInstance = UUID.fromString(uuid);
+            return  !uuidInstance.equals(new UUID(0,0));
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
