@@ -2,6 +2,7 @@ package com.sahin.library_management.infra.projections;
 
 import com.fasterxml.jackson.annotation.*;
 import com.sahin.library_management.infra.entity.BookEntity;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.NotNull;
@@ -30,6 +31,7 @@ public class AuthorProjections {
                 property = "id")
         @JsonIdentityReference(alwaysAsId = true)
         @JsonProperty("bookIds")
+        @ApiModelProperty(dataType = "[Ljava.lang.Long;")
         List<BookEntity> getBooks();
     }
 }

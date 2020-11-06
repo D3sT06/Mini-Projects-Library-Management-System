@@ -19,7 +19,7 @@ public class RackValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return Rack.class.equals(aClass);
+        return Rack.class.isAssignableFrom(aClass);
     }
 
     @Override

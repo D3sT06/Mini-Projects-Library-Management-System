@@ -19,7 +19,7 @@ public class BookCategoryValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return BookCategory.class.equals(aClass);
+        return BookCategory.class.isAssignableFrom(aClass);
     }
 
     @Override

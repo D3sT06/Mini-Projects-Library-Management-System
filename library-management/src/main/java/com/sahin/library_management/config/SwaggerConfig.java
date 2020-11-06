@@ -7,26 +7,24 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
-@Profile("dev")
+@Profile("swagger")
 @EnableSwagger2
 public class SwaggerConfig implements BeanFactoryAware {
 
@@ -47,6 +45,10 @@ public class SwaggerConfig implements BeanFactoryAware {
     void init() {
         setPathsForRoles();
         createBeans();
+    }
+
+    private BasicAuth basicAuth() {
+        return new BasicAuth("basicAuth");
     }
 
     private ApiInfo metaData() {
@@ -75,7 +77,8 @@ public class SwaggerConfig implements BeanFactoryAware {
                     .build()
                     .groupName(entry.getKey())
                     .apiInfo(metaData())
-                    .pathMapping("/");
+                    .pathMapping("/")
+                    .securitySchemes(Arrays.asList(basicAuth()));
 
             configurableBeanFactory.registerSingleton(beanName, bean);
         }

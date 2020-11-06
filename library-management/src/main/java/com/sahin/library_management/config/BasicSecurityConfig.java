@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
-@Profile("dev")
 @ConditionalOnProperty(name = "security.authentication.basic", havingValue = "true")
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 

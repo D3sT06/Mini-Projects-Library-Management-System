@@ -19,7 +19,7 @@ public class BookValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return Book.class.equals(aClass);
+        return Book.class.isAssignableFrom(aClass);
     }
 
     @Override

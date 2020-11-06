@@ -1,5 +1,6 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.controller.swagger.BookSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("api/books")
 @LogExecutionTime
-public class BookController {
+public class BookController implements BookSwaggerApi {
 
     @Autowired
     private BookService bookService;

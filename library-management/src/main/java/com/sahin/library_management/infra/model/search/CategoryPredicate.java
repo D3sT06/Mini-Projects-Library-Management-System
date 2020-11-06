@@ -22,15 +22,13 @@ public class CategoryPredicate extends BookPredicate {
 
     @Override
     public Optional<Predicate> getPredicate() {
-        if (!getBookFilter().getCategories().isPresent())
+        if (!getBookFilter().getCategoryIds().isPresent())
             return Optional.empty();
 
         Join<BookEntity, BookCategoryEntity> join = getRoot().join(BOOK_CATEGORY_FIELD);
 
         Predicate predicate = join.get(CATEGORY_ID_FIELD).in(
-                getBookFilter().getCategories().get().stream()
-                        .map(BookCategoryEntity::getId)
-                        .collect(Collectors.toList()));
+                getBookFilter().getCategoryIds().get());
 
         return Optional.of(predicate);
     }

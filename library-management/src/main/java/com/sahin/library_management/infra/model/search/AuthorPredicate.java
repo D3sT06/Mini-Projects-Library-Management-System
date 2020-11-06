@@ -18,13 +18,16 @@ public class AuthorPredicate extends BookPredicate {
     }
 
     public Optional<Predicate> getPredicate() {
-        if (!getBookFilter().getAuthors().isPresent())
+        if (!getBookFilter().getAuthorIds().isPresent())
             return Optional.empty();
 
         CriteriaBuilder.In<AuthorEntity> authorPredicate = getCb().in(getRoot().get(BOOK_AUTHOR_FIELD));
 
-        for (AuthorEntity entity : getBookFilter().getAuthors().get())
+        for (Long id : getBookFilter().getAuthorIds().get()) {
+            AuthorEntity entity = new AuthorEntity();
+            entity.setId(id);
             authorPredicate.value(entity);
+        }
 
         return Optional.of(authorPredicate);
     }

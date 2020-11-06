@@ -1,7 +1,9 @@
 package com.sahin.library_management.controller;
 
+import com.sahin.library_management.controller.swagger.BookCategorySwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.model.book.swagger.CategoryRequest;
 import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.infra.validator.BookCategoryValidator;
 import com.sahin.library_management.service.BookCategoryService;
@@ -17,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/categories")
 @LogExecutionTime
-public class BookCategoryController {
+public class BookCategoryController implements BookCategorySwaggerApi {
 
     @Autowired
     private BookCategoryService categoryService;
@@ -32,7 +34,7 @@ public class BookCategoryController {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
-    public ResponseEntity<BookCategory> createCategory(@RequestBody @Valid BookCategory bookCategory) {
+    public ResponseEntity<BookCategory> createCategory(@RequestBody @Valid CategoryRequest bookCategory) {
         BookCategory createdCategory = categoryService.createCategory(bookCategory);
         return ResponseEntity.ok(createdCategory);
     }

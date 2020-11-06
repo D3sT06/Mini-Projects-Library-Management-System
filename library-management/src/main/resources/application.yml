@@ -29,5 +29,9 @@ springfox:
         path: /swagger/docs
     enabled: false
 
+security:
+  authentication:
+    basic: false
+
 
 

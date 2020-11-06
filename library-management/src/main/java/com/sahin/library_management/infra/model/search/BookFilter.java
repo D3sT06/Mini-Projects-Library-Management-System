@@ -11,16 +11,16 @@ import java.util.Optional;
 public class BookFilter {
 
     private String title;
-    private List<AuthorEntity> authors;
-    private List<BookCategoryEntity> categories;
+    private List<Long> authorIds;
+    private List<Long> categoryIds;
 
     public Optional<String> getTitle() {
         return Optional.ofNullable(title);
     }
-    public Optional<List<AuthorEntity>> getAuthors() {
-        return Optional.ofNullable(authors);
+    public Optional<List<Long>> getAuthorIds() {
+        return Optional.ofNullable(authorIds);
     }
-    public Optional<List<BookCategoryEntity>> getCategories() {
-        return Optional.ofNullable(categories);
+    public Optional<List<Long>> getCategoryIds() {
+        return Optional.ofNullable(categoryIds);
     }
 }
