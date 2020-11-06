@@ -27,6 +27,7 @@ springfox:
     swagger:
       v2:
         path: /swagger/docs
+    enabled: false
 
 
 
