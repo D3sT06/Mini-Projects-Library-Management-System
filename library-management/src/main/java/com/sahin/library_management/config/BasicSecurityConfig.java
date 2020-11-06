@@ -22,6 +22,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ConditionalOnProperty(name = "security.authentication.basic", havingValue = "true")
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/swagger/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration",
+            "/configuration/**",
+            "/swagger-ui/**",
+            "/webjars/**",
+            // other public endpoints of your API may be appended to this array
+            "/h2-console/**"
+    };
+
     private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
     private final PasswordEncoder passwordEncoder;
 
@@ -52,7 +65,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated().and()
                 .httpBasic().and()

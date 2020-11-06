@@ -25,7 +25,7 @@ import java.util.*;
 @Component
 @Async
 @ConditionalOnMissingBean(BasicSecurityConfig.class)
-@Profile("dev")
+@Profile("sim")
 public class Simulator {
 
     @Autowired

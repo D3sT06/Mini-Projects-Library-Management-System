@@ -22,3 +22,11 @@ logging:
   level:
     com.sahin.library_management: debug
 
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /swagger/docs
+
+
+

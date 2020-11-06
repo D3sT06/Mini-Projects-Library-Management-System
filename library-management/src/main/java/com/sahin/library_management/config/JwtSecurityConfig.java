@@ -90,6 +90,19 @@ public class JwtSecurityConfig {
     @ConditionalOnMissingBean(BasicSecurityConfig.class)
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+        private static final String[] AUTH_WHITELIST = {
+                // -- swagger ui
+                "/swagger/**",
+                "/swagger-resources",
+                "/swagger-resources/**",
+                "/configuration",
+                "/configuration/**",
+                "/swagger-ui/**",
+                "/webjars/**",
+                // other public endpoints of your API may be appended to this array
+                "/h2-console/**"
+        };
+
         private final JwtTokenDecoderService jwtTokenDecoderService;
         private final UserDetailsService myUserDetailsService;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -114,7 +127,7 @@ public class JwtSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, myUserDetailsService), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
-                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                     .anyRequest().authenticated().and()
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
