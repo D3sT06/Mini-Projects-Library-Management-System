@@ -17,7 +17,7 @@ spring:
 
 security:
   authentication:
-    basic: true
+    basic: false
 
 springfox:
   documentation:

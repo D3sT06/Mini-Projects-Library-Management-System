@@ -1,9 +1,8 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.controller.swagger.AuthorSwaggerApi;
+import com.sahin.library_management.swagger.controller.AuthorSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.model.book.swagger.AuthorRequest;
 import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.infra.validator.AuthorValidator;
 import com.sahin.library_management.service.AuthorService;
@@ -34,7 +33,7 @@ public class AuthorController implements AuthorSwaggerApi {
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
-    public ResponseEntity<Author> createAuthor(@RequestBody @Valid AuthorRequest author) {
+    public ResponseEntity<Author> createAuthor(@RequestBody @Valid Author author) {
         Author createdAuthor = authorService.createAuthor(author);
         return ResponseEntity.ok(createdAuthor);
     }

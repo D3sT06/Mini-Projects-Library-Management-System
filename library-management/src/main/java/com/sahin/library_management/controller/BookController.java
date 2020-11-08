@@ -1,6 +1,6 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.controller.swagger.BookSwaggerApi;
+import com.sahin.library_management.swagger.controller.BookSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;

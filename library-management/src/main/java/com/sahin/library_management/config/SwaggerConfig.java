@@ -1,8 +1,12 @@
 package com.sahin.library_management.config;
 
+import com.fasterxml.classmate.ResolvedType;
+import com.fasterxml.classmate.TypeResolver;
+import com.sahin.library_management.swagger.model.*;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -11,6 +15,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
@@ -30,8 +35,14 @@ public class SwaggerConfig implements BeanFactoryAware {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
+    @Value("${app.security.url.login}")
+    private String loginUrl;
+
     @Autowired
     private RequestMappingHandlerMapping mapping;
+
+    @Autowired
+    private TypeResolver typeResolver;
 
     private BeanFactory beanFactory;
     private Map<String, Set<String>> pathsForRoles;
@@ -47,8 +58,8 @@ public class SwaggerConfig implements BeanFactoryAware {
         createBeans();
     }
 
-    private BasicAuth basicAuth() {
-        return new BasicAuth("basicAuth");
+    private ApiKey apiKey() {
+        return new ApiKey("bearer", "Authorization", "header");
     }
 
     private ApiInfo metaData() {
@@ -62,7 +73,27 @@ public class SwaggerConfig implements BeanFactoryAware {
                 .build();
     }
 
+    private ResolvedType[] resolvedTypes() {
+        List<ResolvedType> resolvedTypes = new ArrayList<>();
+        resolvedTypes.add(typeResolver.resolve(AuthorUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(CategoryCreateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(CategoryUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookItemCreateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookItemUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookLoanUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookReservationUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookCreateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(RackCreateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(RackUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(AccountCreateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(AccountUpdateRequest.class));
+        resolvedTypes.add(typeResolver.resolve(BookFilterRequest.class));
+        resolvedTypes.add(typeResolver.resolve(ModelWithOnlyId.class));
 
+        ResolvedType[] array = new ResolvedType[resolvedTypes.size()];
+        return resolvedTypes.toArray(array);
+    }
 
     private void createBeans() {
 
@@ -73,12 +104,13 @@ public class SwaggerConfig implements BeanFactoryAware {
             Docket bean = new Docket(DocumentationType.SWAGGER_2)
                     .select()
                     .paths(entry.getValue()::contains)
-                    .apis(RequestHandlerSelectors.basePackage("com.sahin.library_management.controller"))
+                    .apis(RequestHandlerSelectors.basePackage("com.sahin.library_management"))
                     .build()
                     .groupName(entry.getKey())
                     .apiInfo(metaData())
                     .pathMapping("/")
-                    .securitySchemes(Arrays.asList(basicAuth()));
+                    .additionalModels(typeResolver.resolve(AuthorCreateRequest.class), resolvedTypes())
+                    .securitySchemes(Arrays.asList(apiKey()));
 
             configurableBeanFactory.registerSingleton(beanName, bean);
         }
@@ -103,5 +135,11 @@ public class SwaggerConfig implements BeanFactoryAware {
                 }
             }
         });
+
+        for (String role : pathsForRoles.keySet()) {
+            Set<String> paths = pathsForRoles.getOrDefault(role, new HashSet<>());
+            paths.add(loginUrl);
+            this.pathsForRoles.put(role, paths);
+        }
     }
 }

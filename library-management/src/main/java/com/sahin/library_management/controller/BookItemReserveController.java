@@ -1,6 +1,6 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.controller.swagger.BookItemReserveSwaggerApi;
+import com.sahin.library_management.swagger.controller.BookItemReserveSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookReserving;
