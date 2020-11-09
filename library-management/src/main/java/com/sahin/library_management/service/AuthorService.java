@@ -87,7 +87,7 @@ public class AuthorService {
         return authorViews;
     }
 
-    @CachePut
+    @CachePut(key = "#view.id")
     public AuthorProjections.AuthorView cache(AuthorProjections.AuthorView view) {
         return view;
     }
