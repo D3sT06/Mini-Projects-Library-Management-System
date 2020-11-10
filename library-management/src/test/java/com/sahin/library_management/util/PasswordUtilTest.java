@@ -2,7 +2,7 @@ package com.sahin.library_management.util;
 
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("Password Utility Tests")
-public class PasswordUtilTest {
+class PasswordUtilTest {
 
-    @Test
+    @RepeatedTest(10)
     @DisplayName("Random password can be created")
     void createRandomPassword() {
         String password = PasswordUtil.createRandomPassword();
