@@ -84,6 +84,53 @@ class BookItemServiceTest {
     @DisplayName("Caching:")
     @ContextConfiguration(classes = BookItemServiceTest.SpringConfig.class)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class CachingRepeatedTests {
+
+        @Autowired
+        private BookItemService itemService;
+
+        @Autowired
+        private BookItemRepository itemRepository;
+
+        @Autowired
+        private CacheManager cacheManager;
+
+        private BookItemEntity itemEntity;
+        private Cache itemsCache;
+
+        @BeforeAll
+        void setup() {
+            itemsCache = cacheManager.getCache("bookItems");
+
+            itemEntity = new BookItemEntity();
+            itemEntity.setBarcode(UUID.randomUUID().toString());
+        }
+
+        @BeforeEach
+        void resetSetup(RepetitionInfo repetitionInfo) {
+            if (repetitionInfo.getCurrentRepetition() != 1)
+                return;
+
+            itemsCache.clear();
+            reset(itemRepository);
+        }
+
+        @RepeatedTest(2)
+        @DisplayName("Item is cached by barcode while getting it")
+        void cacheWhenGettingByBarcode() {
+
+            given(itemRepository.findById(anyString())).willReturn(Optional.of(itemEntity));
+
+            itemService.getBookItemByBarcode(itemEntity.getBarcode());
+
+            verify(itemRepository, times(1)).findById(anyString());
+        }
+    }
+
+    @Nested
+    @DisplayName("Caching:")
+    @ContextConfiguration(classes = BookItemServiceTest.SpringConfig.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class CachingTest {
 
         @Autowired
@@ -117,7 +164,7 @@ class BookItemServiceTest {
         }
 
         @Test
-        @DisplayName("Item is removed from cache by barcode while updating it")
+        @DisplayName("Item is put into cache by barcode while updating it")
         void updateCacheWhenUpdatingItem() {
 
             BookItemEntity updatedEntity = new BookItemEntity();
@@ -150,18 +197,6 @@ class BookItemServiceTest {
             itemService.deleteBookItemByBarcode(item.getBarcode());
 
             assertNull(itemsCache.get(item.getBarcode()));
-        }
-
-        @Test
-        @DisplayName("Item is cached by barcode while getting it")
-        void cacheWhenGettingByBarcode() {
-
-            given(itemRepository.findById(anyString())).willReturn(Optional.of(itemEntity));
-
-            itemService.getBookItemByBarcode(itemEntity.getBarcode());
-            itemService.getBookItemByBarcode(itemEntity.getBarcode());
-
-            verify(itemRepository, times(1)).findById(anyString());
         }
 
         @Test

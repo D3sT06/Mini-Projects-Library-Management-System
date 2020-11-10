@@ -9,7 +9,6 @@ import com.sahin.library_management.mapper.AuthorMapperImpl;
 import com.sahin.library_management.repository.AuthorRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -61,6 +60,76 @@ class AuthorServiceTest {
         @Bean
         public AuthorMapper authorMapper() {
             return new AuthorMapperImpl();
+        }
+    }
+
+    @Nested
+    @DisplayName("Caching Repeated Tests:")
+    @ContextConfiguration(classes = SpringConfig.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class CachingRepeatedTests {
+        @Autowired
+        private AuthorService authorService;
+
+        @Autowired
+        private AuthorRepository authorRepository;
+
+        @Autowired
+        private CacheManager cacheManager;
+
+        private AuthorProjections.AuthorView authorView;
+        private Cache authorsCache;
+
+        @BeforeEach
+        void resetSetup(RepetitionInfo repetitionInfo) {
+
+            if (repetitionInfo.getCurrentRepetition() != 1)
+                return;
+
+            authorsCache.clear();
+            reset(authorRepository);
+        }
+
+        @BeforeAll
+        void setup() {
+            authorsCache = cacheManager.getCache("authors");
+
+            authorView = new AuthorProjections.AuthorView() {
+                @Override
+                public Long getId() {
+                    return 1L;
+                }
+
+                @Override
+                public @NotNull String getName() {
+                    return "name";
+                }
+
+                @Override
+                public @NotNull String getSurname() {
+                    return "surname";
+                }
+
+                @Override
+                public String getFullname() {
+                    return "name surname";
+                }
+
+                @Override
+                public List<BookEntity> getBooks() {
+                    return null;
+                }
+            };
+        }
+
+        @RepeatedTest(2)
+        @DisplayName("Author is cached by id while getting it")
+        void cacheWhenGettingById() {
+
+            given(authorRepository.findProjectedById(anyLong())).willReturn(Optional.of(authorView));
+            authorService.getAuthorById(1L);
+
+            verify(authorRepository, times(1)).findProjectedById(anyLong());
         }
     }
 
@@ -150,18 +219,6 @@ class AuthorServiceTest {
             authorService.deleteAuthorById(author.getId());
 
             assertNull(authorsCache.get(author.getId()));
-        }
-
-        @Test
-        @DisplayName("Author is cached by id while getting it")
-        void cacheWhenGettingById() {
-
-            given(authorRepository.findProjectedById(anyLong())).willReturn(Optional.of(authorView));
-
-            authorService.getAuthorById(1L);
-            authorService.getAuthorById(1L);
-
-            verify(authorRepository, times(1)).findProjectedById(anyLong());
         }
 
         @Test

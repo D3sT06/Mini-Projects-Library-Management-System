@@ -64,6 +64,67 @@ class BookCategoryServiceTest {
     }
 
     @Nested
+    @DisplayName("Caching Repeated Tests:")
+    @ContextConfiguration(classes = BookCategoryServiceTest.SpringConfig.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class CachingRepeatedTests {
+
+        @Autowired
+        private BookCategoryService categoryService;
+
+        @Autowired
+        private BookCategoryRepository categoryRepository;
+
+        @Autowired
+        private CacheManager cacheManager;
+
+        private CategoryProjections.CategoryView categoryView;
+        private Cache categoriesCache;
+
+        @BeforeAll
+        void setup() {
+            categoriesCache = cacheManager.getCache("categories");
+
+            categoryView = new CategoryProjections.CategoryView() {
+                @Override
+                public Long getId() {
+                    return 1L;
+                }
+
+                @Override
+                public @NotNull String getName() {
+                    return "category";
+                }
+
+                @Override
+                public @NotNull Set<BookEntity> getBooks() {
+                    return null;
+                }
+            };
+        }
+
+        @BeforeEach
+        void resetSetup(RepetitionInfo repetitionInfo) {
+            if (repetitionInfo.getCurrentRepetition() != 1)
+                return;
+
+            categoriesCache.clear();
+            reset(categoryRepository);
+        }
+
+        @RepeatedTest(2)
+        @DisplayName("Category is cached by id while getting it")
+        void cacheWhenGettingById() {
+
+            given(categoryRepository.findProjectedById(anyLong())).willReturn(Optional.of(categoryView));
+
+            categoryService.getCategoryById(1L);
+
+            verify(categoryRepository, times(1)).findProjectedById(anyLong());
+        }
+    }
+
+    @Nested
     @DisplayName("Caching:")
     @ContextConfiguration(classes = BookCategoryServiceTest.SpringConfig.class)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -139,18 +200,6 @@ class BookCategoryServiceTest {
             categoryService.deleteCategoryById(category.getId());
 
             assertNull(categoriesCache.get(category.getId()));
-        }
-
-        @Test
-        @DisplayName("Category is cached by id while getting it")
-        void cacheWhenGettingById() {
-
-            given(categoryRepository.findProjectedById(anyLong())).willReturn(Optional.of(categoryView));
-
-            categoryService.getCategoryById(1L);
-            categoryService.getCategoryById(1L);
-
-            verify(categoryRepository, times(1)).findProjectedById(anyLong());
         }
 
         @Test
