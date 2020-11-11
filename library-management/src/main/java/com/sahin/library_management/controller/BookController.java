@@ -1,14 +1,19 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.swagger.controller.BookSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
+import com.sahin.library_management.infra.enums.LogAction;
+import com.sahin.library_management.infra.enums.LogTopic;
 import com.sahin.library_management.infra.model.book.Book;
+import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.validator.BookValidator;
 import com.sahin.library_management.service.BookService;
+import com.sahin.library_management.service.MemberLogService;
+import com.sahin.library_management.swagger.controller.BookSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,6 +31,9 @@ public class BookController implements BookSwaggerApi {
 
     @Autowired
     private BookValidator bookValidator;
+
+    @Autowired
+    private MemberLogService memberLogService;
 
     // book is the name of the object
     @InitBinder("book")
@@ -64,6 +72,16 @@ public class BookController implements BookSwaggerApi {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
     @PostMapping("search")
     public ResponseEntity<Page<Book>> getAll(@RequestBody @Valid BookFilter bookFilter, Pageable pageable) {
-        return ResponseEntity.ok(bookService.searchBook(pageable, bookFilter));
+
+        Page<Book> books = bookService.searchBook(pageable, bookFilter);
+
+        memberLogService.send(LogTopic.BOOK, new MemberLog.Builder()
+                .action(LogAction.SEARCH_BOOK)
+                .httpStatus(HttpStatus.OK)
+                .details(bookFilter.toString())
+                .build()
+        );
+
+        return ResponseEntity.ok(books);
     }
 }

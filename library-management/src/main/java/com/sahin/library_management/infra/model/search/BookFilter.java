@@ -1,13 +1,13 @@
 package com.sahin.library_management.infra.model.search;
 
-import com.sahin.library_management.infra.entity.AuthorEntity;
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Optional;
 
 @Setter
+@ToString
 public class BookFilter {
 
     private String title;
