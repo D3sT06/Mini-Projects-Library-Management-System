@@ -18,6 +18,9 @@ aspect:
     log-execution-time: true
     log-null-parameters: true
 
+amqp:
+  enabled: false
+
 logging:
   level:
     com.sahin.library_management: debug

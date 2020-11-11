@@ -1,4 +1,4 @@
-package com.sahin.library_management.service;
+package com.sahin.library_management.service.item_state;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.enums.BookStatus;
@@ -7,6 +7,7 @@ import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.infra.model.book.BookReserving;
+import com.sahin.library_management.service.item_state.BookItemStateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

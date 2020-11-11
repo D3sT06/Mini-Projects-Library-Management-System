@@ -1,10 +1,13 @@
-package com.sahin.library_management.service;
+package com.sahin.library_management.service.item_state;
 
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.infra.model.book.BookReserving;
+import com.sahin.library_management.service.BookItemService;
+import com.sahin.library_management.service.BookLoaningService;
+import com.sahin.library_management.service.BookReservingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 

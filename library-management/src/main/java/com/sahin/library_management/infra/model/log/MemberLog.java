@@ -3,6 +3,7 @@ package com.sahin.library_management.infra.model.log;
 import com.sahin.library_management.infra.enums.LogAction;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -11,6 +12,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@ToString
 public class MemberLog implements Serializable {
 
     private String cardBarcode;
@@ -50,7 +52,7 @@ public class MemberLog implements Serializable {
             memberLog.message = this.message;
             memberLog.details = this.details;
             memberLog.httpStatus = this.httpStatus;
-            memberLog.cardBarcode = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+            memberLog.cardBarcode = SecurityContextHolder.getContext().getAuthentication().getName();
             memberLog.actionTime = Instant.now().toEpochMilli();
             return memberLog;
         }

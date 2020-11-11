@@ -15,10 +15,6 @@ spring:
     console:
       enabled: true
 
-security:
-  authentication:
-    basic: false
-
 springfox:
   documentation:
     enabled: true

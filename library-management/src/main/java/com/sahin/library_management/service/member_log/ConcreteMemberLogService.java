@@ -1,4 +1,4 @@
-package com.sahin.library_management.service;
+package com.sahin.library_management.service.member_log;
 
 import com.sahin.library_management.factory.QueueFactory;
 import com.sahin.library_management.infra.enums.LogTopic;
@@ -7,11 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
+import javax.annotation.PostConstruct;
+
 @Slf4j
-public class MemberLogService {
+public class ConcreteMemberLogService implements MemberLogService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;

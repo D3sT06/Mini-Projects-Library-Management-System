@@ -7,7 +7,7 @@ import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookReserving;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.service.BookReservingService;
-import com.sahin.library_management.service.MemberLogService;
+import com.sahin.library_management.service.member_log.MemberLogService;
 import com.sahin.library_management.swagger.controller.BookItemReserveSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

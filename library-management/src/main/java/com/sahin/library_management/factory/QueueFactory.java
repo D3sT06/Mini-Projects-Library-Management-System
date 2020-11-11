@@ -1,8 +1,10 @@
 package com.sahin.library_management.factory;
 
+import com.sahin.library_management.config.RabbitMqConfig;
 import com.sahin.library_management.infra.enums.LogTopic;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +12,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @Component
+@ConditionalOnBean(RabbitMqConfig.class)
 public class QueueFactory {
 
     private Map<LogTopic, Queue> topicQueueMap;

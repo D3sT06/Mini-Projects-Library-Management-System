@@ -2,11 +2,13 @@ package com.sahin.library_management.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableRabbit
+@ConditionalOnExpression("${amqp.enabled}")
 public class RabbitMqConfig {
 
     @Bean
