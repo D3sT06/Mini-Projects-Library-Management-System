@@ -5,7 +5,7 @@ import com.sahin.library_management.infra.model.log.MemberLog;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class VoidMemberLogService implements MemberLogService {
+public class VoidMemberLogPublisherService implements MemberLogPublisherService {
 
     @Override
     public void send(LogTopic logTopic, MemberLog memberLog) {

@@ -19,7 +19,7 @@ aspect:
     log-null-parameters: true
 
 amqp:
-  enabled: false
+  enabled: true
 
 logging:
   level:

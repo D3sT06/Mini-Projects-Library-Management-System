@@ -8,10 +8,8 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-
 @Slf4j
-public class ConcreteMemberLogService implements MemberLogService {
+public class ConcreteMemberLogPublisherService implements MemberLogPublisherService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;

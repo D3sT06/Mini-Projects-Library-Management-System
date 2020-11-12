@@ -3,8 +3,7 @@ package com.sahin.library_management.controller;
 import com.sahin.library_management.infra.enums.LogAction;
 import com.sahin.library_management.infra.enums.LogTopic;
 import com.sahin.library_management.infra.model.log.MemberLog;
-import com.sahin.library_management.service.member_log.ConcreteMemberLogService;
-import com.sahin.library_management.service.member_log.MemberLogService;
+import com.sahin.library_management.service.member_log.MemberLogPublisherService;
 import com.sahin.library_management.swagger.controller.BookItemSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookItem;
@@ -27,7 +26,7 @@ public class BookItemController implements BookItemSwaggerApi {
     private BookItemService bookItemService;
 
     @Autowired
-    private MemberLogService memberLogService;
+    private MemberLogPublisherService memberLogPublisherService;
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
@@ -55,7 +54,7 @@ public class BookItemController implements BookItemSwaggerApi {
     public ResponseEntity<BookItem> getBookItemByBarcode(@PathVariable String barcode) {
         BookItem bookItem = bookItemService.getBookItemByBarcode(barcode);
 
-        memberLogService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
                 .action(LogAction.GET_ITEM, barcode)
                 .httpStatus(HttpStatus.OK)
                 .build()
@@ -69,7 +68,7 @@ public class BookItemController implements BookItemSwaggerApi {
     public ResponseEntity<List<BookItem>> getBookItemsByBook(@PathVariable Long bookId) {
         List<BookItem> bookItems = bookItemService.getBookItemByBookId(bookId);
 
-        memberLogService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
                 .action(LogAction.GET_ITEM_BY_BOOK, bookId.toString())
                 .httpStatus(HttpStatus.OK)
                 .build()

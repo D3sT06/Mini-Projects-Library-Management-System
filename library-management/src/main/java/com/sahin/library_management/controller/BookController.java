@@ -8,8 +8,7 @@ import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.validator.BookValidator;
 import com.sahin.library_management.service.BookService;
-import com.sahin.library_management.service.member_log.ConcreteMemberLogService;
-import com.sahin.library_management.service.member_log.MemberLogService;
+import com.sahin.library_management.service.member_log.MemberLogPublisherService;
 import com.sahin.library_management.swagger.controller.BookSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +33,7 @@ public class BookController implements BookSwaggerApi {
     private BookValidator bookValidator;
 
     @Autowired
-    private MemberLogService memberLogService;
+    private MemberLogPublisherService memberLogPublisherService;
 
     // book is the name of the object
     @InitBinder("book")
@@ -76,7 +75,7 @@ public class BookController implements BookSwaggerApi {
 
         Page<Book> books = bookService.searchBook(pageable, bookFilter);
 
-        memberLogService.send(LogTopic.BOOK, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK, new MemberLog.Builder()
                 .action(LogAction.SEARCH_BOOK)
                 .httpStatus(HttpStatus.OK)
                 .details(bookFilter.toString())

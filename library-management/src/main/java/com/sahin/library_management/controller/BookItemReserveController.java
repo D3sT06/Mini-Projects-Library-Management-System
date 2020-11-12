@@ -7,7 +7,7 @@ import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookReserving;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.service.BookReservingService;
-import com.sahin.library_management.service.member_log.MemberLogService;
+import com.sahin.library_management.service.member_log.MemberLogPublisherService;
 import com.sahin.library_management.swagger.controller.BookItemReserveSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,14 +27,14 @@ public class BookItemReserveController implements BookItemReserveSwaggerApi {
     private BookReservingService bookReservingService;
 
     @Autowired
-    private MemberLogService memberLogService;
+    private MemberLogPublisherService memberLogPublisherService;
 
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     @PostMapping
     public ResponseEntity<BookReserving> reserveBookItem(@AuthenticationPrincipal LibraryCard libraryCard, @RequestParam("itemId") String bookItemBarcode) {
         BookReserving bookReserving = bookReservingService.reserveBookItem(bookItemBarcode, libraryCard.getBarcode());
 
-        memberLogService.send(LogTopic.BOOK_RESERVATION, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_RESERVATION, new MemberLog.Builder()
                 .action(LogAction.RESERVE_ITEM, bookItemBarcode)
                 .details("New Reserving id: " + bookReserving.getId())
                 .httpStatus(HttpStatus.OK)

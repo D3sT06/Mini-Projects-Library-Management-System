@@ -1,8 +1,8 @@
 package com.sahin.library_management.config;
 
-import com.sahin.library_management.service.member_log.ConcreteMemberLogService;
-import com.sahin.library_management.service.member_log.MemberLogService;
-import com.sahin.library_management.service.member_log.VoidMemberLogService;
+import com.sahin.library_management.service.member_log.ConcreteMemberLogPublisherService;
+import com.sahin.library_management.service.member_log.MemberLogPublisherService;
+import com.sahin.library_management.service.member_log.VoidMemberLogPublisherService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -13,14 +13,14 @@ public class WebConfig {
 
     @Bean
     @ConditionalOnBean(RabbitMqConfig.class)
-    public MemberLogService concreteLogService() {
-        return new ConcreteMemberLogService();
+    public MemberLogPublisherService concreteLogService() {
+        return new ConcreteMemberLogPublisherService();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public MemberLogService voidLogService() {
-        return new VoidMemberLogService();
+    public MemberLogPublisherService voidLogService() {
+        return new VoidMemberLogPublisherService();
     }
 
 

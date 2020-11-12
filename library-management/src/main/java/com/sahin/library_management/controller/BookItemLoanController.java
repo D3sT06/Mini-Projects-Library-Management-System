@@ -7,7 +7,7 @@ import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.service.BookLoaningService;
-import com.sahin.library_management.service.member_log.MemberLogService;
+import com.sahin.library_management.service.member_log.MemberLogPublisherService;
 import com.sahin.library_management.swagger.controller.BookItemLoanSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,14 +27,14 @@ public class BookItemLoanController implements BookItemLoanSwaggerApi {
     private BookLoaningService bookLoaningService;
 
     @Autowired
-    private MemberLogService memberLogService;
+    private MemberLogPublisherService memberLogPublisherService;
 
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     @PostMapping("renew")
     public ResponseEntity<BookLoaning> renewBookItem(@AuthenticationPrincipal LibraryCard libraryCard, @RequestParam("itemId") String bookItemBarcode) {
         BookLoaning newBookLoaning = bookLoaningService.renewBookItem(bookItemBarcode, libraryCard.getBarcode());
 
-        memberLogService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
                 .action(LogAction.RENEW_ITEM, bookItemBarcode)
                 .details("New Loaning id: " + newBookLoaning.getId())
                 .httpStatus(HttpStatus.OK)
@@ -49,7 +49,7 @@ public class BookItemLoanController implements BookItemLoanSwaggerApi {
     public ResponseEntity<BookLoaning> checkOutBookItem(@AuthenticationPrincipal LibraryCard libraryCard, @RequestParam("itemId") String bookItemBarcode) {
         BookLoaning bookLoaning = bookLoaningService.checkOutBookItem(bookItemBarcode, libraryCard.getBarcode());
 
-        memberLogService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
                 .action(LogAction.CHECKOUT_ITEM, bookItemBarcode)
                 .details("Loaning id: " + bookLoaning.getId())
                 .httpStatus(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class BookItemLoanController implements BookItemLoanSwaggerApi {
     public ResponseEntity<Void> returnBookItem(@AuthenticationPrincipal LibraryCard libraryCard, @RequestParam("itemId") String bookItemBarcode) {
         bookLoaningService.returnBookItem(bookItemBarcode, libraryCard.getBarcode());
 
-        memberLogService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
+        memberLogPublisherService.send(LogTopic.BOOK_LOAN, new MemberLog.Builder()
                 .action(LogAction.RETURN_ITEM, bookItemBarcode)
                 .httpStatus(HttpStatus.OK)
                 .build()
