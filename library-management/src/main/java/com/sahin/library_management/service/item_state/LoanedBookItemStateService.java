@@ -20,7 +20,7 @@ import java.util.Optional;
 public class LoanedBookItemStateService extends BookItemStateService {
 
     public BookLoaning checkOutBookItem(BookItem bookItem, Member member) {
-        throw new MyRuntimeException("The book item has already been loaned by someone else", HttpStatus.BAD_REQUEST);
+        throw new MyRuntimeException("ALREADY LOANED", "The book item has already been loaned by someone else", HttpStatus.BAD_REQUEST);
     }
 
     @Transactional

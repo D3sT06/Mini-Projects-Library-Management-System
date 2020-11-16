@@ -55,12 +55,12 @@ public class ReservedAtLibraryBookItemStateService extends BookItemStateService 
 
     @Transactional
     public void returnBookItem(BookLoaning bookLoaning, Member member) {
-        throw new MyRuntimeException("The book item is already returned!",
+        throw new MyRuntimeException("ALREADY RETURNED", "The book item is already returned!",
                 HttpStatus.BAD_REQUEST);
     }
 
     public BookLoaning renewBookItem(BookLoaning bookLoaning, Member member) {
-        throw new MyRuntimeException("The book item is reserved by someone else. You cannot renew the loaning for it!",
+        throw new MyRuntimeException("RESERVED", "The book item is reserved by someone else. You cannot renew the loaning for it!",
                 HttpStatus.BAD_REQUEST);
     }
 }

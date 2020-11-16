@@ -510,39 +510,321 @@ public class BookItemLoanIT {
         }
     }
 
+    @Nested
+    @SpringBootTest(classes = LibraryManagementApp.class)
+    @AutoConfigureMockMvc
+    @ActiveProfiles("test")
+    @DisplayName("When the book item is reserved when it is at library")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class ReservedAtLibraryBookItem {
-        void renewBookItem() {
 
+        @MockBean
+        protected LibraryCardRepository libraryCardRepository;
+
+        @Autowired
+        protected BookItemRepository bookItemRepository;
+
+        @Autowired
+        protected BookLoaningRepository loaningRepository;
+
+        @Autowired
+        protected BookReservingRepository reservingRepository;
+
+        private boolean constructed = false;
+
+        @PostConstruct
+        void setup() {
+            if (!constructed) {
+                constructed = true;
+                authorLoader.loadDb();
+                categoryLoader.loadDb();
+                bookLoader.loadDb();
+                rackLoader.loadDb();
+                accountLoader.loadDb();
+            }
+
+            List<AccountEntity> accountEntities = (List<AccountEntity>) accountLoader.getAll();
+
+            LibraryCardEntity memberCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            LibraryCardEntity librarianCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            given(libraryCardRepository.findById("member")).willReturn(
+                    Optional.of(memberCard));
+            given(libraryCardRepository.findById("librarian")).willReturn(
+                    Optional.of(librarianCard));
         }
 
-        void checkOutBookItem() {
-
+        @AfterAll
+        void clear() {
+            accountLoader.clearDb();
+            rackLoader.clearDb();
+            bookLoader.clearDb();
+            authorLoader.clearDb();
+            categoryLoader.clearDb();
         }
 
-        void returnBookItem() {
+        @BeforeEach
+        void beforeEach() {
+            itemLoader.loadDb();
 
+            List<BookItemEntity> bookItems = (List<BookItemEntity>) itemLoader.getAll();
+            List<AccountEntity> members = ((List<AccountEntity>) accountLoader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
+
+            // the book item has returned yesterday.
+            BookLoaningEntity loaning = new BookLoaningEntity();
+            loaning.setBookItem(bookItems.get(bookItems.size()-1));
+            loaning.setLoanedAt(Instant.now().minus(5, ChronoUnit.DAYS).toEpochMilli());
+            loaning.setDueDate(Instant.now().plus(5, ChronoUnit.DAYS).toEpochMilli());
+            loaning.setMember(members.get(members.size()-1));
+            loaning.setReturnedAt(Instant.now().minus(2, ChronoUnit.DAYS).toEpochMilli());
+            loaning.getBookItem().setStatus(BookStatus.RESERVED_AT_LIBRARY);
+
+            bookItemRepository.save(loaning.getBookItem());
+            loaningRepository.save(loaning);
         }
 
-        void updateBookItem() {
+        @AfterEach
+        void afterEach() {
+            bookLoanLoader.clearDb();
+            bookReserveLoader.clearDb();
+            itemLoader.clearDb();
+        }
 
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user cannot renew it")
+        @Order(1)
+        void renewBookItem() throws Exception {
+            BookItemEntity itemEntity = ((BookLoaningEntity) bookLoanLoader.getAll().get(0)).getBookItem();
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/renew/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(result -> {
+                        ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
+                        assertNotNull(errorResponse);
+                        assertEquals("RESERVED", errorResponse.getTitle());
+                    });
+        }
+
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user can loan it")
+        @Order(2)
+        void checkOutBookItem() throws Exception {
+            BookItemEntity itemEntity = (BookItemEntity) itemLoader.getAll().get(0);
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/check-out/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        BookLoaning loaning = objectMapper.readValue(result.getResponse().getContentAsString(), BookLoaning.class);
+                        assertNotNull(loaning);
+                        assertEquals(BookStatus.LOANED, bookItemRepository.findById(itemEntity.getBarcode()).get().getStatus());
+                    });
+        }
+
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user cannot return it")
+        @Order(3)
+        void returnBookItem() throws Exception {
+            BookItemEntity itemEntity = ((BookLoaningEntity) bookLoanLoader.getAll().get(0)).getBookItem();
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/return/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(result -> {
+                        ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
+                        assertNotNull(errorResponse);
+                        assertEquals("ALREADY RETURNED", errorResponse.getTitle());
+                    });
         }
     }
 
+    @Nested
+    @SpringBootTest(classes = LibraryManagementApp.class)
+    @AutoConfigureMockMvc
+    @ActiveProfiles("test")
+    @DisplayName("When the book item is loaned")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class LoanedBookItem {
-        void renewBookItem() {
 
+        @MockBean
+        protected LibraryCardRepository libraryCardRepository;
+
+        @Autowired
+        protected BookItemRepository bookItemRepository;
+
+        @Autowired
+        protected BookLoaningRepository loaningRepository;
+
+        @Autowired
+        protected BookReservingRepository reservingRepository;
+
+        private boolean constructed = false;
+
+        @PostConstruct
+        void setup() {
+            if (!constructed) {
+                constructed = true;
+                authorLoader.loadDb();
+                categoryLoader.loadDb();
+                bookLoader.loadDb();
+                rackLoader.loadDb();
+                accountLoader.loadDb();
+            }
+
+            List<AccountEntity> accountEntities = (List<AccountEntity>) accountLoader.getAll();
+
+            LibraryCardEntity memberCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            LibraryCardEntity librarianCard = accountEntities.stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                    .findFirst()
+                    .map(account -> account.getLibraryCard())
+                    .get();
+
+            given(libraryCardRepository.findById("member")).willReturn(
+                    Optional.of(memberCard));
+            given(libraryCardRepository.findById("librarian")).willReturn(
+                    Optional.of(librarianCard));
         }
 
-        void checkOutBookItem() {
-
+        @AfterAll
+        void clear() {
+            accountLoader.clearDb();
+            rackLoader.clearDb();
+            bookLoader.clearDb();
+            authorLoader.clearDb();
+            categoryLoader.clearDb();
         }
 
-        void returnBookItem() {
+        @BeforeEach
+        void beforeEach() {
+            itemLoader.loadDb();
 
+            List<BookItemEntity> bookItems = (List<BookItemEntity>) itemLoader.getAll();
+            List<AccountEntity> members = ((List<AccountEntity>) accountLoader.getAll()).stream()
+                    .filter(account -> account.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
+                    .collect(Collectors.toList());
+
+            // the book item has returned yesterday.
+            BookLoaningEntity loaning = new BookLoaningEntity();
+            loaning.setBookItem(bookItems.get(bookItems.size()-1));
+            loaning.setLoanedAt(Instant.now().minus(5, ChronoUnit.DAYS).toEpochMilli());
+            loaning.setDueDate(Instant.now().plus(5, ChronoUnit.DAYS).toEpochMilli());
+            loaning.setMember(members.get(0));
+            loaning.getBookItem().setStatus(BookStatus.LOANED);
+
+            bookItemRepository.save(loaning.getBookItem());
+            loaningRepository.save(loaning);
         }
 
-        void updateBookItem() {
+        @AfterEach
+        void afterEach() {
+            bookLoanLoader.clearDb();
+            bookReserveLoader.clearDb();
+            itemLoader.clearDb();
+        }
 
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user cannot renew it")
+        @Order(1)
+        void renewBookItem() throws Exception {
+            BookLoaningEntity loaningEntity = (BookLoaningEntity) bookLoanLoader.getAll().get(0);
+            BookItemEntity itemEntity = loaningEntity.getBookItem();
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/renew/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        assertNotNull(loaningRepository.findById(loaningEntity.getId()).get().getReturnedAt());
+                        assertEquals(BookStatus.LOANED, bookItemRepository.findById(itemEntity.getBarcode()).get().getStatus());
+                        assertEquals(1, loaningRepository.countByMemberIdAndReturnedAtIsNull(loaningEntity.getMember().getId()));
+                    });
+        }
+
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user cannot loan it again")
+        @Order(2)
+        void checkOutBookItem() throws Exception {
+            BookItemEntity itemEntity = ((BookLoaningEntity) bookLoanLoader.getAll().get(0)).getBookItem();
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/check-out/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(result -> {
+                        ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
+                        assertNotNull(errorResponse);
+                        assertEquals("ALREADY LOANED", errorResponse.getTitle());
+                    });
+        }
+
+        @Test
+        @WithUserDetails(userDetailsServiceBeanName = "libraryCardService",
+                value = "member",
+                setupBefore = TestExecutionEvent.TEST_EXECUTION)
+        @DisplayName("Then user cannot return it")
+        @Order(3)
+        void returnBookItem() throws Exception {
+            BookLoaningEntity loaningEntity = (BookLoaningEntity) bookLoanLoader.getAll().get(0);
+            BookItemEntity itemEntity = loaningEntity.getBookItem();
+
+            mockMvc
+                    .perform(
+                            post("/api/book-items/loan/return/")
+                                    .param("itemId", itemEntity.getBarcode())
+                                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        assertNotNull(loaningRepository.findById(loaningEntity.getId()).get().getReturnedAt());
+                        assertEquals(BookStatus.AVAILABLE, bookItemRepository.findById(itemEntity.getBarcode()).get().getStatus());
+                    });
         }
     }
 }
