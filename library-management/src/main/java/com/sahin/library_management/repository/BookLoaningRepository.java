@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookLoaningRepository  extends JpaRepository<BookLoaningEntity, Long> {
-    Optional<BookLoaningEntity> findTopByBookItemOrderByLoanedAtDesc(BookItemEntity bookItemEntity);
-    int countByMemberAndReturnedAtIsNull(AccountEntity memberEntity);
+    Optional<BookLoaningEntity> findTopByBookItemBarcodeOrderByLoanedAtDesc(String bookItemBarcode);
+    int countByMemberIdAndReturnedAtIsNull(Long memberId);
 }

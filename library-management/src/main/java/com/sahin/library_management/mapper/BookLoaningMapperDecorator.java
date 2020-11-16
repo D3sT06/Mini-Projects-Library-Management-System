@@ -18,6 +18,10 @@ public abstract class BookLoaningMapperDecorator implements BookLoaningMapper {
     @Override
     public BookLoaning toModel(BookLoaningEntity entity) {
         BookLoaning loaning = delegate.toModel(entity);
+
+        if (loaning == null)
+            return null;
+
         loaning.setBookItem(itemMapper.toModel(entity.getBookItem(), new CyclePreventiveContext()));
         loaning.setMember(accountMapper.toMemberModel(entity.getMember(), new CyclePreventiveContext()));
         return loaning;

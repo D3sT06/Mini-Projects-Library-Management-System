@@ -124,14 +124,15 @@ public class BookLoaningService {
     @Transactional
     public Optional<BookLoaning> findLastByItem(BookItem bookItem) {
         BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
-        Optional<BookLoaningEntity> bookLoaningEntity = bookLoaningRepository.findTopByBookItemOrderByLoanedAtDesc(bookItemEntity);
+        Optional<BookLoaningEntity> bookLoaningEntity = bookLoaningRepository
+                .findTopByBookItemBarcodeOrderByLoanedAtDesc(bookItemEntity.getBarcode());
         return Optional.ofNullable(bookLoaningMapper.toModel(bookLoaningEntity.orElse(null)));
     }
 
     @Transactional
     public int countActiveLoansByMember(Member member) {
         AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
-        return bookLoaningRepository.countByMemberAndReturnedAtIsNull(entity);
+        return bookLoaningRepository.countByMemberIdAndReturnedAtIsNull(entity.getId());
     }
 
     private BookLoaning getBookLoaning(String bookItemBarcode) {

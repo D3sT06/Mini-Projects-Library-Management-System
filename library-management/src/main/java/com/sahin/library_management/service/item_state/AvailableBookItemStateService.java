@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 @LogExecutionTime
 public class AvailableBookItemStateService extends BookItemStateService {
 
+    @Override
     @Transactional
     public BookLoaning checkOutBookItem(BookItem bookItem, Member member) {
         if (willExceedMaxNumberOfCheckedOutBooks(member))
@@ -31,10 +32,12 @@ public class AvailableBookItemStateService extends BookItemStateService {
         return bookLoaningService.create(bookLoaning);
     }
 
+    @Override
     public BookReserving reserveBookItem(BookItem bookItem, Member member) {
         throw new MyRuntimeException("ALREADY AVAILABLE", "The book item is now available. No need to reserve it!", HttpStatus.BAD_REQUEST);
     }
 
+    @Override
     public void returnBookItem(BookLoaning bookLoaning, Member member) {
         throw new MyRuntimeException("ALREADY RETURNED", "The book with a barcode of " + bookLoaning.getBookItem().getBarcode()
                 + " has already been returned", HttpStatus.BAD_REQUEST);
