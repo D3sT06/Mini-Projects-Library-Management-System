@@ -9,6 +9,8 @@ import com.sahin.library_management.infra.entity.BookEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
 import com.sahin.library_management.infra.helper.PageHelper;
 import com.sahin.library_management.infra.model.book.Book;
+import com.sahin.library_management.infra.model.book.BookCategory;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,9 +23,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -102,7 +108,10 @@ class BookIT {
 
             long expectedResult = ((List<BookEntity>) bookLoader.getAll()).stream()
                     .filter(entity -> entity.getTitle().contains("19"))
-                    .filter(entity -> entity.getCategories().contains(1L))
+                    .filter(entity -> entity.getCategories().stream()
+                            .map(BookCategoryEntity::getId)
+                            .collect(Collectors.toList())
+                            .contains(1L))
                     .filter(entity -> entity.getAuthor().getId().equals(3L))
                     .count();
 
@@ -113,15 +122,11 @@ class BookIT {
                                     .content(
                                             "{\n" +
                                                     "    \"title\": \"19\",\n" +
-                                                    "    \"categories\": [\n" +
-                                                    "        {\n" +
-                                                    "            \"id\": 1\n" +
-                                                    "        } \n" +
+                                                    "    \"categoryIds\": [\n" +
+                                                "            1\n" +
                                                     "    ],\n" +
-                                                    "    \"authors\": [\n" +
-                                                    "        {\n" +
-                                                    "            \"id\": 3\n" +
-                                                    "        }\n" +
+                                                    "    \"authorIds\": [\n" +
+                                                "            3\n" +
                                                     "    ]\n" +
                                                     "}"))
                     .andExpect(status().isOk())
@@ -186,7 +191,12 @@ class BookIT {
                                             "        \"id\": " + bookEntity.getAuthor().getId() + "\n" +
                                             "    }\n" +
                                             "}"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Book book = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
+                        assertNotNull(book);
+                        assertEquals("Test", book.getTitle());
+                    });
         }
 
         @Test

@@ -131,7 +131,12 @@ public class RackIT {
                                             "    \"id\": " + rackEntity.getId() + ",\n" +
                                             "    \"location\": \"Test\"\n" +
                                             "}"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
+                        assertNotNull(rack);
+                        assertEquals("Test", rack.getLocation());
+                    });
         }
 
         @Test

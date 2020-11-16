@@ -1,11 +1,15 @@
 package com.sahin.library_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
+import com.sahin.library_management.infra.helper.AuthorViewHelper;
 import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.projections.AuthorProjections;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -70,7 +74,7 @@ public class AuthorIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Author[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), Author[].class);
+                        AuthorViewHelper[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper[].class);
                         assertEquals(expectedResult, authors.length);
                     });
         }
@@ -89,7 +93,7 @@ public class AuthorIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Author author = objectMapper.readValue(result.getResponse().getContentAsString(), Author.class);
+                        AuthorViewHelper author = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper.class);
                         assertNotNull(author);
                     });
         }

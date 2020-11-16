@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +23,8 @@ public interface BookRepository extends PagingAndSortingRepository<BookEntity, L
 
     @EntityGraph(attributePaths = {"author", "categories"})
     Optional<BookEntity> findById(Long id);
+
+    @Override
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Iterable<BookEntity> findAll();
 }

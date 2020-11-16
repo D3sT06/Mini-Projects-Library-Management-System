@@ -20,6 +20,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -172,7 +174,11 @@ class BookItemIT {
                                             "        \"id\": " + rack.getId() + "\n" +
                                             "    }\n" +
                                             "}"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        BookItem item = objectMapper.readValue(result.getResponse().getContentAsString(), BookItem.class);
+                        assertNotNull(item);
+                    });
         }
 
         @Test
@@ -256,7 +262,7 @@ class BookItemIT {
                             post("/api/book-items/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"barcode\": \"test\",\n" +
+                                            "    \"barcode\": \"" + UUID.randomUUID().toString() + "\",\n" +
                                             "    \"book\": {\n" +
                                             "        \"id\": " + book.getId() + "\n" +
                                             "    },\n" +
@@ -313,7 +319,7 @@ class BookItemIT {
                             put("/api/book-items/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"barcode\": \"test\",\n" +
+                                            "    \"barcode\": \"" + UUID.randomUUID().toString() + "\",\n" +
                                             "    \"book\": {\n" +
                                             "        \"id\": " + book.getId() + "\n" +
                                             "    },\n" +
