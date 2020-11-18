@@ -15,7 +15,7 @@ public class MemberLogService {
     private MemberLogRepository memberLogRepository;
 
     @Transactional
-    public void createLogs(Collection<MemberLog> logs) {
+    public void saveAll(Collection<MemberLog> logs) {
         memberLogRepository.saveAll(logs);
     }
 }

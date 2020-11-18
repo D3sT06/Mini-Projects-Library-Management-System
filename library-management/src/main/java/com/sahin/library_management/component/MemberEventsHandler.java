@@ -2,36 +2,42 @@ package com.sahin.library_management.component;
 
 import com.sahin.library_management.config.RabbitMqConfig;
 import com.sahin.library_management.infra.model.log.MemberLog;
-import com.sahin.library_management.service.MemberService;
+import com.sahin.library_management.service.member_log.MemberLogService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 @Component
 @ConditionalOnBean(RabbitMqConfig.class)
+@Slf4j
 public class MemberEventsHandler {
 
     @Autowired
-    private MemberService memberService;
+    private MemberLogService memberLogService;
 
     private BlockingQueue<MemberLog> memberLogsQueue = new ArrayBlockingQueue<>(1000);
 
-    @RabbitListener(queues = {"books", "book_items", "loans", "reservations"})
+    @RabbitListener(queues = {"#{bookQueue.name}", "book_items", "loans", "reservations"})
     public void receiveMessages(MemberLog memberLog) throws InterruptedException {
         memberLogsQueue.put(memberLog);
     }
 
-    @Scheduled
-    @Async
+    @Scheduled(fixedDelay = 10000)
     public void saveLogs() {
+        Collection<MemberLog> collection = new ArrayList<>(memberLogsQueue.size());
 
-        memberLogsQueue.removeA
+        memberLogsQueue.drainTo(collection);
+        memberLogService.saveAll(collection);
 
+        log.info(collection.size() + " items has been saved to the mongo db");
     }
 }

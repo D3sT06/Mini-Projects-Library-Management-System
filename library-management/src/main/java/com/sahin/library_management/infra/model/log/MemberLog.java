@@ -4,6 +4,7 @@ import com.sahin.library_management.infra.enums.LogAction;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
+@Document(collection = "member_logs")
 public class MemberLog implements Serializable {
 
     private String cardBarcode;

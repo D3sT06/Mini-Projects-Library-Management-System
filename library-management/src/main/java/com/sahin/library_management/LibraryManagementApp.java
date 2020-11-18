@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @EnableWebMvc
+@EnableScheduling
 public class LibraryManagementApp {
     public static void main(String[] args) {
         SpringApplication.run(LibraryManagementApp.class);

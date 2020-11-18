@@ -13,6 +13,21 @@ spring:
   jpa:
     show-sql: true
 
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      username: root
+      password: password
+      authentication-database: admin
+      database: logs
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 aspect:
   enabled:
     log-execution-time: true
@@ -24,6 +39,7 @@ amqp:
 logging:
   level:
     com.sahin.library_management: debug
+    org.springframework.data.mongodb.repository: debug
 
 springfox:
   documentation:
