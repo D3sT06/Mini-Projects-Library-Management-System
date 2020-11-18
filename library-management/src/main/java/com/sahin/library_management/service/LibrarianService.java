@@ -3,7 +3,9 @@ package com.sahin.library_management.service;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.library_management.infra.enums.LoginType;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
+import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.account.Member;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +59,12 @@ public class LibrarianService {
         card.setActive(true);
         card.setAccountFor(AccountFor.LIBRARIAN);
         card.setPassword(passwordEncoder.encode(password));
+
+        AccountLoginType passwordType = new AccountLoginType();
+        passwordType.setType(LoginType.PASSWORD);
+        passwordType.setLibraryCard(card);
+
+        card.setLoginTypes(new HashSet<>(Arrays.asList(passwordType)));
         librarian.setLibraryCard(card);
 
         AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
