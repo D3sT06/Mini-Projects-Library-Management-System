@@ -2,14 +2,19 @@ package com.sahin.library_management.bootstrap;
 
 
 import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
 import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -28,6 +33,7 @@ public class AccountLoader implements Loader<AccountEntity> {
     }
 
     private void loadLibrarians() {
+
         LibraryCardEntity libraryCardEntity1 = new LibraryCardEntity();
         libraryCardEntity1.setAccountFor(AccountFor.LIBRARIAN);
         libraryCardEntity1.setActive(true);
@@ -45,6 +51,22 @@ public class AccountLoader implements Loader<AccountEntity> {
         libraryCardEntity3.setActive(true);
         libraryCardEntity3.setIssuedAt(Instant.now().toEpochMilli());
         libraryCardEntity3.setPassword(passwordEncoder.encode("1234"));
+
+        AccountLoginTypeEntity accountLoginType1 = new AccountLoginTypeEntity();
+        accountLoginType1.setLibraryCard(libraryCardEntity1);
+        accountLoginType1.setType(LoginType.PASSWORD);
+
+        AccountLoginTypeEntity accountLoginType2 = new AccountLoginTypeEntity();
+        accountLoginType2.setLibraryCard(libraryCardEntity2);
+        accountLoginType2.setType(LoginType.PASSWORD);
+
+        AccountLoginTypeEntity accountLoginType3 = new AccountLoginTypeEntity();
+        accountLoginType3.setLibraryCard(libraryCardEntity3);
+        accountLoginType3.setType(LoginType.PASSWORD);
+
+        libraryCardEntity1.setLoginTypes(new HashSet<>(Arrays.asList(accountLoginType1)));
+        libraryCardEntity2.setLoginTypes(new HashSet<>(Arrays.asList(accountLoginType2)));
+        libraryCardEntity3.setLoginTypes(new HashSet<>(Arrays.asList(accountLoginType3)));
 
         AccountEntity librarianEntity1 = new AccountEntity();
         librarianEntity1.setName("Serkan");
@@ -85,6 +107,17 @@ public class AccountLoader implements Loader<AccountEntity> {
         libraryCardEntity2.setActive(true);
         libraryCardEntity2.setIssuedAt(Instant.now().toEpochMilli());
         libraryCardEntity2.setPassword(passwordEncoder.encode("1234"));
+
+        AccountLoginTypeEntity accountLoginType1 = new AccountLoginTypeEntity();
+        accountLoginType1.setLibraryCard(libraryCardEntity1);
+        accountLoginType1.setType(LoginType.PASSWORD);
+
+        AccountLoginTypeEntity accountLoginType2 = new AccountLoginTypeEntity();
+        accountLoginType2.setLibraryCard(libraryCardEntity2);
+        accountLoginType2.setType(LoginType.PASSWORD);
+
+        libraryCardEntity1.setLoginTypes(new HashSet<>(Arrays.asList(accountLoginType1)));
+        libraryCardEntity2.setLoginTypes(new HashSet<>(Arrays.asList(accountLoginType2)));
 
         AccountEntity memberEntity1 = new AccountEntity();
         memberEntity1.setName("Wall");

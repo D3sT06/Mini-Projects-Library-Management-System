@@ -78,7 +78,7 @@ public class JwtSecurityConfig {
                     .formLogin().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .authenticationProvider(this.authenticationProvider())
-                    .addFilterBefore(new MyAuthenticationFilter(this.loginUrl, super.authenticationManagerBean(), this.jwtTokenGenerationService),
+                    .addFilterBefore(new PasswordAuthenticationFilter(this.loginUrl, super.authenticationManagerBean(), this.jwtTokenGenerationService),
                         UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         }

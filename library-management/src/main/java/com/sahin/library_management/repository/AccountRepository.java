@@ -14,15 +14,15 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
-    @EntityGraph(attributePaths = {"libraryCard"})
+    @EntityGraph(attributePaths = {"libraryCard", "libraryCard.loginTypes"})
     Optional<AccountEntity> findByLibraryCardBarcode(String barcode);
 
     void deleteByLibraryCardBarcode(String barcode);
 
     // for preventing n+1 problem
-    @EntityGraph(attributePaths = {"libraryCard"})
+    @EntityGraph(attributePaths = {"libraryCard", "libraryCard.loginTypes"})
     List<AccountEntity> findAll();
 
-    @Query("select a from AccountEntity a join fetch a.libraryCard where a.libraryCard.accountFor = :accountFor")
+    @Query("select a from AccountEntity a join fetch a.libraryCard lc join fetch lc.loginTypes where a.libraryCard.accountFor = :accountFor")
     List<AccountEntity> getAll(@Param("accountFor") AccountFor accountFor);
 }

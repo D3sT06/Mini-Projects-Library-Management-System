@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,6 +32,7 @@ public class LibraryCard implements UserDetails {
     private Long issuedAt;
     private Boolean active;
     private AccountFor accountFor;
+    private Set<AccountLoginType> loginTypes;
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override

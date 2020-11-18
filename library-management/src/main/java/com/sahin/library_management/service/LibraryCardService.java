@@ -24,7 +24,7 @@ public class LibraryCardService implements UserDetailsService {
 
     public LibraryCard getLibraryCardByBarcode(String barcode) {
         LibraryCardEntity entity = libraryCardRepository
-                .findById(barcode)
+                .findByBarcode(barcode)
                 .orElseThrow(()-> new MyRuntimeException("Member with card barcode " + barcode + " not exist!", HttpStatus.BAD_REQUEST));
 
         return libraryCardMapper.toModel(entity, new CyclePreventiveContext());

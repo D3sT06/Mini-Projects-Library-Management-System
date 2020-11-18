@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class MyAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final ObjectMapper objectMapper;
     private final JwtTokenGenerationService jwtTokenGenerationService;
 
-    public MyAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService) {
+    public PasswordAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService) {
         super(new AntPathRequestMatcher(loginUrl, "POST"));
         this.objectMapper = new ObjectMapper();
         this.jwtTokenGenerationService = jwtTokenGenerationService;

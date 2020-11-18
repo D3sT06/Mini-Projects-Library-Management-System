@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "library_card", schema = "library_management")
@@ -31,4 +32,7 @@ public class LibraryCardEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "account_for", nullable = false)
     private AccountFor accountFor;
+
+    @OneToMany(mappedBy = "libraryCard", cascade = CascadeType.ALL)
+    private Set<AccountLoginTypeEntity> loginTypes;
 }
