@@ -1,6 +1,7 @@
 package com.sahin.library_management.config;
 
 import com.sahin.library_management.infra.auth.*;
+import com.sahin.library_management.service.AccountLoginTypeService;
 import com.sahin.library_management.service.LibraryCardService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -40,15 +41,17 @@ public class JwtSecurityConfig {
         private final LibraryCardService libraryCardService;
         private final PasswordEncoder passwordEncoder;
         private final UserCache userCache;
+        private final AccountLoginTypeService loginTypeService;
         private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
         public AuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
-                                            LibraryCardService libraryCardService, PasswordEncoder passwordEncoder, UserCache userCache, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+                                            LibraryCardService libraryCardService, PasswordEncoder passwordEncoder, UserCache userCache, AccountLoginTypeService loginTypeService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
             this.jwtTokenGenerationService = jwtTokenService;
             this.libraryCardService = libraryCardService;
             this.passwordEncoder = passwordEncoder;
             this.userCache = userCache;
+            this.loginTypeService = loginTypeService;
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         }
 
@@ -78,7 +81,7 @@ public class JwtSecurityConfig {
                     .formLogin().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                     .authenticationProvider(this.authenticationProvider())
-                    .addFilterBefore(new PasswordAuthenticationFilter(this.loginUrl, super.authenticationManagerBean(), this.jwtTokenGenerationService),
+                    .addFilterBefore(new PasswordAuthenticationFilter(this.loginUrl, super.authenticationManagerBean(), this.jwtTokenGenerationService, loginTypeService),
                         UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         }

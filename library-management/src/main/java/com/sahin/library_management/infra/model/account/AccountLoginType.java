@@ -17,4 +17,5 @@ public class AccountLoginType {
     private LibraryCard libraryCard;
 
     private LoginType type;
+    private String typeSpecificKey;
 }

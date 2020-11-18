@@ -24,4 +24,7 @@ public class AccountLoginTypeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private LoginType type;
+
+    @Column(name = "type_specific_key", nullable = true)
+    private String typeSpecificKey;
 }

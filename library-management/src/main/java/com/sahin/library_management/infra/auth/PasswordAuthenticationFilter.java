@@ -1,7 +1,10 @@
 package com.sahin.library_management.infra.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.auth.LoginModel;
+import com.sahin.library_management.service.AccountLoginTypeService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,9 +21,11 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 
     private final ObjectMapper objectMapper;
     private final JwtTokenGenerationService jwtTokenGenerationService;
+    private final AccountLoginTypeService accountLoginTypeService;
 
-    public PasswordAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService) {
+    public PasswordAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, AccountLoginTypeService accountLoginTypeService) {
         super(new AntPathRequestMatcher(loginUrl, "POST"));
+        this.accountLoginTypeService = accountLoginTypeService;
         this.objectMapper = new ObjectMapper();
         this.jwtTokenGenerationService = jwtTokenGenerationService;
         this.setAuthenticationManager(authenticationManager);
@@ -30,6 +35,11 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         LoginModel loginModel = objectMapper.readValue(request.getInputStream(), LoginModel.class);
+
+        if (!accountLoginTypeService.doesExist(loginModel.getBarcode(), LoginType.PASSWORD)) {
+            throw new MyRuntimeException("Password authentication not exists for this account");
+        }
+
         return this.getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(loginModel.getBarcode(), loginModel.getPassword()));
     }

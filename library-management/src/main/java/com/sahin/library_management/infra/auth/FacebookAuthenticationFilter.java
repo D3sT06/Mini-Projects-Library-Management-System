@@ -1,8 +1,13 @@
 package com.sahin.library_management.infra.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.library_management.infra.exception.MyRuntimeException;
+import com.sahin.library_management.infra.model.account.AccountLoginType;
+import com.sahin.library_management.infra.model.auth.FacebookLoginModel;
 import com.sahin.library_management.infra.model.auth.FacebookUser;
 import com.sahin.library_management.infra.model.auth.LoginModel;
+import com.sahin.library_management.service.AccountLoginTypeService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,10 +24,12 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
 
     private final ObjectMapper objectMapper;
     private final JwtTokenGenerationService jwtTokenGenerationService;
+    private final AccountLoginTypeService accountLoginTypeService;
     private final FacebookClient facebookClient;
 
-    public FacebookAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, FacebookClient facebookClient) {
+    public FacebookAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, AccountLoginTypeService accountLoginTypeService, FacebookClient facebookClient) {
         super(new AntPathRequestMatcher(loginUrl, "POST"));
+        this.accountLoginTypeService = accountLoginTypeService;
         this.facebookClient = facebookClient;
         this.objectMapper = new ObjectMapper();
         this.jwtTokenGenerationService = jwtTokenGenerationService;
@@ -33,12 +40,13 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        String fbAccessToken = objectMapper.readValue(request.getInputStream(), String.class);
-        FacebookUser facebookUser = facebookClient.getUser(fbAccessToken);
+        FacebookLoginModel facebookLoginModel = objectMapper.readValue(request.getInputStream(), FacebookLoginModel.class);
+        FacebookUser facebookUser = facebookClient.getUser(facebookLoginModel.getAccessToken());
+        AccountLoginType loginType = accountLoginTypeService.findByType(facebookUser.getId(), LoginType.FACEBOOK);
+        String barcode = loginType.getLibraryCard().getBarcode();
 
-        LoginModel loginModel = objectMapper.readValue(request.getInputStream(), LoginModel.class);
         return this.getAuthenticationManager()
-                .authenticate(new UsernamePasswordAuthenticationToken(loginModel.getBarcode(), loginModel.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(barcode, null));
     }
 
     @Override
