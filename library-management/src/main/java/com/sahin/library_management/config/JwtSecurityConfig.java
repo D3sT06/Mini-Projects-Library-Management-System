@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -57,13 +56,15 @@ public class JwtSecurityConfig {
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         }
 
-        private UserDetailsService myUserDetailsService() {
+        @Bean
+        public UserDetailsService myUserDetailsService() {
             CachingUserDetailsService cachingUserDetailsService = new CachingUserDetailsService(libraryCardService);
             cachingUserDetailsService.setUserCache(userCache);
             return cachingUserDetailsService;
         }
 
-        private AuthenticationProvider authenticationProvider() {
+        @Bean
+        public AuthenticationProvider authenticationProvider() {
             MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.passwordEncoder);
             myAuthenticationProvider.setUserDetailsService(myUserDetailsService());
             return myAuthenticationProvider;
@@ -95,37 +96,28 @@ public class JwtSecurityConfig {
         private String facebookLoginUrl;
 
         private final JwtTokenGenerationService jwtTokenGenerationService;
-        private final LibraryCardService libraryCardService;
         private final PasswordEncoder rawPassword;
-        private final UserCache userCache;
         private final AccountLoginTypeService loginTypeService;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
         private final FacebookClient facebookClient;
+        private final UserDetailsService myUserDetailsService;
 
 
         public SocialAuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
-                                                  LibraryCardService libraryCardService, PasswordEncoder rawPassword,
-                                                  UserCache userCache, AccountLoginTypeService loginTypeService,
+                                                  PasswordEncoder rawPassword, AccountLoginTypeService loginTypeService,
                                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                                  FacebookClient facebookClient) {
+                                                  FacebookClient facebookClient, UserDetailsService myUserDetailsService) {
             this.jwtTokenGenerationService = jwtTokenService;
-            this.libraryCardService = libraryCardService;
             this.rawPassword = rawPassword;
-            this.userCache = userCache;
             this.loginTypeService = loginTypeService;
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
             this.facebookClient = facebookClient;
-        }
-
-        private UserDetailsService myUserDetailsService() {
-            CachingUserDetailsService cachingUserDetailsService = new CachingUserDetailsService(libraryCardService);
-            cachingUserDetailsService.setUserCache(userCache);
-            return cachingUserDetailsService;
+            this.myUserDetailsService = myUserDetailsService;
         }
 
         private AuthenticationProvider authenticationProvider() {
             MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.rawPassword);
-            myAuthenticationProvider.setUserDetailsService(myUserDetailsService());
+            myAuthenticationProvider.setUserDetailsService(myUserDetailsService);
             return myAuthenticationProvider;
         }
 

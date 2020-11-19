@@ -2,6 +2,7 @@ package com.sahin.library_management.infra.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.infra.model.auth.FacebookLoginModel;
 import com.sahin.library_management.infra.model.auth.FacebookUser;
@@ -41,6 +42,11 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
         FacebookLoginModel facebookLoginModel = objectMapper.readValue(request.getInputStream(), FacebookLoginModel.class);
         FacebookUser facebookUser = facebookClient.getUser(facebookLoginModel.getAccessToken());
         AccountLoginType loginType = accountLoginTypeService.findByType(facebookUser.getId(), LoginType.FACEBOOK);
+
+        if (loginType == null) {
+            throw new MyRuntimeException("Facebook authentication not exists for this account");
+        }
+
         String barcode = loginType.getLibraryCard().getBarcode();
         String password = loginType.getLibraryCard().getPassword();
 

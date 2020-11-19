@@ -3,8 +3,11 @@ package com.sahin.library_management.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.auth.LoginModel;
+import com.sahin.library_management.service.AccountLoginTypeService;
 import com.sahin.library_management.service.LibraryCardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +25,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -49,28 +55,38 @@ class AuthenticationTests {
     @MockBean
     private LibraryCardService libraryCardService;
 
+    @MockBean
+    private AccountLoginTypeService accountLoginTypeService;
+
     @Nested
     @DisplayName("When we have valid credentials")
     class ValidCredentials {
         private LoginModel loginModel = new LoginModel();
         private LibraryCard validCard = new LibraryCard();
+        private AccountLoginType loginType = new AccountLoginType();
 
         @BeforeEach
         void setup() {
             loginModel.setBarcode(UUID.randomUUID().toString());
             loginModel.setPassword("1234");
 
+            loginType.setType(LoginType.PASSWORD);
+            loginType.setId(1L);
+            loginType.setLibraryCard(validCard);
+
             validCard.setAccountFor(AccountFor.MEMBER);
             validCard.setActive(true);
             validCard.setBarcode(loginModel.getBarcode());
             validCard.setIssuedAt(Instant.now().getEpochSecond());
             validCard.setPassword(passwordEncoder.encode(loginModel.getPassword()));
+            validCard.setLoginTypes(new HashSet<>(Arrays.asList(loginType)));
         }
 
         @Test
         @DisplayName("Then you can authenticate successfully")
         void validAccess() throws Exception {
             given(libraryCardService.loadUserByUsername(any())).willReturn(validCard);
+            given(accountLoginTypeService.doesExist(anyString(), any())).willReturn(true);
 
             mockMvc
                     .perform(
@@ -87,17 +103,23 @@ class AuthenticationTests {
     class InvalidCredentials {
         private LoginModel loginModel = new LoginModel();
         private LibraryCard card = new LibraryCard();
+        private AccountLoginType loginType = new AccountLoginType();
 
         @BeforeEach
         void setup() {
             loginModel.setBarcode(UUID.randomUUID().toString());
             loginModel.setPassword("1234");
 
+            loginType.setType(LoginType.PASSWORD);
+            loginType.setId(1L);
+            loginType.setLibraryCard(card);
+
             card.setAccountFor(AccountFor.MEMBER);
             card.setActive(true);
             card.setBarcode(loginModel.getBarcode());
             card.setIssuedAt(Instant.now().getEpochSecond());
             card.setPassword(passwordEncoder.encode(loginModel.getPassword()));
+            card.setLoginTypes(new HashSet<>(Arrays.asList(loginType)));
         }
 
         @Test
@@ -106,6 +128,7 @@ class AuthenticationTests {
             loginModel.setPassword("wrong password");
 
             given(libraryCardService.loadUserByUsername(any())).willReturn(card);
+            given(accountLoginTypeService.doesExist(anyString(), any())).willReturn(true);
 
             mockMvc
                     .perform(
@@ -121,17 +144,23 @@ class AuthenticationTests {
     class InvalidAccount {
         private LoginModel loginModel = new LoginModel();
         private LibraryCard card = new LibraryCard();
+        private AccountLoginType loginType = new AccountLoginType();
 
         @BeforeEach
         void setup() {
             loginModel.setBarcode(UUID.randomUUID().toString());
             loginModel.setPassword("1234");
 
+            loginType.setType(LoginType.PASSWORD);
+            loginType.setId(1L);
+            loginType.setLibraryCard(card);
+
             card.setAccountFor(AccountFor.MEMBER);
             card.setActive(false);
             card.setBarcode(loginModel.getBarcode());
             card.setIssuedAt(Instant.now().getEpochSecond());
             card.setPassword(passwordEncoder.encode(loginModel.getPassword()));
+            card.setLoginTypes(new HashSet<>(Arrays.asList(loginType)));
         }
 
         @Test
@@ -140,6 +169,7 @@ class AuthenticationTests {
             card.setActive(false);
 
             given(libraryCardService.loadUserByUsername(any())).willReturn(card);
+            given(accountLoginTypeService.doesExist(anyString(), any())).willReturn(true);
 
             mockMvc
                     .perform(
