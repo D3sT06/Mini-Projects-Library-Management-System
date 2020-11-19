@@ -2,11 +2,9 @@ package com.sahin.library_management.infra.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.infra.model.auth.FacebookLoginModel;
 import com.sahin.library_management.infra.model.auth.FacebookUser;
-import com.sahin.library_management.infra.model.auth.LoginModel;
 import com.sahin.library_management.service.AccountLoginTypeService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,9 +42,10 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
         FacebookUser facebookUser = facebookClient.getUser(facebookLoginModel.getAccessToken());
         AccountLoginType loginType = accountLoginTypeService.findByType(facebookUser.getId(), LoginType.FACEBOOK);
         String barcode = loginType.getLibraryCard().getBarcode();
+        String password = loginType.getLibraryCard().getPassword();
 
         return this.getAuthenticationManager()
-                .authenticate(new UsernamePasswordAuthenticationToken(barcode, null));
+                .authenticate(new UsernamePasswordAuthenticationToken(barcode, password));
     }
 
     @Override

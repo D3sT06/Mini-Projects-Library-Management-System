@@ -15,11 +15,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -35,8 +33,11 @@ public class SwaggerConfig implements BeanFactoryAware {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    @Value("${app.security.url.login}")
-    private String loginUrl;
+    @Value("${app.security.url.password-login}")
+    private String passwordLoginUrl;
+
+    @Value("${app.security.url.facebook-login}")
+    private String facebookLoginUrl;
 
     @Autowired
     private RequestMappingHandlerMapping mapping;
@@ -138,7 +139,8 @@ public class SwaggerConfig implements BeanFactoryAware {
 
         for (String role : pathsForRoles.keySet()) {
             Set<String> paths = pathsForRoles.getOrDefault(role, new HashSet<>());
-            paths.add(loginUrl);
+            paths.add(passwordLoginUrl);
+            paths.add(facebookLoginUrl);
             this.pathsForRoles.put(role, paths);
         }
     }

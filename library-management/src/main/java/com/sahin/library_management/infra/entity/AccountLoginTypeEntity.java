@@ -7,7 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "login_type", schema = "library_management")
+@Table(name = "login_type",
+        schema = "library_management",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"card_barcode", "type"}))
 @Getter
 @Setter
 public class AccountLoginTypeEntity {
@@ -25,6 +27,6 @@ public class AccountLoginTypeEntity {
     @Column(name = "type", nullable = false)
     private LoginType type;
 
-    @Column(name = "type_specific_key", nullable = true)
+    @Column(name = "type_specific_key")
     private String typeSpecificKey;
 }
