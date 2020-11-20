@@ -134,9 +134,9 @@ public class BookItemLoanIT {
                     .map(account -> account.getLibraryCard())
                     .get();
 
-            given(libraryCardRepository.findById("member")).willReturn(
+            given(libraryCardRepository.findByBarcode("member")).willReturn(
                     Optional.of(memberCard));
-            given(libraryCardRepository.findById("librarian")).willReturn(
+            given(libraryCardRepository.findByBarcode("librarian")).willReturn(
                     Optional.of(librarianCard));
         }
 
@@ -362,9 +362,9 @@ public class BookItemLoanIT {
                     .map(account -> account.getLibraryCard())
                     .get();
 
-            given(libraryCardRepository.findById("member")).willReturn(
+            given(libraryCardRepository.findByBarcode("member")).willReturn(
                     Optional.of(memberCard));
-            given(libraryCardRepository.findById("librarian")).willReturn(
+            given(libraryCardRepository.findByBarcode("librarian")).willReturn(
                     Optional.of(librarianCard));
         }
 
@@ -558,9 +558,9 @@ public class BookItemLoanIT {
                     .map(account -> account.getLibraryCard())
                     .get();
 
-            given(libraryCardRepository.findById("member")).willReturn(
+            given(libraryCardRepository.findByBarcode("member")).willReturn(
                     Optional.of(memberCard));
-            given(libraryCardRepository.findById("librarian")).willReturn(
+            given(libraryCardRepository.findByBarcode("librarian")).willReturn(
                     Optional.of(librarianCard));
         }
 
@@ -717,9 +717,9 @@ public class BookItemLoanIT {
                     .map(account -> account.getLibraryCard())
                     .get();
 
-            given(libraryCardRepository.findById("member")).willReturn(
+            given(libraryCardRepository.findByBarcode("member")).willReturn(
                     Optional.of(memberCard));
-            given(libraryCardRepository.findById("librarian")).willReturn(
+            given(libraryCardRepository.findByBarcode("librarian")).willReturn(
                     Optional.of(librarianCard));
         }
 

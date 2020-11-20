@@ -64,6 +64,11 @@ class LibrarianServiceTest {
         }
 
         @Bean
+        public AccountLoginTypeMapper accountLoginTypeMapper() {
+            return new AccountLoginTypeMapperImpl();
+        }
+
+        @Bean
         public LibraryCardMapper cardMapper() {
             return new LibraryCardMapperImpl();
         }
