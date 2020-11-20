@@ -4,8 +4,8 @@ server:
 app:
   security:
     url:
-      password-login: /api/auth/login
-      facebook-login: /api/auth/facebook
+      password-login: /api/auth/login/default
+      facebook-login: /api/auth/login/facebook
     jwt:
       privateKey: ssahin
       ttl: 3600

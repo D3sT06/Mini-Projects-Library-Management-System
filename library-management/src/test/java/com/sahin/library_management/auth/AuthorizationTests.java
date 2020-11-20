@@ -93,7 +93,7 @@ public class AuthorizationTests {
 
             mockMvc
                     .perform(
-                            post("/api/auth/login")
+                            post("/api/auth/login/default")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginModel)))
                     .andExpect(status().isOk())
@@ -117,7 +117,7 @@ public class AuthorizationTests {
 
             mockMvc
                     .perform(
-                            post("/api/auth/login")
+                            post("/api/auth/login/default")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginModel)))
                     .andExpect(status().isOk())

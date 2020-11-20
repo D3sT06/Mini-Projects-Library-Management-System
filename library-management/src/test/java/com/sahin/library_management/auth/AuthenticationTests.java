@@ -90,7 +90,7 @@ class AuthenticationTests {
 
             mockMvc
                     .perform(
-                            post("/api/auth/login")
+                            post("/api/auth/login/default")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginModel)))
                     .andExpect(status().isOk())
@@ -132,7 +132,7 @@ class AuthenticationTests {
 
             mockMvc
                     .perform(
-                            post("/api/auth/login")
+                            post("/api/auth/login/default")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginModel)))
                     .andExpect(status().isUnauthorized());
@@ -173,7 +173,7 @@ class AuthenticationTests {
 
             mockMvc
                     .perform(
-                            post("/api/auth/login")
+                            post("/api/auth/login/default")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginModel)))
                     .andExpect(status().isUnauthorized());
