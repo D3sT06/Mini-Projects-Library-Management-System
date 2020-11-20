@@ -96,7 +96,7 @@ public class JwtSecurityConfig {
         private String facebookLoginUrl;
 
         private final JwtTokenGenerationService jwtTokenGenerationService;
-        private final PasswordEncoder rawPassword;
+        private final PasswordEncoder noEncoder;
         private final AccountLoginTypeService loginTypeService;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
         private final FacebookClient facebookClient;
@@ -104,11 +104,11 @@ public class JwtSecurityConfig {
 
 
         public SocialAuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
-                                                  PasswordEncoder rawPassword, AccountLoginTypeService loginTypeService,
+                                                  PasswordEncoder noEncoder, AccountLoginTypeService loginTypeService,
                                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
                                                   FacebookClient facebookClient, UserDetailsService myUserDetailsService) {
             this.jwtTokenGenerationService = jwtTokenService;
-            this.rawPassword = rawPassword;
+            this.noEncoder = noEncoder;
             this.loginTypeService = loginTypeService;
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
             this.facebookClient = facebookClient;
@@ -116,7 +116,7 @@ public class JwtSecurityConfig {
         }
 
         private AuthenticationProvider authenticationProvider() {
-            MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.rawPassword);
+            MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.noEncoder);
             myAuthenticationProvider.setUserDetailsService(myUserDetailsService);
             return myAuthenticationProvider;
         }
