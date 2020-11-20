@@ -23,7 +23,8 @@ public class AuthenticationSwaggerApi {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
-    @ApiOperation(value = "Login with Facebook access token")
+    @ApiOperation(value = "Login with Facebook access token",
+            notes = "Get access token from \"https://developers.facebook.com/apps/178854260554413/roles/test-users\"")
     @PostMapping("/facebook")
     public void login(@RequestBody FacebookLoginModel loginModel) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
