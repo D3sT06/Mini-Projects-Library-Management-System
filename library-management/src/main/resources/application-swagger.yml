@@ -15,9 +15,6 @@ spring:
     console:
       enabled: true
 
-amqp:
-  enabled: false
-
 springfox:
   documentation:
     enabled: true
