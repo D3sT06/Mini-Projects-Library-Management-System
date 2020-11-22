@@ -1,0 +1,42 @@
+version: '3'
+services:
+  library-management-service:
+    build: Dockerfile
+    image: library-management:latest
+    container_name: library-service
+    environment:
+      PROFILE: swagger
+    network_mode: host
+    hostname: localhost
+    restart: always
+    ports:
+    - 7001:7001
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - mongo-db
+      - rabbit-mq
+
+  mongo-db:
+    image: mongo:4
+    container_name: mongo-db
+    restart: always
+    network_mode: host
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    healthcheck:
+      test: "exit 0"
+
+  rabbit-mq:
+    image: rabbitmq:3-management
+    container_name: rabbit-mq
+    restart: always
+    network_mode: host
+    ports:
+    - 5672:5672
+    - 15672:15672
+    healthcheck:
+      test: "exit 0"
