@@ -3,6 +3,7 @@ package com.sahin.library_management.infra.enums;
 public enum LogAction {
 
     SEARCH_BOOK("Searching books by filter"),
+    GET_BOOK("Getting the book by id {1}"),
 
     GET_ITEM_BY_BOOK("Getting items by book id {1}"),
     GET_ITEM("Getting the item by barcode {1}"),

@@ -26,7 +26,7 @@ public class MemberEventsHandler {
 
     private BlockingQueue<MemberLog> memberLogsQueue = new ArrayBlockingQueue<>(1000);
 
-    @RabbitListener(queues = {"#{bookQueue.name}", "book_items", "loans", "reservations"})
+    @RabbitListener(queues = {"#{bookQueue.name}", "#{itemQueue.name}", "#{loanQueue.name}", "#{reservationQueue.name}"})
     public void receiveMessages(MemberLog memberLog) throws InterruptedException {
         memberLogsQueue.put(memberLog);
     }

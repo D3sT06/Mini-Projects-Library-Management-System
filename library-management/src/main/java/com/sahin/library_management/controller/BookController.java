@@ -65,7 +65,15 @@ public class BookController implements BookSwaggerApi {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
     @GetMapping("get/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
-        return ResponseEntity.ok(bookService.getBookById(bookId));
+        Book book = bookService.getBookById(bookId);
+
+        memberLogPublisherService.send(LogTopic.BOOK, new MemberLog.Builder()
+                .action(LogAction.GET_BOOK, bookId.toString())
+                .httpStatus(HttpStatus.OK)
+                .build()
+        );
+
+        return ResponseEntity.ok(book);
     }
 
 

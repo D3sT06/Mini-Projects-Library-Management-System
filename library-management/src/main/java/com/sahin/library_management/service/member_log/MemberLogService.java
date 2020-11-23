@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class MemberLogService {
@@ -17,5 +18,10 @@ public class MemberLogService {
     @Transactional
     public void saveAll(Collection<MemberLog> logs) {
         memberLogRepository.saveAll(logs);
+    }
+
+    @Transactional
+    public List<MemberLog> getAll() {
+        return memberLogRepository.findAll();
     }
 }
