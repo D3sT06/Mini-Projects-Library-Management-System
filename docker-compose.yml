@@ -1,27 +1,25 @@
 version: "3.1"
 services:
-  library-management-service:
-    build: .
+  spring-app:
     image: library-management:latest
     container_name: library-service
-    hostname: localhost
     environment:
       PROFILE: swagger
+      MONGO_HOST: mongo
+      RABBIT_HOST: rabbit
     restart: always
-    network_mode: host
     ports:
     - 7001:7001
     healthcheck:
       test: "exit 0"
     depends_on:
-      - mongo-db
-      - rabbit-mq
+      - mongo
+      - rabbit
 
-  mongo-db:
+  mongo:
     image: mongo:4
-    container_name: mongo-db
+    container_name: mongo
     restart: always
-    hostname: localhost
     ports:
     - 27017:27017
     environment:
@@ -30,9 +28,9 @@ services:
     healthcheck:
       test: "exit 0"
 
-  rabbit-mq:
+  rabbit:
     image: rabbitmq:3-management
-    container_name: rabbit-mq
+    container_name: rabbit
     restart: always
     ports:
     - 5672:5672
