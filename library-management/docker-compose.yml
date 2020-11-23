@@ -1,4 +1,4 @@
-version: '3'
+version: "3.1"
 services:
   library-management-service:
     build: .
@@ -8,6 +8,7 @@ services:
     environment:
       PROFILE: swagger
     restart: always
+    network_mode: host
     ports:
     - 7001:7001
     healthcheck:
