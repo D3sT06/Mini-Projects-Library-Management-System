@@ -2,7 +2,7 @@ version: "3.1"
 services:
   spring-app:
     image: library-management:latest
-    container_name: library-service
+    container_name: spring-app
     environment:
       PROFILE: swagger
       MONGO_HOST: mongo
