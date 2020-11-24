@@ -3,7 +3,9 @@ package com.sahin.library_management.infra.auth;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,16 +17,19 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class TokenValidationFilter extends GenericFilterBean {
 
     private final JwtTokenDecoderService jwtTokenDecoderService;
     private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    public TokenValidationFilter(JwtTokenDecoderService jwtTokenDecoderService, UserDetailsService userDetailsService) {
+    public TokenValidationFilter(JwtTokenDecoderService jwtTokenDecoderService, UserDetailsService userDetailsService, JwtAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Override
@@ -47,11 +52,17 @@ public class TokenValidationFilter extends GenericFilterBean {
                     }
                 }
             } catch (IllegalArgumentException e) {
-                throw new MyRuntimeException("Unable to get JWT Token", HttpStatus.BAD_REQUEST);
+                authenticationEntryPoint.commence((HttpServletRequest) request, (HttpServletResponse) response,
+                        new BadCredentialsException("Unable to get JWT Token")
+                );
             } catch (ExpiredJwtException e) {
-                throw new MyRuntimeException("JWT Token has expired", HttpStatus.BAD_REQUEST);
+                authenticationEntryPoint.commence((HttpServletRequest) request, (HttpServletResponse) response,
+                        new BadCredentialsException("JWT Token has expired")
+                );
             } catch (Exception e) {
-                throw new MyRuntimeException("Invalid JWT", HttpStatus.BAD_REQUEST);
+                authenticationEntryPoint.commence((HttpServletRequest) request, (HttpServletResponse) response,
+                        new BadCredentialsException("Invalid JWT")
+                );
             }
         }
         filterChain.doFilter(request, response);

@@ -41,6 +41,7 @@ logging:
   level:
     com.sahin.library_management: debug
     org.springframework.data.mongodb.repository: debug
+    org.springframework.data.mongodb.core.MongoTemplate: debug
 
 springfox:
   documentation:

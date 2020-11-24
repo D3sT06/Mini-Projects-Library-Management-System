@@ -180,7 +180,7 @@ public class JwtSecurityConfig {
                     // in order to get the H2 console working.
                     .headers().frameOptions().disable().and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
-                    .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, myUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, myUserDetailsService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()

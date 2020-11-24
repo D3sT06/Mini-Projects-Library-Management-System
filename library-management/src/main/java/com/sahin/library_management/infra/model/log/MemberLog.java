@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -17,6 +18,8 @@ import java.time.Instant;
 @Document(collection = "member_logs")
 public class MemberLog implements Serializable {
 
+    @Id
+    private String id;
     private String cardBarcode;
     private Long actionTime;
     private LogAction action;
