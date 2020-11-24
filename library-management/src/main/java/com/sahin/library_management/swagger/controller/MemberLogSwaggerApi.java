@@ -1,8 +1,10 @@
 package com.sahin.library_management.swagger.controller;
 
+import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogAggregation;
+import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -26,4 +28,10 @@ public interface MemberLogSwaggerApi {
             @ApiParam(value = "Barcode of the member card", example = "a1111111-1111-1111-1111-111111111111") String barcode,
             @ApiParam(value = "Unit of time", example = "DAYS") TimeUnit unit,
             @ApiParam(value = "Amount of time unit until now", example = "1") Long amount);
+
+    @ApiOperation(value = "Get all member log aggregation results",
+            response = MemberLogWithBarcodeAggregation[].class,
+            authorizations = @Authorization(value = "bearer"))
+    ResponseEntity<List<MemberLogWithBarcodeAggregation>> getAllActionAggregations(
+            @ApiParam(value = "Term of query", example = "DAILY") QueryTerm queryTerm);
 }

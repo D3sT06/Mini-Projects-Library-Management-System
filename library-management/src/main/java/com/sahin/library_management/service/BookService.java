@@ -2,11 +2,8 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.BookEntity;
-import com.sahin.library_management.infra.enums.LogAction;
-import com.sahin.library_management.infra.enums.LogTopic;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.model.search.BookSpecification;
 import com.sahin.library_management.mapper.BookMapper;
@@ -21,12 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.util.Optional;
 
 @Service

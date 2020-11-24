@@ -6,7 +6,6 @@ import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
 import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

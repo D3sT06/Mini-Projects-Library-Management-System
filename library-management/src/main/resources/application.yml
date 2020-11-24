@@ -13,6 +13,13 @@ app:
 spring:
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        generate_statistics: true
 
   data:
     mongodb:

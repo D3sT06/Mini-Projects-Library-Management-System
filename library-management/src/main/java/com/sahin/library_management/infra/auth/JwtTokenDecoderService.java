@@ -15,7 +15,7 @@ public class JwtTokenDecoderService {
     @Value("${app.security.jwt.privateKey}")
     private String privateKey;
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) {
         final String username = this.getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

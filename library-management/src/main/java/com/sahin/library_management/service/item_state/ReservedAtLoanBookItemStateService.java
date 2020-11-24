@@ -7,7 +7,6 @@ import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.infra.model.book.BookReserving;
-import com.sahin.library_management.service.item_state.BookItemStateService;
 import com.sahin.library_management.util.DateTimeUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

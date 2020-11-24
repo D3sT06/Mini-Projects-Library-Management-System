@@ -6,13 +6,16 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "library_card", schema = "library_management")
 @Getter
 @Setter
-public class LibraryCardEntity {
+public class LibraryCardEntity implements Serializable {
+
+    private static final long serialVersionUID = 1905122041950251207L;
 
     @Id
     @GeneratedValue(generator = "UUID")

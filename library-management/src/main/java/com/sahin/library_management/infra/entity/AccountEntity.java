@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Setter
 public class AccountEntity extends Auditable<String> implements Serializable {
 
+    private static final long serialVersionUID = 2214233152061235312L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

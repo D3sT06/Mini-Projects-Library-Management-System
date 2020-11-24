@@ -13,10 +13,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CustomAuthorityDeserializer extends JsonDeserializer {
+public class CustomAuthorityDeserializer extends JsonDeserializer<List<GrantedAuthority>> {
 
     @Override
-    public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public List<GrantedAuthority> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
 
         ObjectMapper mapper = (ObjectMapper) parser.getCodec();
         JsonNode jsonNode = mapper.readTree(parser);

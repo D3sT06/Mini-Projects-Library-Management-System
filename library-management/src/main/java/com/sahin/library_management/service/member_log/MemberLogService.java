@@ -1,8 +1,10 @@
 package com.sahin.library_management.service.member_log;
 
+import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogAggregation;
+import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
 import com.sahin.library_management.repository.MemberLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -71,6 +73,25 @@ public class MemberLogService {
         Aggregation aggregation = Aggregation.newAggregation(filterTimeAndBarcode, groupByAction, sortByAction);
 
         AggregationResults<MemberLogAggregation> results = mongoTemplate.aggregate(aggregation, COLLECTION_NAME, MemberLogAggregation.class);
+        return results.getMappedResults();
+    }
+
+    @Transactional
+    public List<MemberLogWithBarcodeAggregation> getActionAggregations(QueryTerm queryTerm) {
+
+        MatchOperation filterTime = Aggregation.match(
+                Criteria.where(ACTION_TIME)
+                        .gte(Instant.now().minus(queryTerm.getAmountToSubtract(), timeChronoMap.get(queryTerm.getTimeUnit())).toEpochMilli())
+        );
+
+        GroupOperation groupByAction = Aggregation.group(ACTION, CARD_BARCODE)
+                .count().as(ACTION_COUNT);
+
+        SortOperation sortByAction = Aggregation.sort(Sort.by(Sort.Direction.DESC, ACTION_COUNT));
+
+        Aggregation aggregation = Aggregation.newAggregation(filterTime, groupByAction, sortByAction);
+
+        AggregationResults<MemberLogWithBarcodeAggregation> results = mongoTemplate.aggregate(aggregation, COLLECTION_NAME, MemberLogWithBarcodeAggregation.class);
         return results.getMappedResults();
     }
 }

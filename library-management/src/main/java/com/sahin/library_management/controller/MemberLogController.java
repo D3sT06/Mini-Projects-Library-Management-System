@@ -1,9 +1,11 @@
 package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
+import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogAggregation;
+import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
 import com.sahin.library_management.service.member_log.MemberLogService;
 import com.sahin.library_management.swagger.controller.MemberLogSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,12 @@ public class MemberLogController implements MemberLogSwaggerApi {
     public ResponseEntity<List<MemberLogAggregation>> getActionAggregationsByBarcode(
             @PathVariable String barcode, @RequestParam TimeUnit unit, @RequestParam Long amount) {
         return ResponseEntity.ok(memberLogService.getActionAggregationsByBarcode(barcode, unit, amount));
+    }
+
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
+    @GetMapping("get-action-aggregations")
+    public ResponseEntity<List<MemberLogWithBarcodeAggregation>> getAllActionAggregations(
+            @RequestParam QueryTerm queryTerm) {
+        return ResponseEntity.ok(memberLogService.getActionAggregations(queryTerm));
     }
 }

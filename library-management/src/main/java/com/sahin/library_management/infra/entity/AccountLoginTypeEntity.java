@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "login_type",
@@ -12,7 +13,9 @@ import javax.persistence.*;
         uniqueConstraints = @UniqueConstraint(columnNames = {"card_barcode", "type"}))
 @Getter
 @Setter
-public class AccountLoginTypeEntity {
+public class AccountLoginTypeEntity implements Serializable {
+
+    private static final long serialVersionUID = 1905233152061251207L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

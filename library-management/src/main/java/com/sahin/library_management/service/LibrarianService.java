@@ -8,7 +8,6 @@ import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
-import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.mapper.AccountMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.AccountRepository;

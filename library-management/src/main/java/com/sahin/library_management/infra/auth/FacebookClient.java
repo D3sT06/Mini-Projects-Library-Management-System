@@ -14,7 +14,7 @@ public class FacebookClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String FACEBOOK_GRAPH_API_BASE = "https://graph.facebook.com";
+    private static final String FACEBOOK_GRAPH_API_BASE = "https://graph.facebook.com";
 
     public FacebookUser getUser(String accessToken) {
 

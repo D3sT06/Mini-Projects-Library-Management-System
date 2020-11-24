@@ -1,6 +1,5 @@
 package com.sahin.library_management.infra.model.search;
 
-import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.BookEntity;
 
@@ -9,7 +8,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CategoryPredicate extends BookPredicate {
 

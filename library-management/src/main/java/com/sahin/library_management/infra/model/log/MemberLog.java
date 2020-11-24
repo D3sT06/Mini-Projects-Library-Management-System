@@ -18,6 +18,8 @@ import java.time.Instant;
 @Document(collection = "member_logs")
 public class MemberLog implements Serializable {
 
+    private static final long serialVersionUID = 111345556689102002L;
+
     @Id
     private String id;
     private String cardBarcode;

@@ -1,11 +1,9 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.mapper.BookCategoryMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
