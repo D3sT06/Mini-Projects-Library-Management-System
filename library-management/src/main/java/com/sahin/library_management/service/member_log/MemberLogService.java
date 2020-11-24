@@ -46,7 +46,7 @@ public class MemberLogService {
 
     private EnumMap<TimeUnit, ChronoUnit> timeChronoMap;
 
-    {
+    public MemberLogService() {
         timeChronoMap = new EnumMap<>(TimeUnit.class);
         timeChronoMap.put(TimeUnit.SECONDS, ChronoUnit.SECONDS);
         timeChronoMap.put(TimeUnit.MINUTES, ChronoUnit.SECONDS);
