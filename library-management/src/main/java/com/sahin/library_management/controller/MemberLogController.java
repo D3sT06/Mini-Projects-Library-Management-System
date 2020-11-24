@@ -7,12 +7,10 @@ import com.sahin.library_management.infra.model.log.MemberLogAggregation;
 import com.sahin.library_management.service.member_log.MemberLogService;
 import com.sahin.library_management.swagger.controller.MemberLogSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
