@@ -1,5 +1,6 @@
 package com.sahin.library_management.service.member_log;
 
+import com.sahin.library_management.factory.ChronoUnitFactory;
 import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.List;
 
 
@@ -36,6 +35,9 @@ public class MemberLogService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private ChronoUnitFactory chronoUnitFactory;
+
     @Transactional
     public void saveAll(Collection<MemberLog> logs) {
         memberLogRepository.saveAll(logs);
@@ -46,22 +48,12 @@ public class MemberLogService {
         return memberLogRepository.findAll();
     }
 
-    private EnumMap<TimeUnit, ChronoUnit> timeChronoMap;
-
-    public MemberLogService() {
-        timeChronoMap = new EnumMap<>(TimeUnit.class);
-        timeChronoMap.put(TimeUnit.SECONDS, ChronoUnit.SECONDS);
-        timeChronoMap.put(TimeUnit.MINUTES, ChronoUnit.SECONDS);
-        timeChronoMap.put(TimeUnit.HOURS, ChronoUnit.HOURS);
-        timeChronoMap.put(TimeUnit.DAYS, ChronoUnit.DAYS);
-    }
-
     @Transactional
     public List<MemberLogAggregation> getActionAggregationsByBarcode(String barcode, TimeUnit timeUnit, Long amountToSubsctract) {
 
         MatchOperation filterTimeAndBarcode = Aggregation.match(
                 Criteria.where(ACTION_TIME)
-                        .gte(Instant.now().minus(amountToSubsctract, timeChronoMap.get(timeUnit)).toEpochMilli())
+                        .gte(Instant.now().minus(amountToSubsctract, chronoUnitFactory.get(timeUnit)).toEpochMilli())
                         .and(CARD_BARCODE).is(barcode)
         );
 
@@ -81,7 +73,7 @@ public class MemberLogService {
 
         MatchOperation filterTime = Aggregation.match(
                 Criteria.where(ACTION_TIME)
-                        .gte(Instant.now().minus(queryTerm.getAmountToSubtract(), timeChronoMap.get(queryTerm.getTimeUnit())).toEpochMilli())
+                        .gte(Instant.now().minus(queryTerm.getAmountToSubtract(), chronoUnitFactory.get(queryTerm.getTimeUnit())).toEpochMilli())
         );
 
         GroupOperation groupByAction = Aggregation.group(ACTION, CARD_BARCODE)
