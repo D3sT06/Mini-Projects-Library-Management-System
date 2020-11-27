@@ -46,7 +46,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String token = this.jwtTokenGenerationService.generateToken(authResult);
+        String token = this.jwtTokenGenerationService.getToken(authResult);
         response.addHeader("Authorization", token);
     }
 }
