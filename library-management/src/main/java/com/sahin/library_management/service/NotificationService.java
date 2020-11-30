@@ -1,14 +1,14 @@
 package com.sahin.library_management.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.infra.entity.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.book.BookLoaning;
+import com.sahin.library_management.mapper.NotificationMapper;
 import com.sahin.library_management.repository.NotificationRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.DefaultTypedTuple;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+@Slf4j
 @Service
 public class NotificationService {
 
     private static final String LOAN_ID_PREFIX = "loan-";
     private static final String TIME_TO_SEND_SUFFIX = ":timeToSend";
     private String timeToSendKey;
+    private String redisHashValue;
 
     @Autowired
     private NotificationRepository notificationRepository;
@@ -30,9 +32,13 @@ public class NotificationService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @PostConstruct
     void init() {
-        timeToSendKey = NotificationEntity.class.getAnnotation(RedisHash.class).value() + TIME_TO_SEND_SUFFIX;
+        redisHashValue = NotificationEntity.class.getAnnotation(RedisHash.class).value();
+        timeToSendKey = redisHashValue + TIME_TO_SEND_SUFFIX;
     }
 
     public void createLoanNotifications(BookLoaning loaning) {
@@ -43,7 +49,6 @@ public class NotificationService {
         entities.addAll(createLoanNotificationsAfterDueDate(loaning));
 
         notificationRepository.saveAll(entities);
-
         redisTemplate.opsForZSet().add(timeToSendKey, getTypedTuples(entities));
     }
 
@@ -51,21 +56,34 @@ public class NotificationService {
 
         List<NotificationEntity> entities = notificationRepository.findAllByAboutId(LOAN_ID_PREFIX + loaning.getId());
         notificationRepository.deleteAll(entities);
-
-        redisTemplate.opsForZSet().remove(timeToSendKey, getTypedTuples(entities));
+        redisTemplate.opsForZSet().remove(timeToSendKey, entities);
     }
 
     @Scheduled(fixedDelay = 10000)
     public void getAllNotifications() {
 
-        Long currentTime = Instant.now().toEpochMilli();
-
+        Long currentTime = Instant.now().plus(10, ChronoUnit.DAYS).toEpochMilli();
         Set<String> keys = redisTemplate.opsForZSet().rangeByScore(timeToSendKey, Double.MIN_VALUE, currentTime);
-        List<Object> entities = redisTemplate.boundHashOps("notifications:35a94ce5-c063-4eec-a832-9e3d0511d7e5").values();
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-//        List<NotificationEntity> entities = notificationRepository.findAllByIdIn(keys);
+        List<NotificationEntity> entities = new ArrayList<>();
+        for (String key : keys) {
 
-        entities.forEach(System.out::println);
+            Map<String, String> entityMap = hashOperations.entries(redisHashValue + ":" + key);
+
+            if (!entityMap.isEmpty()) {
+                NotificationEntity entity = notificationMapper.toEntity(entityMap);
+                entities.add(entity);
+
+                log.info("Getting notification with id " + entity.getId());
+            }
+        }
+
+        log.info(entities.size() + " items has pushed to the queue");
+
+        notificationRepository.deleteAll(entities);
+        redisTemplate.opsForZSet().remove(timeToSendKey, entities.st);
+        log.info(entities.size() + " items has deleted from cache");
     }
 
     private List<NotificationEntity> createLoanNotificationsBeforeDueDate(BookLoaning loaning) {
@@ -136,7 +154,7 @@ public class NotificationService {
     private Set<ZSetOperations.TypedTuple<String>> getTypedTuples(List<NotificationEntity> entities) {
         Set<ZSetOperations.TypedTuple<String>> typedTuples = new HashSet<>();
         entities.forEach(
-                entity -> typedTuples.add(new DefaultTypedTuple<String>(entity.getId(), entity.getTimeToSend().doubleValue()))
+                entity -> typedTuples.add(new DefaultTypedTuple<>(entity.getId(), entity.getTimeToSend().doubleValue()))
         );
         return typedTuples;
     }
