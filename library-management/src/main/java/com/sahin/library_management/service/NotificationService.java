@@ -8,7 +8,9 @@ import com.sahin.library_management.mapper.NotificationMapper;
 import com.sahin.library_management.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.*;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,6 +37,12 @@ public class NotificationService {
 
     @Autowired
     private NotificationMapper notificationMapper;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Value("spring.activemq.queue.name")
+    private String activemqQueueName;
 
     @PostConstruct
     void init() {
@@ -56,7 +65,9 @@ public class NotificationService {
 
         List<NotificationEntity> entities = notificationRepository.findAllByAboutId(LOAN_ID_PREFIX + loaning.getId());
         notificationRepository.deleteAll(entities);
-        redisTemplate.opsForZSet().remove(timeToSendKey, entities);
+        redisTemplate.opsForZSet().remove(timeToSendKey, entities.stream()
+                .map(NotificationEntity::getId)
+                .toArray());
     }
 
     @Scheduled(fixedDelay = 10000)
@@ -79,10 +90,12 @@ public class NotificationService {
             }
         }
 
+        entities.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
         log.info(entities.size() + " items has pushed to the queue");
 
         notificationRepository.deleteAll(entities);
-        redisTemplate.opsForZSet().remove(timeToSendKey, entities.st);
+        redisTemplate.opsForZSet().removeRangeByScore(timeToSendKey, Double.MIN_VALUE, currentTime);
+
         log.info(entities.size() + " items has deleted from cache");
     }
 

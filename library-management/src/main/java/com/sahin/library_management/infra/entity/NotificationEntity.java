@@ -7,10 +7,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @RedisHash("notifications")
-public class NotificationEntity {
+public class NotificationEntity implements Serializable {
+
+    private static final long serialVersionUID = 568971231478502111L;
 
     @Id
     private String id;

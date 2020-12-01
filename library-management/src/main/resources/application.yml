@@ -41,6 +41,13 @@ spring:
     port: 6379
     password: password
 
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: root
+    password: password
+    queue:
+      name: notifications
+
 aspect:
   enabled:
     log-execution-time: true
