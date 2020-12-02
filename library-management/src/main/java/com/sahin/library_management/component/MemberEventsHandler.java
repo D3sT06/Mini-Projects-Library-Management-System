@@ -1,10 +1,10 @@
 package com.sahin.library_management.component;
 
 import com.sahin.library_management.config.RabbitMqConfig;
-import com.sahin.library_management.infra.entity.LogAggregationEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LogAction;
 import com.sahin.library_management.infra.enums.QueryTerm;
+import com.sahin.library_management.infra.model.log.LogAggregation;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
 import com.sahin.library_management.service.LogAggregationService;
@@ -54,20 +54,20 @@ public class MemberEventsHandler {
     @Scheduled(fixedDelay = 10000)
     public void saveAggregations() {
 
-        List<LogAggregationEntity> aggregations = new LinkedList<>();
+        List<LogAggregation> aggregations = new LinkedList<>();
 
         for(QueryTerm term : QueryTerm.values()) {
             List<MemberLogWithBarcodeAggregation> events = memberLogService.getActionAggregations(term);
 
             events.forEach(event -> {
-                LogAggregationEntity logAggregationEntity = new LogAggregationEntity();
-                logAggregationEntity.setAccountFor(AccountFor.MEMBER);
-                logAggregationEntity.setAction(LogAction.valueOf(event.getGroup().getAction()));
-                logAggregationEntity.setActionCount(event.getActionCount());
-                logAggregationEntity.setBarcode(event.getGroup().getCardBarcode());
-                logAggregationEntity.setQueryTerm(term);
+                LogAggregation logAggregation = new LogAggregation();
+                logAggregation.setAccountFor(AccountFor.MEMBER);
+                logAggregation.setAction(LogAction.valueOf(event.getGroup().getAction()));
+                logAggregation.setActionCount(event.getActionCount());
+                logAggregation.setBarcode(event.getGroup().getCardBarcode());
+                logAggregation.setQueryTerm(term);
 
-                aggregations.add(logAggregationEntity);
+                aggregations.add(logAggregation);
             });
 
         }

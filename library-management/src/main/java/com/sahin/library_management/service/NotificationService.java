@@ -69,35 +69,13 @@ public class NotificationService {
     }
 
     @Scheduled(fixedDelay = 10000)
-    public void getAllNotifications() {
+    public void processNotifications() {
 
         long currentTime = Instant.now().toEpochMilli();
-        Set<String> keys = redisTemplate.opsForZSet().rangeByScore(timeToSendKey, Double.MIN_VALUE, currentTime);
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-        List<NotificationEntity> entities = new ArrayList<>();
-
-        if (keys != null) {
-            for (String key : keys) {
-
-                Map<String, String> entityMap = hashOperations.entries(redisHashValue + ":" + key);
-
-                if (!entityMap.isEmpty()) {
-                    NotificationEntity entity = notificationMapper.toEntity(entityMap);
-                    entities.add(entity);
-
-                    log.info("Getting notification with id " + entity.getId());
-                }
-            }
-        }
-
-        entities.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
-        log.info(entities.size() + " items has pushed to the queue");
-
-        notificationRepository.deleteAll(entities);
-        redisTemplate.opsForZSet().removeRangeByScore(timeToSendKey, Double.MIN_VALUE, currentTime);
-
-        log.info(entities.size() + " items has deleted from cache");
+        List<NotificationEntity> entities = getNotificationsBeforeTime(currentTime);
+        sendToQueue(entities);
+        deleteFromCache(entities, currentTime);
     }
 
     private List<NotificationEntity> createLoanNotificationsBeforeDueDate(BookLoaning loaning) {
@@ -174,5 +152,42 @@ public class NotificationService {
                 entity -> typedTuples.add(new DefaultTypedTuple<>(entity.getId(), entity.getTimeToSend().doubleValue()))
         );
         return typedTuples;
+    }
+
+    private List<NotificationEntity> getNotificationsBeforeTime(long time) {
+
+        Set<String> keys = redisTemplate.opsForZSet().rangeByScore(timeToSendKey, Double.MIN_VALUE, time);
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+
+        List<NotificationEntity> entities = new ArrayList<>();
+
+        if (keys != null) {
+            for (String key : keys) {
+
+                Map<String, String> entityMap = hashOperations.entries(redisHashValue + ":" + key);
+
+                if (!entityMap.isEmpty()) {
+                    NotificationEntity entity = notificationMapper.toEntity(entityMap);
+                    entities.add(entity);
+
+                    log.info("Getting notification with id " + entity.getId());
+                }
+            }
+        }
+
+        return entities;
+    }
+
+
+    private void deleteFromCache(List<NotificationEntity> entities, long time) {
+
+        notificationRepository.deleteAll(entities);
+        redisTemplate.opsForZSet().removeRangeByScore(timeToSendKey, Double.MIN_VALUE, time);
+        log.info(entities.size() + " items has deleted from cache");
+    }
+
+    private void sendToQueue(List<NotificationEntity> entities) {
+        entities.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
+        log.info(entities.size() + " items has pushed to the queue");
     }
 }

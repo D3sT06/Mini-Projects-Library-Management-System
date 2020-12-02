@@ -5,6 +5,8 @@ import com.sahin.library_management.infra.entity.LogAggregationEntity;
 import com.sahin.library_management.infra.enums.LogAction;
 import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
+import com.sahin.library_management.infra.model.log.LogAggregation;
+import com.sahin.library_management.mapper.LogAggregationMapper;
 import com.sahin.library_management.repository.LogAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,19 @@ import java.util.Optional;
 public class LogAggregationService {
 
     @Autowired
+    private LogAggregationMapper logAggregationMapper;
+
+    @Autowired
     private LogAggregationRepository logAggregationRepository;
 
     @Autowired
     private ChronoUnitFactory chronoUnitFactory;
 
     @Transactional
-    public void saveAll(Collection<LogAggregationEntity> logs) {
-        logAggregationRepository.saveAll(logs);
+    public void saveAll(Collection<LogAggregation> logs) {
+
+        Collection<LogAggregationEntity> entities = logAggregationMapper.toEntityCollection(logs);
+        logAggregationRepository.saveAll(entities);
     }
 
     @Transactional
