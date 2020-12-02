@@ -47,6 +47,19 @@ spring:
     password: password
     queue:
       name: notifications
+    packages:
+      trust-all: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noreplylibrarymanagement@gmail.com
+    password: "**library!"
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+    default-encoding: UTF-8
 
 aspect:
   enabled:

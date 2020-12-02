@@ -1,6 +1,5 @@
 package com.sahin.library_management.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.infra.entity.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.book.BookLoaning;
@@ -18,7 +17,6 @@ import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +39,7 @@ public class NotificationService {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Value("spring.activemq.queue.name")
+    @Value("${spring.activemq.queue.name}")
     private String activemqQueueName;
 
     @PostConstruct
@@ -73,20 +71,23 @@ public class NotificationService {
     @Scheduled(fixedDelay = 10000)
     public void getAllNotifications() {
 
-        Long currentTime = Instant.now().plus(10, ChronoUnit.DAYS).toEpochMilli();
+        long currentTime = Instant.now().toEpochMilli();
         Set<String> keys = redisTemplate.opsForZSet().rangeByScore(timeToSendKey, Double.MIN_VALUE, currentTime);
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
         List<NotificationEntity> entities = new ArrayList<>();
-        for (String key : keys) {
 
-            Map<String, String> entityMap = hashOperations.entries(redisHashValue + ":" + key);
+        if (keys != null) {
+            for (String key : keys) {
 
-            if (!entityMap.isEmpty()) {
-                NotificationEntity entity = notificationMapper.toEntity(entityMap);
-                entities.add(entity);
+                Map<String, String> entityMap = hashOperations.entries(redisHashValue + ":" + key);
 
-                log.info("Getting notification with id " + entity.getId());
+                if (!entityMap.isEmpty()) {
+                    NotificationEntity entity = notificationMapper.toEntity(entityMap);
+                    entities.add(entity);
+
+                    log.info("Getting notification with id " + entity.getId());
+                }
             }
         }
 
@@ -113,6 +114,7 @@ public class NotificationService {
 
             NotificationEntity entity = new NotificationEntity();
             entity.setCardBarcode(loaning.getMember().getLibraryCard().getBarcode());
+            entity.setMail(loaning.getMember().getEmail());
             entity.setType(NotificationType.RETURN_TIME_CLOSING);
             entity.setAboutId(LOAN_ID_PREFIX + loaning.getId().toString());
             entity.setTimeToSend(entry.getValue());
@@ -139,6 +141,7 @@ public class NotificationService {
 
             NotificationEntity entity = new NotificationEntity();
             entity.setCardBarcode(loaning.getMember().getLibraryCard().getBarcode());
+            entity.setMail(loaning.getMember().getEmail());
             entity.setType(NotificationType.RETURN_TIME_PASSED);
             entity.setAboutId(LOAN_ID_PREFIX + loaning.getId().toString());
             entity.setTimeToSend(entry.getValue());
@@ -155,6 +158,7 @@ public class NotificationService {
 
         NotificationEntity entity = new NotificationEntity();
         entity.setCardBarcode(loaning.getMember().getLibraryCard().getBarcode());
+        entity.setMail(loaning.getMember().getEmail());
         entity.setType(NotificationType.RETURN_TIME_TODAY);
         entity.setAboutId(LOAN_ID_PREFIX + loaning.getId().toString());
         entity.setTimeToSend(loaning.getDueDate());
