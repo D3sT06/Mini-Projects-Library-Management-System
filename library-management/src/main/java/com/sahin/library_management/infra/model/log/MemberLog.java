@@ -2,25 +2,23 @@ package com.sahin.library_management.infra.model.log;
 
 import com.sahin.library_management.infra.enums.LogAction;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.Instant;
 
 @Getter
 @Setter
 @ToString
-@Document(collection = "member_logs")
+@NoArgsConstructor
 public class MemberLog implements Serializable {
 
     private static final long serialVersionUID = 111345556689102002L;
 
-    @Id
     private String id;
     private String cardBarcode;
     private Long actionTime;
@@ -28,8 +26,6 @@ public class MemberLog implements Serializable {
     private String message;
     private String details;
     private HttpStatus httpStatus;
-
-    private MemberLog() {}
 
     public static class Builder {
         private LogAction action;

@@ -1,11 +1,13 @@
 package com.sahin.library_management.service.member_log;
 
 import com.sahin.library_management.factory.ChronoUnitFactory;
+import com.sahin.library_management.infra.entity.MemberLogEntity;
 import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogAggregation;
 import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.library_management.mapper.MemberLogMapper;
 import com.sahin.library_management.repository.MemberLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -36,16 +38,22 @@ public class MemberLogService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
+    private MemberLogMapper memberLogMapper;
+
+    @Autowired
     private ChronoUnitFactory chronoUnitFactory;
 
     @Transactional
     public void saveAll(Collection<MemberLog> logs) {
-        memberLogRepository.saveAll(logs);
+
+        Collection<MemberLogEntity> entities = memberLogMapper.toEntityCollection(logs);
+        memberLogRepository.saveAll(entities);
     }
 
     @Transactional
     public List<MemberLog> getAll() {
-        return memberLogRepository.findAll();
+        List<MemberLogEntity> entities = memberLogRepository.findAll();
+        return memberLogMapper.toModelList(entities);
     }
 
     @Transactional
