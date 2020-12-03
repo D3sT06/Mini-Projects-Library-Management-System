@@ -2,6 +2,7 @@ package com.sahin.library_management.mapper;
 
 import com.sahin.library_management.infra.entity.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
+import com.sahin.library_management.infra.model.notification.Notification;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 
 @Mapper(componentModel = "spring")
@@ -43,4 +45,6 @@ public interface NotificationMapper {
         }
     }
 
+    Notification toModel(NotificationEntity entity);
+    List<Notification> toModels(List<NotificationEntity> entities);
 }

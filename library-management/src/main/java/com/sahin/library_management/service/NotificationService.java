@@ -3,6 +3,7 @@ package com.sahin.library_management.service;
 import com.sahin.library_management.infra.entity.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.book.BookLoaning;
+import com.sahin.library_management.infra.model.notification.Notification;
 import com.sahin.library_management.mapper.NotificationMapper;
 import com.sahin.library_management.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +75,10 @@ public class NotificationService {
         long currentTime = Instant.now().toEpochMilli();
 
         List<NotificationEntity> entities = getNotificationsBeforeTime(currentTime);
-        sendToQueue(entities);
+
+        List<Notification> notifications = notificationMapper.toModels(entities);
+        sendToQueue(notifications);
+
         deleteFromCache(entities, currentTime);
     }
 
@@ -186,8 +190,8 @@ public class NotificationService {
         log.info(entities.size() + " items has deleted from cache");
     }
 
-    private void sendToQueue(List<NotificationEntity> entities) {
-        entities.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
-        log.info(entities.size() + " items has pushed to the queue");
+    private void sendToQueue(List<Notification> notifications) {
+        notifications.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
+        log.info(notifications.size() + " items has pushed to the queue");
     }
 }
