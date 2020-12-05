@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@Component
 public class BookItem {
 
     @NullableUUIDFormat
