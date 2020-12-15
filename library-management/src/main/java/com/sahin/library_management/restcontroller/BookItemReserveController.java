@@ -1,4 +1,4 @@
-package com.sahin.library_management.controller;
+package com.sahin.library_management.restcontroller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.enums.LogAction;
