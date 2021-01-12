@@ -3,6 +3,9 @@ package com.sahin.library_management.infra.viewmapper;
 import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.model.book.Book;
+import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import org.springframework.stereotype.Component;
 
@@ -16,51 +19,51 @@ import java.util.stream.Collectors;
 @Component
 public class BookViewModelMapper {
 
-    public BookViewModel toViewModel(BookEntity entity) {
+    public BookViewModel toViewModel(Book model) {
 
-        BookViewModel model = new BookViewModel();
-        model.setId(entity.getId());
-        model.setTitle(entity.getTitle());
-        model.setAuthorId(entity.getAuthor().getId());
-        model.setAuthorFullname(entity.getAuthor().getName() + " " + entity.getAuthor().getSurname());
-        model.setCategoryIds((entity.getCategories().stream()
-                .map(BookCategoryEntity::getId)
+        BookViewModel viewModel = new BookViewModel();
+        viewModel.setId(model.getId());
+        viewModel.setTitle(model.getTitle());
+        viewModel.setAuthorId(model.getAuthor().getId());
+        viewModel.setAuthorFullname(model.getAuthor().getName() + " " + model.getAuthor().getSurname());
+        viewModel.setCategoryIds((model.getCategories().stream()
+                .map(BookCategory::getId)
                 .collect(Collectors.toSet())));
-        model.setCategoryNames(entity.getCategories().stream()
-                .map(BookCategoryEntity::getName)
+        viewModel.setCategoryNames(model.getCategories().stream()
+                .map(BookCategory::getName)
                 .collect(Collectors.joining(", ")));
-        model.setPublicationDate(entity.getPublicationDate().toString());
+        viewModel.setPublicationDate(model.getPublicationDate().toString());
+
+        return viewModel;
+    }
+
+    public Book toModel(BookViewModel viewModel) {
+        Book model = new Book();
+        model.setId(viewModel.getId());
+        model.setTitle(viewModel.getTitle());
+
+        LocalDate localDate = LocalDate.parse(viewModel.getPublicationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        model.setPublicationDate(localDate);
+        model.setCategories(new HashSet<>());
+
+        Author author = new Author();
+        author.setId(viewModel.getAuthorId());
+        model.setAuthor(author);
+
+        for (Long categoryId : viewModel.getCategoryIds()) {
+            BookCategory category = new BookCategory();
+            category.setId(categoryId);
+            model.getCategories().add(category);
+        }
 
         return model;
     }
 
-    public BookEntity toEntity(BookViewModel model) {
-        BookEntity entity = new BookEntity();
-        entity.setId(model.getId());
-        entity.setTitle(model.getTitle());
-
-        LocalDate localDate = LocalDate.parse(model.getPublicationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        entity.setPublicationDate(localDate);
-        entity.setCategories(new HashSet<>());
-
-        AuthorEntity author = new AuthorEntity();
-        author.setId(model.getAuthorId());
-        entity.setAuthor(author);
-
-        for (Long categoryId : model.getCategoryIds()) {
-            BookCategoryEntity category = new BookCategoryEntity();
-            category.setId(categoryId);
-            entity.getCategories().add(category);
-        }
-
-        return entity;
-    }
-
-    public List<BookViewModel> toViewModels(List<BookEntity> entities) {
+    public List<BookViewModel> toViewModels(List<Book> models) {
 
         List<BookViewModel> modelCollection = new ArrayList<>();
 
-        entities.forEach(entity -> modelCollection.add(this.toViewModel(entity)));
+        models.forEach(entity -> modelCollection.add(this.toViewModel(entity)));
         return modelCollection;
     }
 }

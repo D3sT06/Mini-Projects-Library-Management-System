@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -103,5 +104,10 @@ public class BookService {
 
     private MyRuntimeException setExceptionWhenBookNotExist(Long bookId) {
         return new MyRuntimeException("NOT FOUND", "Book with id \"" + bookId + "\" not exist!", HttpStatus.BAD_REQUEST);
+    }
+
+    public List<Book> getAll() {
+        List<BookEntity> books = (List<BookEntity>) bookRepository.findAll();
+        return bookMapper.toModels(books, new CyclePreventiveContext());
     }
 }

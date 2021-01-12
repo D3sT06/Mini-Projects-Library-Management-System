@@ -1,6 +1,7 @@
 package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ public class MemberModelController {
     }
 
     @GetMapping("/members/new")
-    public String showSignUpForm(AccountEntity member, Model model) {
+    public String showSignUpForm(Member member, Model model) {
         model.addAttribute("member", member);
         return "add-member";
     }
@@ -29,13 +30,13 @@ public class MemberModelController {
     @GetMapping("/members/edit/{barcode}")
     public String showEditForm(@PathVariable String barcode, Model model) {
 
-        AccountEntity entity = memberService.getMemberByBarcode(barcode);
-        model.addAttribute("member", entity);
+        Member member = memberService.getMemberByBarcode(barcode);
+        model.addAttribute("member", member);
         return "update-member";
     }
 
     @PostMapping("/members/create")
-    public String createMember(AccountEntity member, Model model) {
+    public String createMember(Member member, Model model) {
 
         memberService.createMember(member);
         model.addAttribute("members", memberService.getAll());
@@ -44,7 +45,7 @@ public class MemberModelController {
     }
 
     @PostMapping("/members/update/{barcode}")
-    public String updateMember(AccountEntity member,@PathVariable String barcode, Model model) {
+    public String updateMember(Member member,@PathVariable String barcode, Model model) {
 
         member.setId(memberService.getMemberByBarcode(barcode).getId());
         memberService.updateMember(member);

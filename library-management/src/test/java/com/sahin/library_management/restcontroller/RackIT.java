@@ -1,13 +1,11 @@
-package com.sahin.library_management.controller;
-
+package com.sahin.library_management.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.RackEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.helper.CategoryViewHelper;
-import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.model.book.Rack;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -29,8 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-@DisplayName("Category Endpoints:")
-public class BookCategoryIT {
+@DisplayName("Rack Endpoints:")
+public class RackIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -39,14 +37,14 @@ public class BookCategoryIT {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    @Qualifier("categoryLoader")
+    @Qualifier("rackLoader")
     protected Loader<?> loader;
 
     @Nested
-    @DisplayName("When the category is valid")
+    @DisplayName("When the rack is valid")
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class ValidCategory {
+    class ValidRack {
 
         @BeforeAll
         void setup() {
@@ -68,12 +66,12 @@ public class BookCategoryIT {
 
             mockMvc
                     .perform(
-                            get("/api/categories/getAll")
+                            get("/api/racks/getAll")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        CategoryViewHelper[] categories = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper[].class);
-                        assertEquals(expectedResult, categories.length);
+                        Rack[] racks = objectMapper.readValue(result.getResponse().getContentAsString(), Rack[].class);
+                        assertEquals(expectedResult, racks.length);
                     });
         }
 
@@ -83,16 +81,16 @@ public class BookCategoryIT {
         @Order(2)
         void getById() throws Exception {
 
-            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
+            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            get("/api/categories/get/" + categoryEntity.getId())
+                            get("/api/racks/get/" + rackEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        CategoryViewHelper category = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper.class);
-                        assertNotNull(category);
+                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
+                        assertNotNull(rack);
                     });
         }
 
@@ -100,20 +98,20 @@ public class BookCategoryIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can create it")
         @Order(3)
-        void createCategory() throws Exception {
+        void createRack() throws Exception {
 
             mockMvc
                     .perform(
-                            post("/api/categories/create")
+                            post("/api/racks/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"name\": \"test\"\n" +
+                                            "    \"location\": \"B-3\"\n" +
                                             "}"))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        BookCategory category = objectMapper.readValue(result.getResponse().getContentAsString(), BookCategory.class);
-                        assertNotNull(category);
-                        assertNotNull(category.getId());
+                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
+                        assertNotNull(rack);
+                        assertNotNull(rack.getId());
                     });
         }
 
@@ -121,41 +119,46 @@ public class BookCategoryIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can update it")
         @Order(4)
-        void updateCategory() throws Exception {
+        void updateRack() throws Exception {
 
-            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
+            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            put("/api/categories/update")
+                            put("/api/racks/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"id\": " + categoryEntity.getId() + ",\n" +
-                                            "    \"name\": \"test-2\"\n" +
+                                            "    \"id\": " + rackEntity.getId() + ",\n" +
+                                            "    \"location\": \"Test\"\n" +
                                             "}"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(result -> {
+                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
+                        assertNotNull(rack);
+                        assertEquals("Test", rack.getLocation());
+                    });
         }
 
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can delete it")
         @Order(5)
-        void deleteCategoryById() throws Exception {
+        void deleteRackById() throws Exception {
 
-            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
+            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            delete("/api/categories/delete/" + categoryEntity.getId())
+                            delete("/api/racks/delete/" + rackEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
         }
     }
 
     @Nested
-    @DisplayName("When the category is invalid")
+    @DisplayName("When the rack is invalid")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class InvalidCategory {
+    class InvalidRack {
 
         @BeforeAll
         void setup() {
@@ -170,14 +173,14 @@ public class BookCategoryIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then librarian cannot create it with id")
-        void createCategoryWithId() throws Exception {
+        void createRackWithId() throws Exception {
             mockMvc
                     .perform(
-                            post("/api/categories/create")
+                            post("/api/racks/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 5,\n" +
-                                            "    \"name\": \"test\"\n" +
+                                            "    \"location\": \"test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -190,13 +193,13 @@ public class BookCategoryIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it without id")
-        void updateCategoryWithoutId() throws Exception {
+        void updateRackWithoutId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/categories/update")
+                            put("/api/racks/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"name\": \"test\"\n" +
+                                            "    \"location\": \"Test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -209,14 +212,14 @@ public class BookCategoryIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it if not found")
-        void updateCategoryWithNonExistingId() throws Exception {
+        void updateRackWithNonExistingId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/categories/update")
+                            put("/api/racks/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 1000,\n" +
-                                            "    \"name\": \"test\"\n" +
+                                            "    \"location\": \"Test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -229,11 +232,11 @@ public class BookCategoryIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot delete it if not found")
-        void deleteCategoryById() throws Exception {
+        void deleteRackById() throws Exception {
 
             mockMvc
                     .perform(
-                            delete("/api/categories/delete/1000")
+                            delete("/api/racks/delete/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -246,11 +249,11 @@ public class BookCategoryIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then a user cannot get it if not found")
-        void getCategoryById() throws Exception {
+        void getRackById() throws Exception {
 
             mockMvc
                     .perform(
-                            get("/api/categories/get/1000")
+                            get("/api/racks/get/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {

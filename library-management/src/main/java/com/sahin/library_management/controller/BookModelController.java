@@ -2,6 +2,11 @@ package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.model.book.Book;
+import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.projections.AuthorProjections;
+import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.infra.viewmapper.BookViewModelMapper;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import com.sahin.library_management.service.AuthorService;
@@ -37,11 +42,11 @@ public class BookModelController {
     @PostMapping("/books/create")
     public String createBook(BookViewModel book, Model model) {
 
-        BookEntity entity = bookViewModelMapper.toEntity(book);
-        bookService.createBook(entity);
+        Book bookModel = bookViewModelMapper.toModel(book);
+        bookService.createBook(bookModel);
 
-        List<BookEntity> entities = bookService.getAll();
-        model.addAttribute("books", bookViewModelMapper.toViewModels(entities));
+        List<Book> booksList = bookService.getAll();
+        model.addAttribute("books", bookViewModelMapper.toViewModels(booksList));
 
         return "redirect:/books";
     }
@@ -49,13 +54,13 @@ public class BookModelController {
     @PostMapping("/books/update/{id}")
     public String updateBook(BookViewModel book, @PathVariable Long id, Model model) {
 
-        BookEntity entity = bookViewModelMapper.toEntity(book);
+        Book bookModel = bookViewModelMapper.toModel(book);
 
-        entity.setId(bookService.getBookById(id).getId());
-        bookService.updateBook(entity);
+        bookModel.setId(bookService.getBookById(id).getId());
+        bookService.updateBook(bookModel);
 
-        List<BookEntity> entities = bookService.getAll();
-        model.addAttribute("books", bookViewModelMapper.toViewModels(entities));
+        List<Book> books = bookService.getAll();
+        model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
         return "redirect:/books";
     }
@@ -65,24 +70,39 @@ public class BookModelController {
 
         bookService.deleteBookById(id);
 
-        List<BookEntity> entities = bookService.getAll();
-        model.addAttribute("books", bookViewModelMapper.toViewModels(entities));
+        List<Book> books = bookService.getAll();
+        model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
         return "redirect:/books";
     }
 
     @GetMapping({"books", "books.html"})
     public String books(Model model) {
-        List<BookEntity> entities = bookService.getAll();
+        List<Book> books = bookService.getAll();
 
-        entities.forEach(entity -> {
-            entity.setAuthor(authorService.getAuthorById(entity.getAuthor().getId()));
-            Set<BookCategoryEntity> categories = new HashSet<>(entity.getCategories());
+        books.forEach(book -> {
 
-            entity.setCategories(new HashSet<>());
-            categories.forEach(category -> entity.getCategories().add(categoryService.getCategoryById(category.getId())));
+            AuthorProjections.AuthorView authorView = authorService.getAuthorById(book.getAuthor().getId());
+            Author author = new Author();
+            author.setId(authorView.getId());
+            author.setName(authorView.getName());
+            author.setSurname(authorView.getSurname());
+
+            book.setAuthor(author);
+            Set<BookCategory> categories = new HashSet<>(book.getCategories());
+
+            book.setCategories(new HashSet<>());
+            categories.forEach(category -> {
+
+                CategoryProjections.CategoryView categoryView = categoryService.getCategoryById(category.getId());
+                BookCategory bookCategory = new BookCategory();
+                bookCategory.setId(categoryView.getId());
+                bookCategory.setName(categoryView.getName());
+
+                book.getCategories().add(bookCategory);
+            });
         });
-        model.addAttribute("books", bookViewModelMapper.toViewModels(entities));
+        model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
         return "books";
     }
@@ -108,14 +128,29 @@ public class BookModelController {
     @GetMapping("/books/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        BookEntity entity = bookService.getBookById(id);
-        entity.setAuthor(authorService.getAuthorById(entity.getAuthor().getId()));
-        Set<BookCategoryEntity> categories = new HashSet<>(entity.getCategories());
+        Book bookModel = bookService.getBookById(id);
 
-        entity.setCategories(new HashSet<>());
-        categories.forEach(category -> entity.getCategories().add(categoryService.getCategoryById(category.getId())));
+        AuthorProjections.AuthorView authorView = authorService.getAuthorById(bookModel.getAuthor().getId());
+        Author author = new Author();
+        author.setId(authorView.getId());
+        author.setName(authorView.getName());
+        author.setSurname(authorView.getSurname());
 
-        model.addAttribute("book", bookViewModelMapper.toViewModel(entity));
+        bookModel.setAuthor(author);
+        Set<BookCategory> categories = new HashSet<>(bookModel.getCategories());
+
+        bookModel.setCategories(new HashSet<>());
+        categories.forEach(category -> {
+
+            CategoryProjections.CategoryView categoryView = categoryService.getCategoryById(category.getId());
+            BookCategory bookCategory = new BookCategory();
+            bookCategory.setId(categoryView.getId());
+            bookCategory.setName(categoryView.getName());
+
+            bookModel.getCategories().add(bookCategory);
+        });
+
+        model.addAttribute("book", bookViewModelMapper.toViewModel(bookModel));
         model.addAttribute("authors", authorService.getAll());
         model.addAttribute("categories", categoryService.getAll());
 

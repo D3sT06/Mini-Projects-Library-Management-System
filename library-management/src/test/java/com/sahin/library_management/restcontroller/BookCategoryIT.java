@@ -1,15 +1,13 @@
-package com.sahin.library_management.controller;
+package com.sahin.library_management.restcontroller;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.helper.AuthorViewHelper;
-import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.projections.AuthorProjections;
+import com.sahin.library_management.infra.helper.CategoryViewHelper;
+import com.sahin.library_management.infra.model.book.BookCategory;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-@DisplayName("Author Endpoints:")
-public class AuthorIT {
+@DisplayName("Category Endpoints:")
+public class BookCategoryIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -41,14 +39,14 @@ public class AuthorIT {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    @Qualifier("authorLoader")
+    @Qualifier("categoryLoader")
     protected Loader<?> loader;
 
     @Nested
-    @DisplayName("When the author is valid")
+    @DisplayName("When the category is valid")
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class ValidAuthor {
+    class ValidCategory {
 
         @BeforeAll
         void setup() {
@@ -70,12 +68,12 @@ public class AuthorIT {
 
             mockMvc
                     .perform(
-                            get("/api/authors/getAll")
+                            get("/api/categories/getAll")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        AuthorViewHelper[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper[].class);
-                        assertEquals(expectedResult, authors.length);
+                        CategoryViewHelper[] categories = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper[].class);
+                        assertEquals(expectedResult, categories.length);
                     });
         }
 
@@ -85,16 +83,16 @@ public class AuthorIT {
         @Order(2)
         void getById() throws Exception {
 
-            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
+            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            get("/api/authors/get/" + authorEntity.getId())
+                            get("/api/categories/get/" + categoryEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        AuthorViewHelper author = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper.class);
-                        assertNotNull(author);
+                        CategoryViewHelper category = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper.class);
+                        assertNotNull(category);
                     });
         }
 
@@ -102,21 +100,20 @@ public class AuthorIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can create it")
         @Order(3)
-        void createAuthor() throws Exception {
+        void createCategory() throws Exception {
 
             mockMvc
                     .perform(
-                            post("/api/authors/create")
+                            post("/api/categories/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"name\": \"İlber\",\n" +
-                                            "    \"surname\": \"Ortaylı\"\n" +
+                                            "    \"name\": \"test\"\n" +
                                             "}"))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Author author = objectMapper.readValue(result.getResponse().getContentAsString(), Author.class);
-                        assertNotNull(author);
-                        assertNotNull(author.getId());
+                        BookCategory category = objectMapper.readValue(result.getResponse().getContentAsString(), BookCategory.class);
+                        assertNotNull(category);
+                        assertNotNull(category.getId());
                     });
         }
 
@@ -124,18 +121,17 @@ public class AuthorIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can update it")
         @Order(4)
-        void updateAuthor() throws Exception {
+        void updateCategory() throws Exception {
 
-            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
+            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            put("/api/authors/update")
+                            put("/api/categories/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"id\": " + authorEntity.getId() + ",\n" +
-                                            "    \"name\": \"Test\",\n" +
-                                            "    \"surname\": \"Test\"\n" +
+                                            "    \"id\": " + categoryEntity.getId() + ",\n" +
+                                            "    \"name\": \"test-2\"\n" +
                                             "}"))
                     .andExpect(status().isOk());
         }
@@ -144,22 +140,22 @@ public class AuthorIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can delete it")
         @Order(5)
-        void deleteAuthorById() throws Exception {
+        void deleteCategoryById() throws Exception {
 
-            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
+            BookCategoryEntity categoryEntity = (BookCategoryEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            delete("/api/authors/delete/" + authorEntity.getId())
+                            delete("/api/categories/delete/" + categoryEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
         }
     }
 
     @Nested
-    @DisplayName("When the author is invalid")
+    @DisplayName("When the category is invalid")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class InvalidAuthor {
+    class InvalidCategory {
 
         @BeforeAll
         void setup() {
@@ -174,15 +170,14 @@ public class AuthorIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then librarian cannot create it with id")
-        void createAuthorWithId() throws Exception {
+        void createCategoryWithId() throws Exception {
             mockMvc
                     .perform(
-                            post("/api/authors/create")
+                            post("/api/categories/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 5,\n" +
-                                            "    \"name\": \"Test\",\n" +
-                                            "    \"surname\": \"Test\"\n" +
+                                            "    \"name\": \"test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -195,14 +190,13 @@ public class AuthorIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it without id")
-        void updateAuthorWithoutId() throws Exception {
+        void updateCategoryWithoutId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/authors/update")
+                            put("/api/categories/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"name\": \"Test\",\n" +
-                                            "    \"surname\": \"Test\"\n" +
+                                            "    \"name\": \"test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -215,15 +209,14 @@ public class AuthorIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it if not found")
-        void updateAuthorWithNonExistingId() throws Exception {
+        void updateCategoryWithNonExistingId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/authors/update")
+                            put("/api/categories/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 1000,\n" +
-                                            "    \"name\": \"Test\",\n" +
-                                            "    \"surname\": \"Test\"\n" +
+                                            "    \"name\": \"test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -236,11 +229,11 @@ public class AuthorIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot delete it if not found")
-        void deleteAuthorById() throws Exception {
+        void deleteCategoryById() throws Exception {
 
             mockMvc
                     .perform(
-                            delete("/api/authors/delete/1000")
+                            delete("/api/categories/delete/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -253,11 +246,11 @@ public class AuthorIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then a user cannot get it if not found")
-        void getAuthorById() throws Exception {
+        void getCategoryById() throws Exception {
 
             mockMvc
                     .perform(
-                            get("/api/authors/get/1000")
+                            get("/api/categories/get/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {

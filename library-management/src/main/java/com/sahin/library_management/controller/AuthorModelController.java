@@ -1,6 +1,8 @@
 package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,7 @@ public class AuthorModelController {
     private AuthorService authorService;
 
     @PostMapping("/authors/create")
-    public String createAuthor(AuthorEntity author, Model model) {
+    public String createAuthor(Author author, Model model) {
 
         authorService.createAuthor(author);
         model.addAttribute("authors", authorService.getAll());
@@ -25,7 +27,7 @@ public class AuthorModelController {
     }
 
     @PostMapping("/authors/update/{id}")
-    public String updateAuthor(AuthorEntity author,@PathVariable Long id, Model model) {
+    public String updateAuthor(Author author, @PathVariable Long id, Model model) {
 
         author.setId(authorService.getAuthorById(id).getId());
         authorService.updateAuthor(author);
@@ -50,7 +52,7 @@ public class AuthorModelController {
     }
 
     @GetMapping("/authors/new")
-    public String showSignUpForm(AuthorEntity author, Model model) {
+    public String showSignUpForm(Author author, Model model) {
         model.addAttribute("author", author);
         return "add-author";
     }
@@ -58,8 +60,8 @@ public class AuthorModelController {
     @GetMapping("/authors/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        AuthorEntity entity = authorService.getAuthorById(id);
-        model.addAttribute("author", entity);
+        AuthorProjections.AuthorView authorView = authorService.getAuthorById(id);
+        model.addAttribute("author", authorView);
         return "update-author";
     }
 }

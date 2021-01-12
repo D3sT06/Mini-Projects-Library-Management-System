@@ -1,11 +1,15 @@
-package com.sahin.library_management.controller;
+package com.sahin.library_management.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.RackEntity;
+import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.model.book.Rack;
+import com.sahin.library_management.infra.helper.AuthorViewHelper;
+import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.projections.AuthorProjections;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,8 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-@DisplayName("Rack Endpoints:")
-public class RackIT {
+@DisplayName("Author Endpoints:")
+public class AuthorIT {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -37,14 +41,14 @@ public class RackIT {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    @Qualifier("rackLoader")
+    @Qualifier("authorLoader")
     protected Loader<?> loader;
 
     @Nested
-    @DisplayName("When the rack is valid")
+    @DisplayName("When the author is valid")
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class ValidRack {
+    class ValidAuthor {
 
         @BeforeAll
         void setup() {
@@ -66,12 +70,12 @@ public class RackIT {
 
             mockMvc
                     .perform(
-                            get("/api/racks/getAll")
+                            get("/api/authors/getAll")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Rack[] racks = objectMapper.readValue(result.getResponse().getContentAsString(), Rack[].class);
-                        assertEquals(expectedResult, racks.length);
+                        AuthorViewHelper[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper[].class);
+                        assertEquals(expectedResult, authors.length);
                     });
         }
 
@@ -81,16 +85,16 @@ public class RackIT {
         @Order(2)
         void getById() throws Exception {
 
-            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
+            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            get("/api/racks/get/" + rackEntity.getId())
+                            get("/api/authors/get/" + authorEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
-                        assertNotNull(rack);
+                        AuthorViewHelper author = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper.class);
+                        assertNotNull(author);
                     });
         }
 
@@ -98,20 +102,21 @@ public class RackIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can create it")
         @Order(3)
-        void createRack() throws Exception {
+        void createAuthor() throws Exception {
 
             mockMvc
                     .perform(
-                            post("/api/racks/create")
+                            post("/api/authors/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"location\": \"B-3\"\n" +
+                                            "    \"name\": \"İlber\",\n" +
+                                            "    \"surname\": \"Ortaylı\"\n" +
                                             "}"))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
-                        assertNotNull(rack);
-                        assertNotNull(rack.getId());
+                        Author author = objectMapper.readValue(result.getResponse().getContentAsString(), Author.class);
+                        assertNotNull(author);
+                        assertNotNull(author.getId());
                     });
         }
 
@@ -119,46 +124,42 @@ public class RackIT {
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can update it")
         @Order(4)
-        void updateRack() throws Exception {
+        void updateAuthor() throws Exception {
 
-            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
+            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            put("/api/racks/update")
+                            put("/api/authors/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"id\": " + rackEntity.getId() + ",\n" +
-                                            "    \"location\": \"Test\"\n" +
+                                            "    \"id\": " + authorEntity.getId() + ",\n" +
+                                            "    \"name\": \"Test\",\n" +
+                                            "    \"surname\": \"Test\"\n" +
                                             "}"))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-                        Rack rack = objectMapper.readValue(result.getResponse().getContentAsString(), Rack.class);
-                        assertNotNull(rack);
-                        assertEquals("Test", rack.getLocation());
-                    });
+                    .andExpect(status().isOk());
         }
 
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = "LIBRARIAN")
         @DisplayName("Then librarian can delete it")
         @Order(5)
-        void deleteRackById() throws Exception {
+        void deleteAuthorById() throws Exception {
 
-            RackEntity rackEntity = (RackEntity) loader.getAll().get(0);
+            AuthorEntity authorEntity = (AuthorEntity) loader.getAll().get(0);
 
             mockMvc
                     .perform(
-                            delete("/api/racks/delete/" + rackEntity.getId())
+                            delete("/api/authors/delete/" + authorEntity.getId())
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
         }
     }
 
     @Nested
-    @DisplayName("When the rack is invalid")
+    @DisplayName("When the author is invalid")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class InvalidRack {
+    class InvalidAuthor {
 
         @BeforeAll
         void setup() {
@@ -173,14 +174,15 @@ public class RackIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then librarian cannot create it with id")
-        void createRackWithId() throws Exception {
+        void createAuthorWithId() throws Exception {
             mockMvc
                     .perform(
-                            post("/api/racks/create")
+                            post("/api/authors/create")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 5,\n" +
-                                            "    \"location\": \"test\"\n" +
+                                            "    \"name\": \"Test\",\n" +
+                                            "    \"surname\": \"Test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -193,13 +195,14 @@ public class RackIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it without id")
-        void updateRackWithoutId() throws Exception {
+        void updateAuthorWithoutId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/racks/update")
+                            put("/api/authors/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
-                                            "    \"location\": \"Test\"\n" +
+                                            "    \"name\": \"Test\",\n" +
+                                            "    \"surname\": \"Test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -212,14 +215,15 @@ public class RackIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot update it if not found")
-        void updateRackWithNonExistingId() throws Exception {
+        void updateAuthorWithNonExistingId() throws Exception {
             mockMvc
                     .perform(
-                            put("/api/racks/update")
+                            put("/api/authors/update")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("{\n" +
                                             "    \"id\": 1000,\n" +
-                                            "    \"location\": \"Test\"\n" +
+                                            "    \"name\": \"Test\",\n" +
+                                            "    \"surname\": \"Test\"\n" +
                                             "}"))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -232,11 +236,11 @@ public class RackIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian cannot delete it if not found")
-        void deleteRackById() throws Exception {
+        void deleteAuthorById() throws Exception {
 
             mockMvc
                     .perform(
-                            delete("/api/racks/delete/1000")
+                            delete("/api/authors/delete/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
@@ -249,11 +253,11 @@ public class RackIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then a user cannot get it if not found")
-        void getRackById() throws Exception {
+        void getAuthorById() throws Exception {
 
             mockMvc
                     .perform(
-                            get("/api/racks/get/1000")
+                            get("/api/authors/get/1000")
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(result -> {
