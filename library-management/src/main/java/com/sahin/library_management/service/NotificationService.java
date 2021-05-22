@@ -64,9 +64,11 @@ public class NotificationService {
 
         List<NotificationEntity> entities = notificationRepository.findAllByAboutId(LOAN_ID_PREFIX + loaning.getId());
         notificationRepository.deleteAll(entities);
-        redisTemplate.opsForZSet().remove(timeToSendKey, entities.stream()
-                .map(NotificationEntity::getId)
-                .toArray());
+
+        if (!entities.isEmpty())
+            redisTemplate.opsForZSet().remove(timeToSendKey, entities.stream()
+                    .map(NotificationEntity::getId)
+                    .toArray());
     }
 
     @Scheduled(fixedDelay = 10000)

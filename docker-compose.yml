@@ -17,6 +17,7 @@ services:
       - mongo
       - rabbit
       - redis
+      - activemq
 
   mongo:
     image: mongo:4
