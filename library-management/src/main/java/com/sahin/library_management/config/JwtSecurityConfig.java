@@ -154,6 +154,7 @@ public class JwtSecurityConfig {
                 "/configuration/**",
                 "/swagger-ui/**",
                 "/webjars/**",
+                "/model/**",
                 // other public endpoints of your API may be appended to this array
                 "/h2-console/**"
         };

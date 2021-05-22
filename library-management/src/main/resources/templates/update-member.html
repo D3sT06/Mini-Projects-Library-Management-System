@@ -14,7 +14,7 @@
     <h2 class="mb-5">Update Member</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/members/update/{barcode}(barcode=${member.libraryCard.barcode})}" th:object="${member}" method="post">
+            <form action="#" th:action="@{/model/members/update/{barcode}(barcode=${member.libraryCard.barcode})}" th:object="${member}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name" class="col-form-label">Name</label>
@@ -38,9 +38,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Update Member">
-                    </div>
+                    <input type="submit" class="btn btn-primary" style="margin: 10px" value="Update Member">
+                    <input type="button" class="btn btn-primary" style="margin: 10px" value="Back" onclick="location.href = '/model/members'">
                 </div>
             </form>
         </div>

@@ -14,7 +14,7 @@
     <h2 class="mb-5">New Book</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/books/create}" th:object="${book}" method="post">
+            <form action="#" th:action="@{/model/books/create}" th:object="${book}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="title" class="col-form-label">Title</label>
@@ -42,9 +42,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add Book">
-                    </div>
+                    <input type="submit" class="btn btn-primary" style="margin: 10px" value="Add Book">
+                    <input type="button" class="btn btn-primary" style="margin: 10px" value="Back" onclick="location.href = '/model/books'">
                 </div>
             </form>
         </div>

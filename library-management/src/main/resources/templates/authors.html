@@ -9,6 +9,23 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/shards.min.css">
 </head>
+
+<header class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <a href="books.html">Books</a>
+        </div>
+        <div class="col-md-3">
+            <a href="authors.html">Authors</a>
+        </div>
+        <div class="col-md-3">
+            <a href="categories.html">Categories</a>
+        </div>
+        <div class="col-md-3">
+            <a href="members.html">Members</a>
+        </div>
+    </div>
+</header>
 <body>
 <div th:switch="${authors}" class="container my-5">
     <div class="row">
@@ -29,13 +46,13 @@
                         <td th:text="${author.id}"></td>
                         <td th:text="${author.name}"></td>
                         <td th:text="${author.surname}"></td>
-                        <td><a th:href="@{/authors/edit/{id}(barcode=${author.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                        <td><a th:href="@{/authors/delete/{id}(barcode=${author.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                        <td><a th:href="@{/model/authors/edit/{id}(id=${author.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                        <td><a th:href="@{/model/authors/delete/{id}(id=${author.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="my-5"><a href="/authors/new" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
+            <p class="my-5"><a href="/model/authors/new" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i></a></p>
         </div>
     </div>
 </div>

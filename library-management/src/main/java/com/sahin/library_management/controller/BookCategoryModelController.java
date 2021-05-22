@@ -10,9 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/model")
 public class BookCategoryModelController {
 
     @Autowired
@@ -24,7 +26,7 @@ public class BookCategoryModelController {
         categoryService.createCategory(category);
         model.addAttribute("categories", categoryService.getAll());
 
-        return "redirect:/categories";
+        return "redirect:/model/categories";
     }
 
     @PostMapping("/categories/update/{id}")
@@ -34,7 +36,7 @@ public class BookCategoryModelController {
         categoryService.updateCategory(category);
         model.addAttribute("categories", categoryService.getAll());
 
-        return "redirect:/categories";
+        return "redirect:/model/categories";
     }
 
     @GetMapping("/categories/delete/{id}")
@@ -43,7 +45,7 @@ public class BookCategoryModelController {
         categoryService.deleteCategoryById(id);
         model.addAttribute("categories", categoryService.getAll());
 
-        return "redirect:/categories";
+        return "redirect:/model/categories";
     }
 
     @GetMapping({"categories", "categories.html"})

@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/model")
 public class AuthorModelController {
 
     @Autowired
@@ -23,7 +25,7 @@ public class AuthorModelController {
         authorService.createAuthor(author);
         model.addAttribute("authors", authorService.getAll());
 
-        return "redirect:/authors";
+        return "redirect:/model/authors";
     }
 
     @PostMapping("/authors/update/{id}")
@@ -33,7 +35,7 @@ public class AuthorModelController {
         authorService.updateAuthor(author);
         model.addAttribute("authors", authorService.getAll());
 
-        return "redirect:/authors";
+        return "redirect:/model/authors";
     }
 
     @GetMapping("/authors/delete/{id}")
@@ -42,7 +44,7 @@ public class AuthorModelController {
         authorService.deleteAuthorById(id);
         model.addAttribute("authors", authorService.getAll());
 
-        return "redirect:/authors";
+        return "redirect:/model/authors";
     }
 
     @GetMapping({"authors", "authors.html"})

@@ -19,12 +19,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Controller
+@RequestMapping("/model")
 public class BookModelController {
 
     @Autowired
@@ -48,7 +50,7 @@ public class BookModelController {
         List<Book> booksList = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(booksList));
 
-        return "redirect:/books";
+        return "redirect:/model/books";
     }
 
     @PostMapping("/books/update/{id}")
@@ -62,7 +64,7 @@ public class BookModelController {
         List<Book> books = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
-        return "redirect:/books";
+        return "redirect:/model/books";
     }
 
     @GetMapping("/books/delete/{id}")
@@ -73,7 +75,12 @@ public class BookModelController {
         List<Book> books = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
-        return "redirect:/books";
+        return "redirect:/model/books";
+    }
+
+    @GetMapping("")
+    public String redirectToBooks() {
+        return "redirect:/model/books";
     }
 
     @GetMapping({"books", "books.html"})

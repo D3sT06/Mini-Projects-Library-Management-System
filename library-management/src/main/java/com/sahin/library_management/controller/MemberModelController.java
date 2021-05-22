@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/model")
 public class MemberModelController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MemberModelController {
         memberService.createMember(member);
         model.addAttribute("members", memberService.getAll());
 
-        return "redirect:/members";
+        return "redirect:/model/members";
     }
 
     @PostMapping("/members/update/{barcode}")
@@ -51,7 +52,7 @@ public class MemberModelController {
         memberService.updateMember(member);
         model.addAttribute("members", memberService.getAll());
 
-        return "redirect:/members";
+        return "redirect:/model/members";
     }
 
     @GetMapping("/members/delete/{barcode}")
@@ -60,6 +61,6 @@ public class MemberModelController {
         memberService.deleteMemberByBarcode(barcode);
         model.addAttribute("members", memberService.getAll());
 
-        return "redirect:/members";
+        return "redirect:/model/members";
     }
 }

@@ -58,6 +58,7 @@ depending on whether `spring.datasource.platform = sim` line exists or not in `a
 - It uses MySQL database.
 
 # **LINKS**
+- Website with Thymeleaf: http://localhost:7001/model
 - Swagger UI: http://localhost:7001/swagger-ui/index.html
 - H2-Console: http://localhost:7001/h2-console/login 
   (The credentials are `root` for user name and `password` for password)

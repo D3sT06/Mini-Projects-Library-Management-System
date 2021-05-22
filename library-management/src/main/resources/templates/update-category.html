@@ -14,7 +14,7 @@
     <h2 class="mb-5">Update Category</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/categories/update/{id}(id=${category.id})}" th:object="${category}" method="post">
+            <form action="#" th:action="@{/model/categories/update/{id}(id=${category.id})}" th:object="${category}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name" class="col-form-label">Name</label>
@@ -23,9 +23,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Update Category">
-                    </div>
+                    <input type="submit" class="btn btn-primary" style="margin: 10px" value="Update Category">
+                    <input type="button" class="btn btn-primary" style="margin: 10px" value="Back" onclick="location.href = '/model/categories'">
                 </div>
             </form>
         </div>
