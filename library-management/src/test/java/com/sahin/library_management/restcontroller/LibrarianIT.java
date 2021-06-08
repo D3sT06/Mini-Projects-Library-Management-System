@@ -3,7 +3,7 @@ package com.sahin.library_management.restcontroller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Librarian;
 import org.junit.jupiter.api.*;

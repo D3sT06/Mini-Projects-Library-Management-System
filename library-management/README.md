@@ -5,12 +5,50 @@ the main titles of these modules, in which features of these are used
 and in which classes they are used.
 
 **LOMBOK**
+- Lombok is used in the project
+- The basic annotations used are;
+    - Slf4j
+    - Getter, Setter
+    - NoArgsConstructor, AllArgsConstructor
+    - ToString
+    - Builder
 
 **WEB MVC WITH REST**
+- Web MVC with Rest started to be used in `restcontroller` package.
+- `WebMvcConfig` is the configuration of it.
+- `PostMapping`, `PutMapping`, `GetMapping`, `DeleteMapping` annotations are used
+together with `RequestMapping` annotation.
+- `PathVariable` and `RequestBody` annotations are also used when passing parameters.
+- `Service` and `Repository` classes are the remaining components of MVC.
+- `RestTemplate` which is configured in `WebMvcConfig` is used while calling
+facebook endpoint to get auth token.
 
 **WEB MVC WITH THYMELEAF**
+- Web MVC with Rest started to be used in `controller` package.
+- As a view resolver, thymeleaf is used.
+- Only some controllers are created to exemplify this.
+- `Model` is used in general whereas `ModelAndView` and `ModelMap` are used
+ in a few methods.
+- The files under `resources/templates` directory are html files used in
+the controllers.
 
 **DATA JPA**
+- The JPA repositories are defined in `repository/jpa` package.
+- Spring Data JPA uses Hibernate as ORM in the background.
+- CRUD operations are done by using these repositories.
+- Entities are defined in `infra/entity/jpa` package.
+- One to one, one to many, many to one and many to many relations
+are used while connecting entities to each other.
+- Paging and sorting is done for books.
+- n+1 query problem is solved by using `EntityGraph` annotation.
+- A custom query can also be generated using `Query` annotation. `join fetch` is
+used to prevent n+1 query problem.
+- Specifications are used while searching books with some custom filters.
+- Projections are used for authors and categories while mapping the entity into a custom
+object.
+- `bootstrap` package fills in the in-memory database.
+- This database loader is used basically for integration tests and when the app is up
+with `dev` profile.
 
 **MAPSTRUCT**
 
@@ -76,6 +114,9 @@ and the topic exchange.
 - `ConcreteMemberLogPublisherService` is sending member logs to the member events topic exchange with a routing key of the related log topic.
 (Book, BookItem, BookLoan...)
 - `MemberEventsHandler` listens all the queues in the topic exchange and put them into an in-memory queue.
+- In the `WebMvcConfig`, a concrete `MemberLogPublisherService` bean is created depending on
+`RabbitMqConfig` bean.
+- Otherwise, `VoidLogService` bean is created.
 
 **DOCKER COMPOSE**
 

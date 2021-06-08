@@ -1,14 +1,14 @@
 package com.sahin.library_management.service.member_log;
 
 import com.sahin.library_management.factory.ChronoUnitFactory;
-import com.sahin.library_management.infra.entity.MemberLogEntity;
+import com.sahin.library_management.infra.entity.document.MemberLogEntity;
 import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import com.sahin.library_management.infra.model.log.MemberLogAggregation;
 import com.sahin.library_management.infra.model.log.MemberLogWithBarcodeAggregation;
 import com.sahin.library_management.mapper.MemberLogMapper;
-import com.sahin.library_management.repository.MemberLogRepository;
+import com.sahin.library_management.repository.mongo.MemberLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;

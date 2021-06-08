@@ -1,13 +1,13 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.factory.ChronoUnitFactory;
-import com.sahin.library_management.infra.entity.LogAggregationEntity;
+import com.sahin.library_management.infra.entity.jpa.LogAggregationEntity;
 import com.sahin.library_management.infra.enums.LogAction;
 import com.sahin.library_management.infra.enums.QueryTerm;
 import com.sahin.library_management.infra.enums.TimeUnit;
 import com.sahin.library_management.infra.model.log.LogAggregation;
 import com.sahin.library_management.mapper.LogAggregationMapper;
-import com.sahin.library_management.repository.LogAggregationRepository;
+import com.sahin.library_management.repository.jpa.LogAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

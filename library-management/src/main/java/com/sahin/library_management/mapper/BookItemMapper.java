@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.BookItemEntity;
+import com.sahin.library_management.infra.entity.jpa.BookItemEntity;
 import com.sahin.library_management.infra.model.book.BookItem;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

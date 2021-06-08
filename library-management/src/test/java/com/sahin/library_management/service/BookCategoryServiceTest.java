@@ -1,12 +1,12 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
-import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.mapper.BookCategoryMapper;
 import com.sahin.library_management.mapper.BookCategoryMapperImpl;
-import com.sahin.library_management.repository.BookCategoryRepository;
+import com.sahin.library_management.repository.jpa.BookCategoryRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.NotificationEntity;
+import com.sahin.library_management.infra.entity.redis.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.notification.Notification;
 import org.mapstruct.AfterMapping;

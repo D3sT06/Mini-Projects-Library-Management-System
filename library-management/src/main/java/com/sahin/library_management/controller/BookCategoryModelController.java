@@ -1,6 +1,6 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.service.BookCategoryService;

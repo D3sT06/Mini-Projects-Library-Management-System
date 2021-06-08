@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.MemberLogEntity;
+import com.sahin.library_management.infra.entity.document.MemberLogEntity;
 import com.sahin.library_management.infra.model.log.MemberLog;
 import org.mapstruct.Mapper;
 

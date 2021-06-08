@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.validator;
 
-import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
 import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.repository.AuthorRepository;
+import com.sahin.library_management.repository.jpa.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

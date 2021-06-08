@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.auth;
 
-import com.sahin.library_management.infra.entity.TokenEntity;
+import com.sahin.library_management.infra.entity.redis.TokenEntity;
 import com.sahin.library_management.infra.model.account.LibraryCard;
-import com.sahin.library_management.repository.TokenRepository;
+import com.sahin.library_management.repository.redis.TokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;

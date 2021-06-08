@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.BookReservingEntity;
+import com.sahin.library_management.infra.entity.jpa.BookReservingEntity;
 import com.sahin.library_management.infra.model.book.BookReserving;
 import org.springframework.beans.factory.annotation.Autowired;
 

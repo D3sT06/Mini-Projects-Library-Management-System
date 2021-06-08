@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.validator;
 
-import com.sahin.library_management.infra.entity.RackEntity;
+import com.sahin.library_management.infra.entity.jpa.RackEntity;
 import com.sahin.library_management.infra.model.book.Rack;
-import com.sahin.library_management.repository.RackRepository;
+import com.sahin.library_management.repository.jpa.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

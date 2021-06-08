@@ -1,12 +1,12 @@
 package com.sahin.library_management.bootstrap;
 
 
-import com.sahin.library_management.infra.entity.AccountEntity;
-import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
-import com.sahin.library_management.infra.entity.LibraryCardEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.jpa.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.repository.AccountRepository;
+import com.sahin.library_management.repository.jpa.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

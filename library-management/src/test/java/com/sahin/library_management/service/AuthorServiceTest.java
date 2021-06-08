@@ -1,12 +1,12 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.AuthorEntity;
-import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.mapper.AuthorMapper;
 import com.sahin.library_management.mapper.AuthorMapperImpl;
-import com.sahin.library_management.repository.AuthorRepository;
+import com.sahin.library_management.repository.jpa.AuthorRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

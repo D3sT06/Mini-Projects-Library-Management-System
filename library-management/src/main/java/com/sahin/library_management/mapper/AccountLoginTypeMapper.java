@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
 import com.sahin.library_management.infra.model.account.AccountLoginType;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

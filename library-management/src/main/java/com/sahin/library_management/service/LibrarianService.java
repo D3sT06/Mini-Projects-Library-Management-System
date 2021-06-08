@@ -1,7 +1,7 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
@@ -10,7 +10,7 @@ import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.mapper.AccountMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
-import com.sahin.library_management.repository.AccountRepository;
+import com.sahin.library_management.repository.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;

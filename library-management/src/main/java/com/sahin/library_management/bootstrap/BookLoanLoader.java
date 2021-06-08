@@ -1,7 +1,7 @@
 package com.sahin.library_management.bootstrap;
 
-import com.sahin.library_management.infra.entity.BookLoaningEntity;
-import com.sahin.library_management.repository.BookLoaningRepository;
+import com.sahin.library_management.infra.entity.jpa.BookLoaningEntity;
+import com.sahin.library_management.repository.jpa.BookLoaningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,15 +1,12 @@
 package com.sahin.library_management.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
-import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
 import com.sahin.library_management.infra.helper.AuthorViewHelper;
 import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.projections.AuthorProjections;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

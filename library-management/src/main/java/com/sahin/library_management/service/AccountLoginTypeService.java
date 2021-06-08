@@ -1,13 +1,13 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
 import com.sahin.library_management.infra.enums.LoginType;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.AccountLoginType;
 import com.sahin.library_management.mapper.AccountLoginTypeMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
-import com.sahin.library_management.repository.AccountLoginTypeRepository;
+import com.sahin.library_management.repository.jpa.AccountLoginTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

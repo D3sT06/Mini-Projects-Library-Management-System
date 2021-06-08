@@ -1,6 +1,5 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.infra.entity.AccountEntity;
 import com.sahin.library_management.infra.model.account.Member;
 import com.sahin.library_management.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;

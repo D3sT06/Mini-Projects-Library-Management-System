@@ -1,9 +1,9 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.mapper.*;
-import com.sahin.library_management.repository.BookRepository;
+import com.sahin.library_management.repository.jpa.BookRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

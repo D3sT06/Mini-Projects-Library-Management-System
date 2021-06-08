@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Account;
 import com.sahin.library_management.infra.model.account.Librarian;

@@ -1,11 +1,11 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.NotificationEntity;
+import com.sahin.library_management.infra.entity.redis.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.infra.model.notification.Notification;
 import com.sahin.library_management.mapper.NotificationMapper;
-import com.sahin.library_management.repository.NotificationRepository;
+import com.sahin.library_management.repository.redis.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

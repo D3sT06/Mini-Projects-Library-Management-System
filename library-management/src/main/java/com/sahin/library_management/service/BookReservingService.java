@@ -1,8 +1,8 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.BookItemEntity;
-import com.sahin.library_management.infra.entity.BookReservingEntity;
+import com.sahin.library_management.infra.entity.jpa.BookItemEntity;
+import com.sahin.library_management.infra.entity.jpa.BookReservingEntity;
 import com.sahin.library_management.infra.enums.BookStatus;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.account.Member;
@@ -11,7 +11,7 @@ import com.sahin.library_management.infra.model.book.BookReserving;
 import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.BookReservingMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
-import com.sahin.library_management.repository.BookReservingRepository;
+import com.sahin.library_management.repository.jpa.BookReservingRepository;
 import com.sahin.library_management.service.item_state.*;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

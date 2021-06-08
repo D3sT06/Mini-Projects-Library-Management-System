@@ -1,12 +1,12 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.RackEntity;
+import com.sahin.library_management.infra.entity.jpa.RackEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Rack;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.mapper.RackMapper;
-import com.sahin.library_management.repository.RackRepository;
+import com.sahin.library_management.repository.jpa.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;

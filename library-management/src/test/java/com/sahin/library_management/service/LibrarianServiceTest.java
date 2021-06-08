@@ -1,11 +1,11 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.mapper.*;
-import com.sahin.library_management.repository.AccountRepository;
+import com.sahin.library_management.repository.jpa.AccountRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

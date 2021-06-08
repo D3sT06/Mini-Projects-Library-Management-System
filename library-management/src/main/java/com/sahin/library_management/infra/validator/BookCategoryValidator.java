@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.validator;
 
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.repository.BookCategoryRepository;
+import com.sahin.library_management.repository.jpa.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

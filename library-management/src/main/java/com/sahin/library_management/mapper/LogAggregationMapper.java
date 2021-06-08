@@ -1,6 +1,6 @@
 package com.sahin.library_management.mapper;
 
-import com.sahin.library_management.infra.entity.LogAggregationEntity;
+import com.sahin.library_management.infra.entity.jpa.LogAggregationEntity;
 import com.sahin.library_management.infra.model.log.LogAggregation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

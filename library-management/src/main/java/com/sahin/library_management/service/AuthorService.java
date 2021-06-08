@@ -1,13 +1,13 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
-import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.mapper.AuthorMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
-import com.sahin.library_management.repository.AuthorRepository;
+import com.sahin.library_management.repository.jpa.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;

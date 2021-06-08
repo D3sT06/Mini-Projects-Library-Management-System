@@ -1,7 +1,7 @@
 package com.sahin.library_management.infra.model.search;
 
-import com.sahin.library_management.infra.entity.BookCategoryEntity;
-import com.sahin.library_management.infra.entity.BookEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
