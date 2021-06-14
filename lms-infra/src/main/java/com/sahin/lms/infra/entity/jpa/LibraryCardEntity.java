@@ -1,10 +1,11 @@
 package com.sahin.lms.infra.entity.jpa;
 
-import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.lms.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 

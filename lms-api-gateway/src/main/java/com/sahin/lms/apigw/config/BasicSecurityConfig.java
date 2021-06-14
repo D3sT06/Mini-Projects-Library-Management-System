@@ -1,7 +1,7 @@
 package com.sahin.lms.apigw.config;
 
 
-import com.sahin.lms.infra.auth.entrypoint.MyBasicAuthenticationEntryPoint;
+import com.sahin.lms.infra.auth.MyBasicAuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

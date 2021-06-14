@@ -1,20 +1,21 @@
 package com.sahin.lms.apigw.service;
 
 import com.sahin.lms.apigw.repository.AccountLoginTypeRepository;
-import com.sahin.lms.infra.annotation.annotation.LogExecutionTime;
-import com.sahin.lms.infra.auth.entity.AccountLoginTypeEntity;
-import com.sahin.lms.infra.auth.enums.LoginType;
-import com.sahin.lms.infra.auth.mapper.AccountLoginTypeMapper;
-import com.sahin.lms.infra.auth.model.AccountLoginType;
-import com.sahin.lms.infra.cycle_prevention_mapper.CyclePreventiveContext;
-import com.sahin.lms.infra.model.error.MyRuntimeException;
+import com.sahin.lms.infra.annotation.LogExecutionTime;
+import com.sahin.lms.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra.enums.LoginType;
+import com.sahin.lms.infra.exception.MyRuntimeException;
+import com.sahin.lms.infra.mapper.AccountLoginTypeMapper;
+import com.sahin.lms.infra.mapper.CyclePreventiveContext;
+import com.sahin.lms.infra.model.account.AccountLoginType;
+import com.sahin.lms.infra.service.ILoginTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 @LogExecutionTime
-public class AccountLoginTypeService {
+public class AccountLoginTypeService implements ILoginTypeService {
 
     @Autowired
     private AccountLoginTypeMapper accountLoginTypeMapper;

@@ -2,13 +2,14 @@ package com.sahin.lms.apigw.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.lms.apigw.ApiGatewayApp;
+import com.sahin.lms.apigw.repository.TokenRepository;
 import com.sahin.lms.apigw.service.AccountLoginTypeService;
 import com.sahin.lms.apigw.service.LibraryCardService;
-import com.sahin.lms.infra.auth.enums.AccountFor;
-import com.sahin.lms.infra.auth.enums.LoginType;
-import com.sahin.lms.infra.auth.model.AccountLoginType;
-import com.sahin.lms.infra.auth.model.LibraryCard;
-import com.sahin.lms.infra.auth.model.LoginModel;
+import com.sahin.lms.infra.enums.AccountFor;
+import com.sahin.lms.infra.enums.LoginType;
+import com.sahin.lms.infra.model.account.AccountLoginType;
+import com.sahin.lms.infra.model.account.LibraryCard;
+import com.sahin.lms.infra.model.auth.LoginModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -58,6 +60,9 @@ class AuthenticationTests {
     @MockBean
     private AccountLoginTypeService accountLoginTypeService;
 
+    @MockBean
+    private TokenRepository tokenRepository;
+
     @Nested
     @DisplayName("When we have valid credentials")
     class ValidCredentials {
@@ -87,6 +92,7 @@ class AuthenticationTests {
         void validAccess() throws Exception {
             given(libraryCardService.loadUserByUsername(any())).willReturn(validCard);
             given(accountLoginTypeService.doesExist(anyString(), any())).willReturn(true);
+            given(tokenRepository.findById(any())).willReturn(Optional.empty());
 
             mockMvc
                     .perform(

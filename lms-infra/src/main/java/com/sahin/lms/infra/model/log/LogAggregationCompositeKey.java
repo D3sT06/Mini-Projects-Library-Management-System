@@ -1,7 +1,7 @@
 package com.sahin.lms.infra.model.log;
 
-import com.sahin.library_management.infra.enums.LogAction;
-import com.sahin.library_management.infra.enums.QueryTerm;
+import com.sahin.lms.infra.enums.LogAction;
+import com.sahin.lms.infra.enums.QueryTerm;
 import lombok.Getter;
 import lombok.Setter;
 

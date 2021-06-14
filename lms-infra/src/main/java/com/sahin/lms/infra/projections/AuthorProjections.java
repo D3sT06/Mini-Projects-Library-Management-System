@@ -1,6 +1,7 @@
 package com.sahin.lms.infra.projections;
 
-import com.sahin.library_management.infra.entity.jpa.BookEntity;
+import com.fasterxml.jackson.annotation.*;
+import com.sahin.lms.infra.entity.jpa.BookEntity;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Value;
 

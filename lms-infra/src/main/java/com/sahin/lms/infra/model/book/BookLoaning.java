@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.model.book;
 
-import com.sahin.library_management.infra.model.account.Member;
+import com.sahin.lms.infra.model.account.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

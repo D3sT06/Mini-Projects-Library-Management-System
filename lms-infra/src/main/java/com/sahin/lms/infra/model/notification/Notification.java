@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.model.notification;
 
-import com.sahin.library_management.infra.enums.NotificationType;
+import com.sahin.lms.infra.enums.NotificationType;
 import lombok.Getter;
 import lombok.Setter;
 

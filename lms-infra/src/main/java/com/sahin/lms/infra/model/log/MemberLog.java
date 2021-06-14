@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.model.log;
 
-import com.sahin.library_management.infra.enums.LogAction;
+import com.sahin.lms.infra.enums.LogAction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

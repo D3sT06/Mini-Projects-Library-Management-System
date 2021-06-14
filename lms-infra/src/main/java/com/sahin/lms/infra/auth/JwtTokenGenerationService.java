@@ -2,6 +2,7 @@ package com.sahin.lms.infra.auth;
 
 import com.sahin.lms.infra.entity.redis.TokenEntity;
 import com.sahin.lms.infra.model.account.LibraryCard;
+import com.sahin.lms.infra.repository.ITokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class JwtTokenGenerationService {
     private long ttl;
 
     @Autowired
-    private TokenRepository tokenRepository;
+    private ITokenRepository tokenRepository;
 
     public String getToken(Authentication authentication) {
 

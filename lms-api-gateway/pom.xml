@@ -72,7 +72,7 @@
         </dependency>
         <dependency>
             <groupId>com.sahin</groupId>
-            <artifactId>lms-infra-auth</artifactId>
+            <artifactId>lms-infra</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

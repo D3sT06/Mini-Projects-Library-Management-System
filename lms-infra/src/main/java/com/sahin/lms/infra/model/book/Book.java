@@ -2,8 +2,8 @@ package com.sahin.lms.infra.model.book;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sahin.library_management.infra.serializer.LocalDateDeserializer;
-import com.sahin.library_management.infra.serializer.LocalDateSerializer;
+import com.sahin.lms.infra.serializer.LocalDateDeserializer;
+import com.sahin.lms.infra.serializer.LocalDateSerializer;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,9 +1,9 @@
 package com.sahin.lms.infra.viewmapper;
 
-import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.infra.viewmodel.BookViewModel;
+import com.sahin.lms.infra.model.book.Author;
+import com.sahin.lms.infra.model.book.Book;
+import com.sahin.lms.infra.model.book.BookCategory;
+import com.sahin.lms.infra.viewmodel.BookViewModel;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

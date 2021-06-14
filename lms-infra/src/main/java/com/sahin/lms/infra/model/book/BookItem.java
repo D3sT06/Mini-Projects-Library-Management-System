@@ -1,7 +1,7 @@
 package com.sahin.lms.infra.model.book;
 
-import com.sahin.library_management.infra.annotation.NullableUUIDFormat;
-import com.sahin.library_management.infra.enums.BookStatus;
+import com.sahin.lms.infra.annotation.NullableUUIDFormat;
+import com.sahin.lms.infra.enums.BookStatus;
 import lombok.Getter;
 import lombok.Setter;
 

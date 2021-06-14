@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.validator;
 
-import com.sahin.library_management.infra.annotation.NullableUUIDFormat;
+import com.sahin.lms.infra.annotation.NullableUUIDFormat;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

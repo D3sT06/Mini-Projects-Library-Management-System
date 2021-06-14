@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.entity.redis;
 
-import com.sahin.library_management.infra.enums.NotificationType;
+import com.sahin.lms.infra.enums.NotificationType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;

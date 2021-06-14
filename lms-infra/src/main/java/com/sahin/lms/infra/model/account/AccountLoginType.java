@@ -1,7 +1,7 @@
 package com.sahin.lms.infra.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sahin.library_management.infra.enums.LoginType;
+import com.sahin.lms.infra.enums.LoginType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

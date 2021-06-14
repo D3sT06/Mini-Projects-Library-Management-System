@@ -1,13 +1,8 @@
 package com.sahin.lms.apigw.config;
 
-import com.sahin.lms.apigw.filter.FacebookAuthenticationFilter;
-import com.sahin.lms.apigw.filter.PasswordAuthenticationFilter;
 import com.sahin.lms.apigw.service.AccountLoginTypeService;
-import com.sahin.lms.apigw.service.JwtTokenGenerationService;
 import com.sahin.lms.apigw.service.LibraryCardService;
-import com.sahin.lms.infra.auth.entrypoint.JwtAuthenticationEntryPoint;
-import com.sahin.lms.infra.auth.model.FacebookClient;
-import com.sahin.lms.infra.auth.model.MyAuthenticationProvider;
+import com.sahin.lms.infra.auth.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

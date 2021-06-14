@@ -1,7 +1,7 @@
 package com.sahin.lms.apigw.swagger.controller;
 
-import com.sahin.lms.infra.auth.model.FacebookLoginModel;
-import com.sahin.lms.infra.auth.model.LoginModel;
+import com.sahin.lms.infra.model.auth.FacebookLoginModel;
+import com.sahin.lms.infra.model.auth.LoginModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;

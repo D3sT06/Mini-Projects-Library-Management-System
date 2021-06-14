@@ -32,6 +32,7 @@ logging:
 aspect:
   enabled:
     log-execution-time: true
+    log-null-parameters: true
 
 springfox:
   documentation:

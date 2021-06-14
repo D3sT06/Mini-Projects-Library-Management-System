@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.lms.infra.enums.LoginType;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.model.auth.LoginModel;
+import com.sahin.lms.infra.service.ILoginTypeService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,11 +21,11 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 
     private final ObjectMapper objectMapper;
     private final JwtTokenGenerationService jwtTokenGenerationService;
-    private final AccountLoginTypeService accountLoginTypeService;
+    private final ILoginTypeService ILoginTypeService;
 
-    public PasswordAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, AccountLoginTypeService accountLoginTypeService) {
+    public PasswordAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, ILoginTypeService ILoginTypeService) {
         super(new AntPathRequestMatcher(loginUrl, "POST"));
-        this.accountLoginTypeService = accountLoginTypeService;
+        this.ILoginTypeService = ILoginTypeService;
         this.objectMapper = new ObjectMapper();
         this.jwtTokenGenerationService = jwtTokenGenerationService;
         this.setAuthenticationManager(authenticationManager);
@@ -35,7 +36,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
             throws IOException {
         LoginModel loginModel = objectMapper.readValue(request.getInputStream(), LoginModel.class);
 
-        if (!accountLoginTypeService.doesExist(loginModel.getBarcode(), LoginType.PASSWORD)) {
+        if (!ILoginTypeService.doesExist(loginModel.getBarcode(), LoginType.PASSWORD)) {
             throw new MyRuntimeException("Password authentication not exists for this account");
         }
 

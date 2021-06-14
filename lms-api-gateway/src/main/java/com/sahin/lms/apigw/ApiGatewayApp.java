@@ -10,8 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra.auth"})
-@EntityScan({"com.sahin.lms.infra.auth"})
+@ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
+@EntityScan({"com.sahin.lms.infra"})
 @EnableZuulProxy
 @EnableDiscoveryClient
 public class ApiGatewayApp {

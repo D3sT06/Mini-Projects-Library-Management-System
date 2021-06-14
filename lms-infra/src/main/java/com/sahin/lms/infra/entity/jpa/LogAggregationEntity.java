@@ -1,14 +1,16 @@
 package com.sahin.lms.infra.entity.jpa;
 
-import com.sahin.library_management.infra.enums.AccountFor;
-import com.sahin.library_management.infra.enums.LogAction;
-import com.sahin.library_management.infra.enums.QueryTerm;
-import com.sahin.library_management.infra.model.log.LogAggregationCompositeKey;
+import com.sahin.lms.infra.enums.AccountFor;
+import com.sahin.lms.infra.enums.LogAction;
+import com.sahin.lms.infra.enums.QueryTerm;
+import com.sahin.lms.infra.model.log.LogAggregationCompositeKey;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "log_aggregation",

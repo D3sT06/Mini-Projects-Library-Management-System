@@ -1,9 +1,11 @@
 package com.sahin.lms.infra.entity.jpa;
 
-import com.sahin.library_management.infra.enums.BookStatus;
+import com.sahin.lms.infra.enums.BookStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "book_item", schema = "library_management")
