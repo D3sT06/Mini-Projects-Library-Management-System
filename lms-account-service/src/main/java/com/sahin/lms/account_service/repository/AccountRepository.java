@@ -1,7 +1,7 @@
 package com.sahin.lms.account_service.repository;
 
-import com.sahin.library_management.infra.entity.jpa.AccountEntity;
-import com.sahin.library_management.infra.enums.AccountFor;
+import com.sahin.lms.infra.entity.jpa.AccountEntity;
+import com.sahin.lms.infra.enums.AccountFor;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,7 @@
-package com.sahin.lms.infra.mapper;
+package com.sahin.lms.account_service.mapper;
 
 import com.sahin.lms.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.AccountLoginType;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

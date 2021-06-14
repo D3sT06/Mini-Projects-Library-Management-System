@@ -1,6 +1,7 @@
 package com.sahin.lms.account_service.swagger.controller;
 
-import com.sahin.library_management.infra.model.account.Librarian;
+import com.sahin.lms.infra.model.account.Librarian;
+import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
