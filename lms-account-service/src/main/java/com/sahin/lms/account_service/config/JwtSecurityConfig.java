@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
-@ConditionalOnProperty(name = "security.authentication.basic", havingValue = "true")
+@ConditionalOnProperty(name = "security.authentication.basic", havingValue = "false")
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {

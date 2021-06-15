@@ -48,6 +48,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:7000/eureka
+      defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
 
-
+zuul:
+  routes:
+    account-service:
+      url:  http://localhost:7003
