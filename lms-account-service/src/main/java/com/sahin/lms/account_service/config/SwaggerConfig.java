@@ -75,15 +75,6 @@ public class SwaggerConfig implements BeanFactoryAware {
                 .build();
     }
 
-    private ResolvedType[] resolvedTypes() {
-        List<ResolvedType> resolvedTypes = new ArrayList<>();
-        resolvedTypes.add(typeResolver.resolve(AccountCreateRequest.class));
-        resolvedTypes.add(typeResolver.resolve(AccountUpdateRequest.class));
-
-        ResolvedType[] array = new ResolvedType[resolvedTypes.size()];
-        return resolvedTypes.toArray(array);
-    }
-
     private void createBeans() {
 
         ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) beanFactory;
@@ -98,7 +89,7 @@ public class SwaggerConfig implements BeanFactoryAware {
                     .groupName(entry.getKey())
                     .apiInfo(metaData())
                     .pathMapping("/")
-                    .additionalModels(typeResolver.resolve(AuthorCreateRequest.class), resolvedTypes())
+                    .additionalModels(typeResolver.resolve(AccountCreateRequest.class), typeResolver.resolve(AccountUpdateRequest.class))
                     .securitySchemes(Arrays.asList(apiKey()));
 
             configurableBeanFactory.registerSingleton(beanName, bean);

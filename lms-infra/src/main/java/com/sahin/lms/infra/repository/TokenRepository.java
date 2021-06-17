@@ -2,6 +2,9 @@ package com.sahin.lms.infra.repository;
 
 import com.sahin.lms.infra.entity.redis.TokenEntity;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ITokenRepository extends CrudRepository<TokenEntity, String> {
+@Repository
+public interface TokenRepository extends CrudRepository<TokenEntity, String> {
 }
+

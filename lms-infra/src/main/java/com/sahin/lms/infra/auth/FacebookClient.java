@@ -2,13 +2,13 @@ package com.sahin.lms.infra.auth;
 
 import com.sahin.lms.infra.model.auth.FacebookUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 public class FacebookClient {
 
     @Autowired

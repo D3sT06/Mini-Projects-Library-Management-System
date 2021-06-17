@@ -1,7 +1,6 @@
-package com.sahin.lms.apigw.mapper;
+package com.sahin.lms.infra.mapper;
 
 import com.sahin.lms.infra.entity.jpa.LibraryCardEntity;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.LibraryCard;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

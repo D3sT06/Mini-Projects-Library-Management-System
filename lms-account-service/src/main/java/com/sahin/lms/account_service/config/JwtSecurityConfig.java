@@ -3,6 +3,7 @@ package com.sahin.lms.account_service.config;
 import com.sahin.lms.infra.auth.JwtAuthenticationEntryPoint;
 import com.sahin.lms.infra.auth.JwtTokenDecoderService;
 import com.sahin.lms.infra.auth.TokenValidationFilter;
+import com.sahin.lms.infra.service.LibraryCardService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,12 +36,12 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final JwtTokenDecoderService jwtTokenDecoderService;
-    private final UserDetailsService myUserDetailsService;
+    private final LibraryCardService libraryCardService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, UserDetailsService myUserDetailsService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
-        this.myUserDetailsService = myUserDetailsService;
+        this.libraryCardService = libraryCardService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
@@ -56,7 +57,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 // in order to get the H2 console working.
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
-                .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, myUserDetailsService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
