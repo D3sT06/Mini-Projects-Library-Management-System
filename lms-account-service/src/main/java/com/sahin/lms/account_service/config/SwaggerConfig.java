@@ -69,8 +69,8 @@ public class SwaggerConfig implements BeanFactoryAware {
 
         return new ApiInfoBuilder()
                 .contact(contact)
-                .title("Library Management Application")
-                .description("Manage your libraries easily")
+                .title("LMS Account Service")
+                .description("Manage librarians and members.")
                 .version("1.0")
                 .build();
     }

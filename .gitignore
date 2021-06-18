@@ -9,7 +9,7 @@
 /lms-loan-service/target/
 /lms-notification-service/target/
 /lms-log-service/target/
-/lms-service-discoverytarget/
+/lms-service-discovery/target/
 /.idea/
 *.iml
 
