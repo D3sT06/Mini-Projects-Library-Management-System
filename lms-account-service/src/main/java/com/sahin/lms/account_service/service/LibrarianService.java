@@ -74,7 +74,7 @@ public class LibrarianService {
     @Transactional
     public void updateLibrarian(Librarian librarian) {
         if (librarian.getId() == null)
-            throw new MyRuntimeException("Librarian to be created must have an id.", HttpStatus.BAD_REQUEST);
+            throw new MyRuntimeException("Librarian to be updated must have an id.", HttpStatus.BAD_REQUEST);
 
         Optional<AccountEntity> optionalEntity = accountRepository.findById(librarian.getId());
 
