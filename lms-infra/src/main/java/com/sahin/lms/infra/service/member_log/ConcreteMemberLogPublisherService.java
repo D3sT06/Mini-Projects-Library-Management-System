@@ -1,8 +1,8 @@
-package com.sahin.lms.library_service.service.member_log;
+package com.sahin.lms.infra.service.member_log;
 
 import com.sahin.lms.infra.enums.LogTopic;
 import com.sahin.lms.infra.model.log.MemberLog;
-import com.sahin.lms.library_service.model.QueueFactory;
+import com.sahin.lms.infra.factory.QueueFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

@@ -1,4 +1,4 @@
-package com.sahin.lms.library_service.service.member_log;
+package com.sahin.lms.infra.service.member_log;
 
 import com.sahin.lms.infra.enums.LogTopic;
 import com.sahin.lms.infra.model.log.MemberLog;

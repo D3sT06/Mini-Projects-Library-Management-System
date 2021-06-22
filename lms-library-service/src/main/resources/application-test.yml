@@ -15,5 +15,5 @@ spring:
     console:
       enabled: true
 
-  amqp:
-    enabled: false
+amqp:
+  enabled: false

@@ -7,7 +7,7 @@ import com.sahin.lms.infra.model.book.Book;
 import com.sahin.lms.infra.model.log.MemberLog;
 import com.sahin.lms.infra.model.search.BookFilter;
 import com.sahin.lms.library_service.service.BookService;
-import com.sahin.lms.library_service.service.member_log.MemberLogPublisherService;
+import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
 import com.sahin.lms.library_service.swagger.controller.BookSwaggerApi;
 import com.sahin.lms.library_service.validator.BookValidator;
 import org.springframework.beans.factory.annotation.Autowired;

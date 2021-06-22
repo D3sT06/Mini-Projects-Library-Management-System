@@ -4,17 +4,17 @@ spring:
     driver-class-name: org.h2.Driver
     username: root
     password: password
-    platform: sim
+
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
   h2:
     console:
       enabled: true
 
-springfox:
-  documentation:
-    enabled: true
+security:
+  authentication:
+    basic: false

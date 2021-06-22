@@ -1,6 +1,5 @@
-package com.sahin.lms.library_service.config;
+package com.sahin.lms.loan_service.config;
 
-import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
 import com.sahin.lms.infra.service.member_log.ConcreteMemberLogPublisherService;
 import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
 import com.sahin.lms.infra.service.member_log.VoidMemberLogPublisherService;
@@ -16,16 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String[] STATIC_RESOURCE = {"/","classpath:/","classpath:/META-INF/resources/", "classpath:/META-INF/resources/webjars/",
-                "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
-
-        if (!registry.hasMappingForPattern("/**")) {
-            registry.addResourceHandler("/**").addResourceLocations(STATIC_RESOURCE);
-        }
-    }
 
     @Bean
     public RestTemplate restTemplate() {
