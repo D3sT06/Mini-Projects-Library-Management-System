@@ -1,0 +1,58 @@
+server:
+  port: 7003
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: password
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        generate_statistics: true
+  application:
+    name: ACCOUNT
+
+app:
+  security:
+    url:
+      password-login: /api/auth/login/default
+      facebook-login: /api/auth/login/facebook
+    jwt:
+      privateKey: ssahin
+      ttl: 3600
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
+
+aspect:
+  enabled:
+    log-execution-time: true
+    log-null-parameters: true
+
+logging:
+  level:
+    com.sahin.library_management: debug
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /swagger/docs
+    enabled: false
+
+security:
+  authentication:
+    basic: false
+
