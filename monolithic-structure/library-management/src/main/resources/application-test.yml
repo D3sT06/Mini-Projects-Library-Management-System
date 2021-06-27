@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;mode=MYSQL;INIT=CREATE SCHEMA IF NOT EXISTS LIBRARY_MANAGEMENT;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: root
+    password: password
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create-drop
+
+  h2:
+    console:
+      enabled: true
+
+  amqp:
+    enabled: false

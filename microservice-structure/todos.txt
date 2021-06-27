@@ -1,0 +1,9 @@
+1. Log service
+2. Notification service
+3. Config service
+4. Docker and docker compose
+5. Multi-database
+    - SAGA
+6. CQRS and Event Sourcing
+7. Hystrix
+8. Spring Boot Actuator

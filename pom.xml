@@ -9,16 +9,8 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>library-management</module>
-        <module>lms-library-service</module>
-        <module>lms-account-service</module>
-        <module>lms-loan-service</module>
-        <module>lms-log-service</module>
-        <module>lms-api-gateway</module>
-        <module>lms-service-discovery</module>
-        <module>lms-config-service</module>
-        <module>lms-infra</module>
-        <module>lms-notification-service</module>
+        <module>monolithic-structure</module>
+        <module>microservice-structure</module>
     </modules>
 
     <properties>

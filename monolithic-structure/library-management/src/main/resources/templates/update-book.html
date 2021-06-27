@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Update Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+<div class="container my-5">
+    <h2 class="mb-5">Update Book</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/model/books/update/{id}(id=${book.id})}" th:object="${book}" method="post">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="title" class="col-form-label">Title</label>
+                        <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
+                        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="publicationDate" class="col-form-label">Publication Date</label>
+                        <input type="date" th:field="*{publicationDate}" class="form-control" id="publicationDate" placeholder="Publication Date">
+                        <span th:if="${#fields.hasErrors('publicationDate')}" th:errors="*{publicationDate}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="author" class="col-form-label">Author</label>
+                        <select type="text" th:field="*{authorId}" class="form-control" id="author" placeholder="Author">
+                            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="categories" class="col-form-label">Categories</label>
+                        <select type="text" th:field="*{categoryIds}" class="form-control" id="categories" placeholder="Categories" multiple="multiple">
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary" style="margin: 10px" value="Update Book">
+                    <input type="button" class="btn btn-primary" style="margin: 10px" value="Back" onclick="location.href = '/model/books'">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
