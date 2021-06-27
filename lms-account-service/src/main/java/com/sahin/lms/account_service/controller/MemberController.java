@@ -41,7 +41,7 @@ public class MemberController implements MemberSwaggerApi {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
     @GetMapping("get/{barcode}")
     public ResponseEntity<Member> getMemberByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(memberService.getMemberByBarcode(barcode));

@@ -1,5 +1,5 @@
 server:
-  port: 7001
+  port: 7005
 
 app:
   security:
@@ -10,7 +10,18 @@ app:
       privateKey: ssahin
       ttl: 3600
 
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
+
 spring:
+  application:
+    name: LOAN
   jpa:
     show-sql: true
     properties:
@@ -69,8 +80,8 @@ amqp:
 feign:
   client:
     appName:
-      library: libraryservice
-      account: accountservice
+      library: LIBRARY
+      account: ACCOUNT
 
 
 

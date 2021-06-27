@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
+import java.util.Locale;
+
 @SpringBootApplication
 @ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
 @EntityScan({"com.sahin.lms.infra"})
@@ -18,6 +20,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories({"com.sahin.lms.infra"})
 public class ApiGatewayApp {
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("en", "US"));
         SpringApplication.run(ApiGatewayApp.class, args);
     }
 }

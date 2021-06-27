@@ -12,7 +12,7 @@ app:
 
 spring:
   application:
-    name: gateway
+    name: GATEWAY
   jpa:
     show-sql: true
     properties:
@@ -51,10 +51,10 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
 
 zuul:
-  routes:
-    accountservice:
-      url:  http://localhost:7003
-      sensitiveHeaders: Cookie,Set-Cookie
-    libraryservice:
-      url: http://localhost:7004
-      sensitiveHeaders: Cookie,Set-Cookie
+  sensitive-headers: Cookie, Set-Cookie
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

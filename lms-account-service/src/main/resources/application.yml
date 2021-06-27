@@ -16,7 +16,7 @@ spring:
         order_updates: true
         generate_statistics: true
   application:
-    name: AccountService
+    name: ACCOUNT
 
 app:
   security:

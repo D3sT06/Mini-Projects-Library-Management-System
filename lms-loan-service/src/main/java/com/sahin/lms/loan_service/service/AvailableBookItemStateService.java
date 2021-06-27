@@ -28,7 +28,7 @@ public class AvailableBookItemStateService extends BookItemStateService {
         BookLoaning bookLoaning = buildBookLoaning(bookItem, member);
         bookLoaning.getBookItem().setStatus(BookStatus.LOANED);
 
-        libraryFeignClient.updateBookItem(bookLoaning.getBookItem());
+        bookItemService.updateStatus(bookLoaning.getBookItem().getBarcode(), BookStatus.LOANED);
         return bookLoaningService.create(bookLoaning);
     }
 

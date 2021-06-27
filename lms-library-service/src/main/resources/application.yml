@@ -20,6 +20,8 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
 
 spring:
+  application:
+    name: LIBRARY
   jpa:
     show-sql: true
     properties:

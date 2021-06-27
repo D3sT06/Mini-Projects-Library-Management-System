@@ -9,13 +9,14 @@ import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.mapper.AccountMapper;
 import com.sahin.lms.infra.mapper.BookItemMapper;
 import com.sahin.lms.infra.mapper.BookLoaningMapper;
+import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.Member;
 import com.sahin.lms.infra.model.book.BookItem;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
 import com.sahin.lms.loan_service.repository.BookLoaningRepository;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
+import com.sahin.lms.loan_service.utils.TokenUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,12 +79,13 @@ public class BookLoaningService {
 
     @Transactional
     public BookLoaning checkOutBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(memberBarcode).getBody();
+
+        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
-        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(bookItemBarcode).getBody();
+        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(TokenUtils.getToken(), bookItemBarcode).getBody();
 
         if (bookItem == null)
             throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
@@ -95,7 +97,7 @@ public class BookLoaningService {
 
     @Transactional
     public void returnBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
@@ -108,7 +110,7 @@ public class BookLoaningService {
 
     @Transactional
     public BookLoaning renewBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
@@ -161,7 +163,7 @@ public class BookLoaningService {
     }
 
     private BookLoaning getBookLoaning(String bookItemBarcode) {
-        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(bookItemBarcode).getBody();
+        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(TokenUtils.getToken(), bookItemBarcode).getBody();
 
         if (bookItem == null)
             throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);

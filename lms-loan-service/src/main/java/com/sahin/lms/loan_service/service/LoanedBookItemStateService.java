@@ -41,7 +41,8 @@ public class LoanedBookItemStateService extends BookItemStateService {
         BookReserving bookReserving = buildBookReserving(bookItem, member);
 
         bookReserving.getBookItem().setStatus(BookStatus.RESERVED_AT_LOAN);
-        libraryFeignClient.updateBookItem(bookReserving.getBookItem());
+        bookItemService.updateStatus(bookReserving.getBookItem().getBarcode(), BookStatus.RESERVED_AT_LOAN);
+
         return bookReservingService.create(bookReserving);
     }
 
@@ -54,7 +55,7 @@ public class LoanedBookItemStateService extends BookItemStateService {
         bookLoaning.setReturnedAt(Instant.now().toEpochMilli());
 
         bookLoaningService.update(bookLoaning);
-        libraryFeignClient.updateBookItem(bookLoaning.getBookItem());
+        bookItemService.updateStatus(bookLoaning.getBookItem().getBarcode(), BookStatus.AVAILABLE);
     }
 
     @Transactional

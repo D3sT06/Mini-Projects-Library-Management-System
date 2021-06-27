@@ -85,7 +85,7 @@ public class SwaggerConfig implements BeanFactoryAware {
             Docket bean = new Docket(DocumentationType.SWAGGER_2)
                     .select()
                     .paths(entry.getValue()::contains)
-                    .apis(RequestHandlerSelectors.basePackage("com.sahin.lms.library_service"))
+                    .apis(RequestHandlerSelectors.basePackage("com.sahin.lms.loan_service"))
                     .build()
                     .groupName(entry.getKey())
                     .apiInfo(metaData())

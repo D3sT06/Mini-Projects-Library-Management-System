@@ -20,15 +20,15 @@ public class NotificationService {
     private String activemqQueueName;
 
     public void deleteLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning, NotificationEvent.DELETE);
+        sendToQueue(loaning.getId(), NotificationEvent.DELETE);
     }
 
     public void createLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning, NotificationEvent.CREATE);
+        sendToQueue(loaning.getId(), NotificationEvent.CREATE);
     }
 
-    public void sendToQueue(BookLoaning bookLoaning, NotificationEvent event) {
-        LoanNotification loanNotification = new LoanNotification(bookLoaning, event);
+    public void sendToQueue(Long bookLoaningId, NotificationEvent event) {
+        LoanNotification loanNotification = new LoanNotification(bookLoaningId, event);
         jmsTemplate.convertAndSend(activemqQueueName, loanNotification);
         log.info("Loan notification has pushed to the queue");
     }

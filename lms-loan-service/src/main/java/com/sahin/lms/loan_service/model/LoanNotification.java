@@ -6,10 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoanNotification {
-    private BookLoaning bookLoaning;
+public class LoanNotification implements Serializable {
+
+    private static final long serialVersionUID = 1224354343512300009L;
+
+    private Long bookLoaningId;
     private NotificationEvent event;
 }

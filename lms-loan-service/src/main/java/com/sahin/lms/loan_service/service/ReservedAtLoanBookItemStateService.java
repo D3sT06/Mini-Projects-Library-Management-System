@@ -50,7 +50,7 @@ public class ReservedAtLoanBookItemStateService extends BookItemStateService {
 
         bookReservingService.update(bookReserving.get());
         bookLoaningService.update(bookLoaning);
-        libraryFeignClient.updateBookItem(bookLoaning.getBookItem());
+        bookItemService.updateStatus(bookLoaning.getBookItem().getBarcode(), BookStatus.RESERVED_AT_LIBRARY);
     }
 
     public BookLoaning renewBookItem(BookLoaning bookLoaning, Member member) {

@@ -4,6 +4,7 @@ import com.sahin.lms.infra.model.account.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookLoaning {
+
     private Long id;
 
     @NotNull

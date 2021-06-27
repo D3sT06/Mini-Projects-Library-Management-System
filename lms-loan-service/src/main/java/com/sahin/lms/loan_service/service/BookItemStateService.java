@@ -22,7 +22,13 @@ public abstract class BookItemStateService {
 
     protected BookLoaningService bookLoaningService;
     protected BookReservingService bookReservingService;
+    protected BookItemService bookItemService;
     protected LibraryFeignClient libraryFeignClient;
+
+    @Autowired
+    public final void setBookItemService(BookItemService bookItemService) {
+        this.bookItemService = bookItemService;
+    }
 
     @Autowired
     public final void setBookLoaningService(BookLoaningService bookLoaningService) {

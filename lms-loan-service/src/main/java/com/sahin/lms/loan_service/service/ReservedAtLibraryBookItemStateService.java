@@ -31,7 +31,7 @@ public class ReservedAtLibraryBookItemStateService extends BookItemStateService 
 
         if (!isValidReservation(bookReserving.get())) {
             bookItem.setStatus(BookStatus.AVAILABLE);
-            libraryFeignClient.updateBookItem(bookItem);
+            bookItemService.updateStatus(bookItem.getBarcode(), BookStatus.AVAILABLE);
             BookItemStateService itemStateService = bookLoaningService.getServiceMap().get(bookItem.getStatus());
             return itemStateService.checkOutBookItem(bookItem, member);
         }
@@ -43,7 +43,7 @@ public class ReservedAtLibraryBookItemStateService extends BookItemStateService 
         BookLoaning bookLoaning = buildBookLoaning(bookItem, member);
         bookLoaning.getBookItem().setStatus(BookStatus.LOANED);
 
-        libraryFeignClient.updateBookItem(bookLoaning.getBookItem());
+        bookItemService.updateStatus(bookLoaning.getBookItem().getBarcode(), BookStatus.LOANED);
         return bookLoaningService.create(bookLoaning);
     }
 

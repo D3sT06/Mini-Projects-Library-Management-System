@@ -14,6 +14,7 @@ import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
 import com.sahin.lms.loan_service.repository.BookReservingRepository;
 import com.sahin.lms.infra.mapper.CyclePreventiveContext;
+import com.sahin.lms.loan_service.utils.TokenUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,12 +71,12 @@ public class BookReservingService {
 
     @Transactional
     public BookReserving reserveBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
-        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(bookItemBarcode).getBody();
+        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(TokenUtils.getToken(), bookItemBarcode).getBody();
 
         if (bookItem == null)
             throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
