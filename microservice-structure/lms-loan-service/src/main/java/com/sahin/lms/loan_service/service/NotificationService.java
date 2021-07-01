@@ -2,7 +2,7 @@ package com.sahin.lms.loan_service.service;
 
 import com.sahin.lms.infra.enums.NotificationEvent;
 import com.sahin.lms.infra.model.book.BookLoaning;
-import com.sahin.lms.loan_service.model.LoanNotification;
+import com.sahin.lms.infra.model.notification.LoanNotification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,15 +20,22 @@ public class NotificationService {
     private String activemqQueueName;
 
     public void deleteLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning.getId(), NotificationEvent.DELETE);
+        sendToQueue(loaning, NotificationEvent.LOAN_DELETE);
     }
 
     public void createLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning.getId(), NotificationEvent.CREATE);
+        sendToQueue(loaning, NotificationEvent.LOAN_CREATE);
     }
 
-    public void sendToQueue(Long bookLoaningId, NotificationEvent event) {
-        LoanNotification loanNotification = new LoanNotification(bookLoaningId, event);
+    public void sendToQueue(BookLoaning bookLoaning, NotificationEvent event) {
+        LoanNotification loanNotification = new LoanNotification(
+                bookLoaning.getId(),
+                bookLoaning.getDueDate(),
+                event,
+                bookLoaning.getMember().getLibraryCard().getBarcode(),
+                bookLoaning.getMember().getEmail()
+        );
+
         jmsTemplate.convertAndSend(activemqQueueName, loanNotification);
         log.info("Loan notification has pushed to the queue");
     }

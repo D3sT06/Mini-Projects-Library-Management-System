@@ -1,5 +1,5 @@
 package com.sahin.lms.infra.enums;
 
 public enum NotificationEvent {
-    CREATE, DELETE
+    LOAN_CREATE, LOAN_DELETE
 }

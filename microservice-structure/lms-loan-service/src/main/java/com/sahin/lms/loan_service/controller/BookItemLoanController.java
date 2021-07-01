@@ -4,6 +4,7 @@ import com.sahin.lms.infra.annotation.LogExecutionTime;
 import com.sahin.lms.infra.enums.LogAction;
 import com.sahin.lms.infra.enums.LogTopic;
 import com.sahin.lms.infra.model.account.LibraryCard;
+import com.sahin.lms.infra.model.book.Book;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import com.sahin.lms.infra.model.log.MemberLog;
 import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
