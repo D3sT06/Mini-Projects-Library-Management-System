@@ -7,13 +7,14 @@ import com.sahin.lms.infra.enums.BookStatus;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.mapper.BookItemMapper;
 import com.sahin.lms.infra.mapper.BookReservingMapper;
+import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.Member;
+import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.model.book.BookItem;
 import com.sahin.lms.infra.model.book.BookReserving;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
 import com.sahin.lms.loan_service.repository.BookReservingRepository;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.loan_service.utils.TokenUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,9 @@ public class BookReservingService {
     @Autowired
     private BookItemMapper bookItemMapper;
 
+    @Autowired
+    private ApiKeyConfig apiKeyConfig;
+
     @Getter
     private Map<BookStatus, BookItemStateService> serviceMap;
 
@@ -71,7 +75,7 @@ public class BookReservingService {
 
     @Transactional
     public BookReserving reserveBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(apiKeyConfig.getValue(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);

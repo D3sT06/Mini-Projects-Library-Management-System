@@ -11,6 +11,7 @@ import com.sahin.lms.infra.mapper.BookItemMapper;
 import com.sahin.lms.infra.mapper.BookLoaningMapper;
 import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.Member;
+import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.model.book.BookItem;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
@@ -65,8 +66,13 @@ public class BookLoaningService {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private ApiKeyConfig apiKeyConfig;
+
     @Getter
     private Map<BookStatus, BookItemStateService> serviceMap;
+
+
 
     @PostConstruct
     public void setServiceMap() {
@@ -80,7 +86,7 @@ public class BookLoaningService {
     @Transactional
     public BookLoaning checkOutBookItem(String bookItemBarcode, String memberBarcode) {
 
-        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(apiKeyConfig.getValue(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
@@ -97,7 +103,7 @@ public class BookLoaningService {
 
     @Transactional
     public void returnBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(apiKeyConfig.getValue(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
@@ -110,7 +116,7 @@ public class BookLoaningService {
 
     @Transactional
     public BookLoaning renewBookItem(String bookItemBarcode, String memberBarcode) {
-        Member member = accountFeignClient.getMemberByBarcode(TokenUtils.getToken(), memberBarcode).getBody();
+        Member member = accountFeignClient.getMemberByBarcode(apiKeyConfig.getValue(), memberBarcode).getBody();
 
         if (member == null)
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);

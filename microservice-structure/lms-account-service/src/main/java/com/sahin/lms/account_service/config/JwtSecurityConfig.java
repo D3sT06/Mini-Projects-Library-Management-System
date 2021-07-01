@@ -1,8 +1,10 @@
 package com.sahin.lms.account_service.config;
 
+import com.sahin.lms.infra.auth.ApiKeyValidationfilter;
 import com.sahin.lms.infra.auth.JwtAuthenticationEntryPoint;
 import com.sahin.lms.infra.auth.JwtTokenDecoderService;
 import com.sahin.lms.infra.auth.TokenValidationFilter;
+import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.service.LibraryCardService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
@@ -37,11 +39,13 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenDecoderService jwtTokenDecoderService;
     private final LibraryCardService libraryCardService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final ApiKeyConfig apiKeyConfig;
 
-    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, ApiKeyConfig apiKeyConfig) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
         this.libraryCardService = libraryCardService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.apiKeyConfig = apiKeyConfig;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                 .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new ApiKeyValidationfilter(apiKeyConfig, jwtAuthenticationEntryPoint), TokenValidationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()

@@ -1,5 +1,6 @@
 package com.sahin.lms.loan_service.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

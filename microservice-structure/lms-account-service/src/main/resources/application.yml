@@ -56,3 +56,6 @@ security:
   authentication:
     basic: false
 
+api-key:
+  header: ${apiKeyHeader:x-api-key}
+  value: ${apiKeyValue:9P6LWbP3om4JgoA4ezukx6f6sInSzqBA38HLWqSP}
