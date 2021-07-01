@@ -1,7 +1,8 @@
 DONE 1. Log service
 DONE 2. Notification service
+DONE 2-2. Account feign client, api-key kullansın.
 
-2. Account feign client, api-key kullansın.
+
 3. Config service
 4. Docker and docker compose
 5. Multi-database
