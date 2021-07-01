@@ -1,5 +1,6 @@
-1. Log service
-2. Notification service
+DONE 1. Log service
+DONE 2. Notification service
+
 3. Config service
 4. Docker and docker compose
 5. Multi-database
