@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class LoanNotification extends BaseNotification implements Serializable {
+public class LoanNotification extends BaseNotification {
 
     private static final long serialVersionUID = 1224354343512300009L;
 

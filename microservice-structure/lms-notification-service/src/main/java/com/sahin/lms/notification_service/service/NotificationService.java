@@ -3,6 +3,7 @@ package com.sahin.lms.notification_service.service;
 import com.sahin.lms.infra.entity.redis.NotificationEntity;
 import com.sahin.lms.infra.mapper.NotificationMapper;
 import com.sahin.lms.infra.model.notification.BaseNotification;
+import com.sahin.lms.infra.model.notification.LoanNotification;
 import com.sahin.lms.infra.model.notification.Notification;
 import com.sahin.lms.notification_service.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +75,7 @@ public abstract class NotificationService {
         deleteFromCache(entities, currentTime);
     }
 
-    @JmsListener(destination = "${spring.activemq.queue.notificationsQueueName}")
+    @JmsListener(destination = "${spring.activemq.queue.notifications}")
     public void receive(BaseNotification notification) {
 
         switch (notification.getEvent()) {

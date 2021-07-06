@@ -1,18 +1,20 @@
 package com.sahin.lms.account_service.config;
 
-import com.sahin.lms.infra.auth.ApiKeyValidationFilter;
-import com.sahin.lms.infra.auth.JwtAuthenticationEntryPoint;
-import com.sahin.lms.infra.auth.JwtTokenDecoderService;
-import com.sahin.lms.infra.auth.TokenValidationFilter;
+import com.sahin.lms.infra.auth.*;
 import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.service.LibraryCardService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -46,6 +48,13 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         this.libraryCardService = libraryCardService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.apiKeyConfig = apiKeyConfig;
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
+        MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(passwordEncoder);
+        myAuthenticationProvider.setUserDetailsService(libraryCardService);
+        return myAuthenticationProvider;
     }
 
     @Override

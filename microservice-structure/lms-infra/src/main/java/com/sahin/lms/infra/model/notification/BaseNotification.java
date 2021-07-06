@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public abstract class BaseNotification {
+public abstract class BaseNotification implements Serializable {
 
     protected NotificationEvent event;
     protected String cardBarcode;

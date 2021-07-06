@@ -50,6 +50,7 @@ public class LoanNotificationService extends NotificationService {
 
         notificationRepository.saveAll(entities);
         redisTemplate.opsForZSet().add(timeToSendKey, getTypedTuples(entities));
+        log.info(entities.size() + " notifications were created.");
     }
 
     private void deleteLoanNotifications(LoanNotification notification) {
@@ -61,6 +62,8 @@ public class LoanNotificationService extends NotificationService {
             redisTemplate.opsForZSet().remove(timeToSendKey, entities.stream()
                     .map(NotificationEntity::getId)
                     .toArray());
+
+        log.info(entities.size() + " notifications were deleted.");
     }
 
     private List<NotificationEntity> createLoanNotificationsBeforeDueDate(LoanNotification notification) {

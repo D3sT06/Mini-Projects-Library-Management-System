@@ -12,6 +12,7 @@ public class ApiKeyAuthToken extends AbstractAuthenticationToken {
     public ApiKeyAuthToken(String apiKey, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.apiKey = apiKey;
+        super.setAuthenticated(true);
     }
 
     @Override
