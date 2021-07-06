@@ -6,9 +6,6 @@ app:
     url:
       password-login: /api/auth/login/default
       facebook-login: /api/auth/login/facebook
-    jwt:
-      privateKey: ssahin
-      ttl: 3600
 
 eureka:
   instance:
@@ -33,13 +30,14 @@ spring:
         order_updates: true
         generate_statistics: true
 
-  mongodb:
-    port: 27017
-    host: localhost
-    username: root
-    password: password
-    authentication-database: admin
-    database: logs
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      username: root
+      password: password
+      authentication-database: admin
+      database: logs
 
   redis:
     host: localhost

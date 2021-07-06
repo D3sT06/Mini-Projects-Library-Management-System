@@ -3,14 +3,15 @@ package com.sahin.lms.infra.auth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 
 @Component
+@PropertySource("jwt.properties")
 public class JwtTokenDecoderService {
 
     @Value("${app.security.jwt.privateKey}")

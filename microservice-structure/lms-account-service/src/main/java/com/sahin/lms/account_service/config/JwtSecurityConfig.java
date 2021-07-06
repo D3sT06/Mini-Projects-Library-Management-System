@@ -1,6 +1,6 @@
 package com.sahin.lms.account_service.config;
 
-import com.sahin.lms.infra.auth.ApiKeyValidationfilter;
+import com.sahin.lms.infra.auth.ApiKeyValidationFilter;
 import com.sahin.lms.infra.auth.JwtAuthenticationEntryPoint;
 import com.sahin.lms.infra.auth.JwtTokenDecoderService;
 import com.sahin.lms.infra.auth.TokenValidationFilter;
@@ -61,7 +61,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
                 .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new ApiKeyValidationfilter(apiKeyConfig, jwtAuthenticationEntryPoint), TokenValidationFilter.class)
+                .addFilterAfter(new ApiKeyValidationFilter(apiKeyConfig, jwtAuthenticationEntryPoint), TokenValidationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()

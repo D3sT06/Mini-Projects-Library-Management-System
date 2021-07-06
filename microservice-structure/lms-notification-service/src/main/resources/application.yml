@@ -6,9 +6,6 @@ app:
     url:
       password-login: /api/auth/login/default
       facebook-login: /api/auth/login/facebook
-    jwt:
-      privateKey: ssahin
-      ttl: 3600
 
 eureka:
   instance:

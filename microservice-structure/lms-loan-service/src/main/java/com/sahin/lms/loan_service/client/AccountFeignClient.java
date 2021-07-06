@@ -1,9 +1,6 @@
 package com.sahin.lms.loan_service.client;
 
 import com.sahin.lms.infra.model.account.Member;
-import com.sahin.lms.loan_service.utils.ApiKeyUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

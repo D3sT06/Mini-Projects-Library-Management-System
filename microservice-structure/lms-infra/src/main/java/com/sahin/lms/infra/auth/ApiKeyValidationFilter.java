@@ -18,13 +18,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApiKeyValidationfilter extends GenericFilterBean {
+public class ApiKeyValidationFilter extends GenericFilterBean {
 
     private final ApiKeyConfig apiKeyConfig;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
 
-    public ApiKeyValidationfilter(ApiKeyConfig apiKeyConfig, JwtAuthenticationEntryPoint authenticationEntryPoint) {
+    public ApiKeyValidationFilter(ApiKeyConfig apiKeyConfig, JwtAuthenticationEntryPoint authenticationEntryPoint) {
         this.apiKeyConfig = apiKeyConfig;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }

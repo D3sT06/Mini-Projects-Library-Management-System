@@ -6,9 +6,6 @@ app:
     url:
       password-login: /api/auth/login/default
       facebook-login: /api/auth/login/facebook
-    jwt:
-      privateKey: ssahin
-      ttl: 3600
 
 eureka:
   instance:
@@ -82,8 +79,5 @@ feign:
     appName:
       library: LIBRARY
       account: ACCOUNT
-
-api-key:
-  value: ${apiKeyValue:9P6LWbP3om4JgoA4ezukx6f6sInSzqBA38HLWqSP}
 
 
