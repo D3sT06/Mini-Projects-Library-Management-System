@@ -13,7 +13,7 @@ import java.util.Locale;
 
 @SpringBootApplication
 @ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
-@EntityScan({"com.sahin.lms.infra"})
+@EntityScan({"com.sahin.lms.infra.entity.account"})
 @EnableJpaRepositories({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
 @EnableZuulProxy
 @EnableDiscoveryClient

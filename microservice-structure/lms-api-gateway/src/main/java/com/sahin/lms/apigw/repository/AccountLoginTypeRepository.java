@@ -1,6 +1,6 @@
 package com.sahin.lms.apigw.repository;
 
-import com.sahin.lms.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountLoginTypeEntity;
 import com.sahin.lms.infra.enums.LoginType;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

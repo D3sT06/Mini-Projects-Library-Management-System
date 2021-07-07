@@ -2,7 +2,7 @@ package com.sahin.lms.apigw.service;
 
 import com.sahin.lms.apigw.repository.AccountLoginTypeRepository;
 import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountLoginTypeEntity;
 import com.sahin.lms.infra.enums.LoginType;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.mapper.AccountLoginTypeMapper;
