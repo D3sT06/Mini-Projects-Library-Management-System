@@ -1,15 +1,17 @@
-package com.sahin.lms.infra.entity.jpa;
+package com.sahin.lms.infra.entity.loan.jpa;
 
+import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookItemEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "book_reserving", schema = "library_management")
+@Table(name = "book_loaning", schema = "library_management")
 @Getter
 @Setter
-public class BookReservingEntity {
+public class BookLoaningEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +26,12 @@ public class BookReservingEntity {
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
     private AccountEntity member;
 
-    @Column(name = "reserved_at")
-    private Long reservedAt;
+    @Column(name = "loaned_at")
+    private Long loanedAt;
 
     @Column(name = "due_date")
     private Long dueDate;
 
-    @Column(name = "expected_loan_at")
-    private Long expectedLoanAt;
+    @Column(name = "returned_at")
+    private Long returnedAt;
 }

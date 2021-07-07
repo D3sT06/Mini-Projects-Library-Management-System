@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.redis;
+package com.sahin.lms.infra.entity.notification.redis;
 
 import com.sahin.lms.infra.enums.NotificationType;
 import lombok.Getter;

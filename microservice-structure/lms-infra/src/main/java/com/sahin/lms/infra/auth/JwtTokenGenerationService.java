@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.auth;
 
-import com.sahin.lms.infra.entity.redis.TokenEntity;
+import com.sahin.lms.infra.entity.account.redis.TokenEntity;
 import com.sahin.lms.infra.model.account.LibraryCard;
 import com.sahin.lms.infra.repository.TokenRepository;
 import io.jsonwebtoken.Jwts;

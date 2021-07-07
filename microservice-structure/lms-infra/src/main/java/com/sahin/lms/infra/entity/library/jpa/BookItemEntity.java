@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.jpa;
+package com.sahin.lms.infra.entity.library.jpa;
 
 import com.sahin.lms.infra.enums.BookStatus;
 import lombok.Getter;

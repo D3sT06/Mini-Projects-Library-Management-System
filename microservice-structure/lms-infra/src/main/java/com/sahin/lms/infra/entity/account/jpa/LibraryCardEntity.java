@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.jpa;
+package com.sahin.lms.infra.entity.account.jpa;
 
 import com.sahin.lms.infra.enums.AccountFor;
 import lombok.Getter;

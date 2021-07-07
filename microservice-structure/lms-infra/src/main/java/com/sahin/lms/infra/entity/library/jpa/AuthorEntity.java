@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.jpa;
+package com.sahin.lms.infra.entity.library.jpa;
 
 import lombok.Getter;
 import lombok.Setter;

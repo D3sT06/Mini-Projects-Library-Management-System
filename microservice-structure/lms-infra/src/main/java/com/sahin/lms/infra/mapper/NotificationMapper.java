@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.mapper;
 
-import com.sahin.lms.infra.entity.redis.NotificationEntity;
+import com.sahin.lms.infra.entity.notification.redis.NotificationEntity;
 import com.sahin.lms.infra.enums.NotificationType;
 import com.sahin.lms.infra.model.notification.Notification;
 import org.mapstruct.AfterMapping;

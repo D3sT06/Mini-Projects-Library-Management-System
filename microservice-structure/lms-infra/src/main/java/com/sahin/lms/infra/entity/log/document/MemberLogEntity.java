@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.document;
+package com.sahin.lms.infra.entity.log.document;
 
 import com.sahin.lms.infra.enums.LogAction;
 import lombok.Getter;

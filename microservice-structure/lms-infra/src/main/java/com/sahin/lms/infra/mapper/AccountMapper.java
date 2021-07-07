@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.mapper;
 
-import com.sahin.lms.infra.entity.jpa.AccountEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
 import com.sahin.lms.infra.enums.AccountFor;
 import com.sahin.lms.infra.model.account.Account;
 import com.sahin.lms.infra.model.account.Librarian;

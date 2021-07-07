@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.helper;
 
-import com.sahin.lms.infra.entity.jpa.BookEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookEntity;
 import com.sahin.lms.infra.projections.AuthorProjections;
 import lombok.Getter;
 

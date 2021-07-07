@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.jpa;
+package com.sahin.lms.infra.entity.log.jpa;
 
 import com.sahin.lms.infra.enums.AccountFor;
 import com.sahin.lms.infra.enums.LogAction;

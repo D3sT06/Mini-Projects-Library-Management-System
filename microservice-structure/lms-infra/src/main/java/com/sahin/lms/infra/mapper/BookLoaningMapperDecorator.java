@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.mapper;
 
-import com.sahin.lms.infra.entity.jpa.BookLoaningEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookLoaningEntity;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import org.springframework.beans.factory.annotation.Autowired;
 

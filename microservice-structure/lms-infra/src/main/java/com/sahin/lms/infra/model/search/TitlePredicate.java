@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.model.search;
 
-import com.sahin.lms.infra.entity.jpa.BookEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookEntity;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;

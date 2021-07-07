@@ -1,6 +1,6 @@
 package com.sahin.lms.infra.mapper;
 
-import com.sahin.lms.infra.entity.jpa.AuthorEntity;
+import com.sahin.lms.infra.entity.library.jpa.AuthorEntity;
 import com.sahin.lms.infra.model.book.Author;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

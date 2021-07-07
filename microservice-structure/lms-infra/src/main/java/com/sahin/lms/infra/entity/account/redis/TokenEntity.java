@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.entity.redis;
+package com.sahin.lms.infra.entity.account.redis;
 
 import lombok.Getter;
 import lombok.Setter;

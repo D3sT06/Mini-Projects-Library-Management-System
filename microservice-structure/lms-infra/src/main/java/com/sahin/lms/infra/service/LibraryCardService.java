@@ -1,7 +1,7 @@
 package com.sahin.lms.infra.service;
 
 import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.jpa.LibraryCardEntity;
+import com.sahin.lms.infra.entity.account.jpa.LibraryCardEntity;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.mapper.LibraryCardMapper;
