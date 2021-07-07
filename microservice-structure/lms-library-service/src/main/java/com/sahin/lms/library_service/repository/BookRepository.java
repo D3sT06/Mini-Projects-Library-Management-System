@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.repository;
 
-import com.sahin.lms.infra.entity.jpa.BookEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

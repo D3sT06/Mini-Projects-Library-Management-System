@@ -1,8 +1,8 @@
 package com.sahin.lms.library_service.bootstrap;
 
-import com.sahin.lms.infra.entity.jpa.BookEntity;
-import com.sahin.lms.infra.entity.jpa.BookItemEntity;
-import com.sahin.lms.infra.entity.jpa.RackEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookItemEntity;
+import com.sahin.lms.infra.entity.library.jpa.RackEntity;
 import com.sahin.lms.infra.enums.BookStatus;
 import com.sahin.lms.library_service.repository.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;

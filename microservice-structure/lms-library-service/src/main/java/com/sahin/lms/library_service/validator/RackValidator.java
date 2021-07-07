@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.validator;
 
-import com.sahin.lms.infra.entity.jpa.RackEntity;
+import com.sahin.lms.infra.entity.library.jpa.RackEntity;
 import com.sahin.lms.infra.model.book.Rack;
 import com.sahin.lms.library_service.repository.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;

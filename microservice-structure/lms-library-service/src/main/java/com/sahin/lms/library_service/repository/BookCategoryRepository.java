@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.repository;
 
-import com.sahin.lms.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.lms.infra.entity.library.jpa.BookCategoryEntity;
 import com.sahin.lms.infra.projections.CategoryProjections;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
