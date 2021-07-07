@@ -1,8 +1,9 @@
 package com.sahin.lms.apigw.config;
 
 import com.sahin.lms.apigw.service.AccountLoginTypeService;
-import com.sahin.lms.infra.auth.*;
-import com.sahin.lms.infra.service.LibraryCardService;
+import com.sahin.lms.apigw.service.LibraryCardService;
+import com.sahin.lms.infra.authorization.JwtAuthenticationEntryPoint;
+import com.sahin.lms.infraauth.auth.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

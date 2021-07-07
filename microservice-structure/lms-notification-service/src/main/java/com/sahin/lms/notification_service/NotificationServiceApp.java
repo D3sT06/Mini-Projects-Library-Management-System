@@ -12,7 +12,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableEurekaClient
 @ComponentScan({"com.sahin.lms.notification_service", "com.sahin.lms.infra"})
 @EntityScan({"com.sahin.lms.infra"})
-@EnableJpaRepositories({"com.sahin.lms.notification_service", "com.sahin.lms.infra"})
+@EnableJpaRepositories({"com.sahin.lms.notification_service"})
 @EnableRedisRepositories({"com.sahin.lms.notification_service", "com.sahin.lms.infra"})
 public class NotificationServiceApp {
     public static void main(String[] args) {

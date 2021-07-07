@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infra.authorization;
 
 import com.sahin.lms.infra.model.auth.ApiKeyAuthToken;
 import com.sahin.lms.infra.model.auth.ApiKeyConfig;

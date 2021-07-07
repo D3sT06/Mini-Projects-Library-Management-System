@@ -1,5 +1,6 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infra.authorization;
 
+import com.sahin.lms.infra.enums.AccountFor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,12 +20,22 @@ public class JwtTokenDecoderService {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = this.getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && isActive(token));
     }
 
     public String getUsernameFromToken(String token) {
         Claims claims = decodeJwt(token);
         return claims.getSubject();
+    }
+
+    public Boolean isActive(String token) {
+        Claims claims = decodeJwt(token);
+        return (Boolean) claims.get("active");
+    }
+
+    public AccountFor getAccountFor(String token) {
+        Claims claims = decodeJwt(token);
+        return AccountFor.valueOf((String) claims.get("accountFor"));
     }
 
     public Date getExpirationDateFromToken(String token) {

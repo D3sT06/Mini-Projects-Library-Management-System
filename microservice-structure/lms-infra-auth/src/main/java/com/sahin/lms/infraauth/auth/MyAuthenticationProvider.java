@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infraauth.auth;
 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;

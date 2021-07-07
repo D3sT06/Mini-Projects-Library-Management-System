@@ -21,6 +21,7 @@
         <module>lms-config-service</module>
         <module>lms-infra</module>
         <module>lms-notification-service</module>
+        <module>lms-infra-auth</module>
     </modules>
 
 </project>

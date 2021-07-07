@@ -1,11 +1,11 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infra.authorization;
 
+import com.sahin.lms.infra.model.account.LibraryCard;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -20,12 +20,10 @@ import java.io.IOException;
 public class TokenValidationFilter extends GenericFilterBean {
 
     private final JwtTokenDecoderService jwtTokenDecoderService;
-    private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    public TokenValidationFilter(JwtTokenDecoderService jwtTokenDecoderService, UserDetailsService userDetailsService, JwtAuthenticationEntryPoint authenticationEntryPoint) {
+    public TokenValidationFilter(JwtTokenDecoderService jwtTokenDecoderService, JwtAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
-        this.userDetailsService = userDetailsService;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
@@ -39,7 +37,7 @@ public class TokenValidationFilter extends GenericFilterBean {
             try {
                 username = jwtTokenDecoderService.getUsernameFromToken(token);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = this.createUserDetails(token);
 
                     if (this.jwtTokenDecoderService.validateToken(token, userDetails)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -73,5 +71,14 @@ public class TokenValidationFilter extends GenericFilterBean {
             jwt = bearerToken.substring(7);
         }
         return jwt;
+    }
+
+    private UserDetails createUserDetails(String token) {
+        LibraryCard libraryCard = new LibraryCard();
+        libraryCard.setAccountFor(jwtTokenDecoderService.getAccountFor(token));
+        libraryCard.setActive(jwtTokenDecoderService.isActive(token));
+        libraryCard.setBarcode(jwtTokenDecoderService.getUsernameFromToken(token));
+
+        return libraryCard;
     }
 }

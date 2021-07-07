@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infra.authorization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sahin.lms.infra.exception.ErrorResponse;

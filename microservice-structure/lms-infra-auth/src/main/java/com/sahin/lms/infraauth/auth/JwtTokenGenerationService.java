@@ -1,8 +1,8 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infraauth.auth;
 
 import com.sahin.lms.infra.entity.account.redis.TokenEntity;
 import com.sahin.lms.infra.model.account.LibraryCard;
-import com.sahin.lms.infra.repository.TokenRepository;
+import com.sahin.lms.infraauth.repository.TokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +31,29 @@ public class JwtTokenGenerationService {
 
     public String getToken(Authentication authentication) {
 
-        String cardBarcode = ((LibraryCard) authentication.getPrincipal()).getBarcode();
-        Optional<String> tokenFromCache = getTokenFromCache(cardBarcode);
+        LibraryCard card = (LibraryCard) authentication.getPrincipal();
+        Optional<String> tokenFromCache = getTokenFromCache(card.getBarcode());
+
         if (tokenFromCache.isPresent())
             return tokenFromCache.get();
 
-        String token = generateToken(authentication, cardBarcode);
+        String token = generateToken(card);
 
-        saveTokenIntoCache(cardBarcode, token);
+        saveTokenIntoCache(card.getBarcode(), token);
 
         return token;
     }
 
-    private String generateToken(Authentication authentication, String cardBarcode) {
+    private String generateToken(LibraryCard libraryCard) {
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiresAt = new Date(System.currentTimeMillis() + this.ttl * 1000);
         Map<String, Object> claims = new HashMap<>();
-        claims.put("authorities", authentication.getAuthorities());
+        claims.put("accountFor", libraryCard.getAccountFor());
+        claims.put("active", libraryCard.getActive());
 
         String token = Jwts.builder()
                 .setClaims(claims)
-                .setSubject(cardBarcode)
+                .setSubject(libraryCard.getBarcode())
                 .setIssuedAt(issuedAt)
                 .setExpiration(expiresAt)
                 .signWith(SignatureAlgorithm.HS512, this.privateKey).compact();

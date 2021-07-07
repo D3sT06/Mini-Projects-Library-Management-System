@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sahin.lms.infra.annotation.NullableUUIDFormat;
-import com.sahin.lms.infra.auth.CustomAuthorityDeserializer;
+import com.sahin.lms.infra.authorization.CustomAuthorityDeserializer;
 import com.sahin.lms.infra.enums.AccountFor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

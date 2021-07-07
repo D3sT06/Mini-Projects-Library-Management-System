@@ -11,9 +11,8 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @SpringBootApplication
 @EnableEurekaClient
 @ComponentScan({"com.sahin.lms.log_service", "com.sahin.lms.infra"})
-@EntityScan({"com.sahin.lms.infra"})
-@EnableJpaRepositories({"com.sahin.lms.log_service", "com.sahin.lms.infra"})
-@EnableRedisRepositories({"com.sahin.lms.infra"})
+@EntityScan({"com.sahin.lms.infra.entity.log"})
+@EnableJpaRepositories({"com.sahin.lms.log_service"})
 public class LogServiceApp {
     public static void main(String[] args) {
         SpringApplication.run(LogServiceApp.class, args);

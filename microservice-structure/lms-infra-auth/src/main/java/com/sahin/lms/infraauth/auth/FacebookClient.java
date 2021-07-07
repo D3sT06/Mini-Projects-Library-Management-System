@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.auth;
+package com.sahin.lms.infraauth.auth;
 
 import com.sahin.lms.infra.model.auth.FacebookUser;
 import org.springframework.beans.factory.annotation.Autowired;

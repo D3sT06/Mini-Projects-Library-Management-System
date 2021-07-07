@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost:9090/mem:accountdb
+    url: jdbc:h2:mem:librarydb;mode=MYSQL;INIT=CREATE SCHEMA IF NOT EXISTS LIBRARY_MANAGEMENT
     driver-class-name: org.h2.Driver
     username: root
     password: password

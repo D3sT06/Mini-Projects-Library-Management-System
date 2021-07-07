@@ -1,4 +1,4 @@
-package com.sahin.lms.infra.repository;
+package com.sahin.lms.infraauth.repository;
 
 import com.sahin.lms.infra.entity.account.redis.TokenEntity;
 import org.springframework.data.repository.CrudRepository;

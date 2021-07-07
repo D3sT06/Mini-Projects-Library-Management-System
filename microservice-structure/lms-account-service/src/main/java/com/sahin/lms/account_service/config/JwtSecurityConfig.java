@@ -1,20 +1,17 @@
 package com.sahin.lms.account_service.config;
 
-import com.sahin.lms.infra.auth.*;
+import com.sahin.lms.infra.authorization.ApiKeyValidationFilter;
+import com.sahin.lms.infra.authorization.JwtAuthenticationEntryPoint;
+import com.sahin.lms.infra.authorization.JwtTokenDecoderService;
+import com.sahin.lms.infra.authorization.TokenValidationFilter;
 import com.sahin.lms.infra.model.auth.ApiKeyConfig;
-import com.sahin.lms.infra.service.LibraryCardService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -39,22 +36,13 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final JwtTokenDecoderService jwtTokenDecoderService;
-    private final LibraryCardService libraryCardService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final ApiKeyConfig apiKeyConfig;
 
-    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, ApiKeyConfig apiKeyConfig) {
+    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, ApiKeyConfig apiKeyConfig) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
-        this.libraryCardService = libraryCardService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.apiKeyConfig = apiKeyConfig;
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
-        MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(passwordEncoder);
-        myAuthenticationProvider.setUserDetailsService(libraryCardService);
-        return myAuthenticationProvider;
     }
 
     @Override
@@ -69,7 +57,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 // in order to get the H2 console working.
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().anonymous().and()
-                .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, libraryCardService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new TokenValidationFilter(jwtTokenDecoderService, jwtAuthenticationEntryPoint), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new ApiKeyValidationFilter(apiKeyConfig, jwtAuthenticationEntryPoint), TokenValidationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()

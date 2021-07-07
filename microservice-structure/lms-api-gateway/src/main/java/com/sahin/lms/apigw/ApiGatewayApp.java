@@ -12,12 +12,12 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import java.util.Locale;
 
 @SpringBootApplication
-@ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
+@ComponentScan({"com.sahin.lms.apigw", "com.sahin.lms.infra", "com.sahin.lms.infraauth"})
 @EntityScan({"com.sahin.lms.infra.entity.account"})
-@EnableJpaRepositories({"com.sahin.lms.apigw", "com.sahin.lms.infra"})
+@EnableJpaRepositories({"com.sahin.lms.apigw", "com.sahin.lms.infraauth"})
 @EnableZuulProxy
 @EnableDiscoveryClient
-@EnableRedisRepositories({"com.sahin.lms.infra"})
+@EnableRedisRepositories({"com.sahin.lms.infraauth"})
 public class ApiGatewayApp {
     public static void main(String[] args) {
         Locale.setDefault(new Locale("en", "US"));
