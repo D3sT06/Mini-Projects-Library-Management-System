@@ -1,9 +1,9 @@
 package com.sahin.lms.account_service.bootstrap;
 
 import com.sahin.lms.account_service.repository.AccountRepository;
-import com.sahin.lms.infra.entity.jpa.AccountEntity;
-import com.sahin.lms.infra.entity.jpa.AccountLoginTypeEntity;
-import com.sahin.lms.infra.entity.jpa.LibraryCardEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra.entity.account.jpa.LibraryCardEntity;
 import com.sahin.lms.infra.enums.AccountFor;
 import com.sahin.lms.infra.enums.LoginType;
 import org.springframework.beans.factory.annotation.Autowired;

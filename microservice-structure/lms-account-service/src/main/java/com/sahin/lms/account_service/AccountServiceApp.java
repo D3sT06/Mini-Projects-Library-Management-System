@@ -11,7 +11,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @SpringBootApplication
 @EnableEurekaClient
 @ComponentScan({"com.sahin.lms.account_service", "com.sahin.lms.infra"})
-@EntityScan({"com.sahin.lms.infra"})
+@EntityScan({"com.sahin.lms.infra.entity.account"})
 @EnableJpaRepositories({"com.sahin.lms.account_service", "com.sahin.lms.infra"})
 @EnableRedisRepositories({"com.sahin.lms.infra"})
 public class AccountServiceApp {

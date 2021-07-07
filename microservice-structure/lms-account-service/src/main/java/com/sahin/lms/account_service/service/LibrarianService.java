@@ -2,7 +2,7 @@ package com.sahin.lms.account_service.service;
 
 import com.sahin.lms.account_service.repository.AccountRepository;
 import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.jpa.AccountEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
 import com.sahin.lms.infra.enums.AccountFor;
 import com.sahin.lms.infra.enums.LoginType;
 import com.sahin.lms.infra.exception.MyRuntimeException;
