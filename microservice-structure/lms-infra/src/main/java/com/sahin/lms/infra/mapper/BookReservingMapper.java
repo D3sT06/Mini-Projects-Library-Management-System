@@ -6,15 +6,13 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {BookItemMapper.class, AccountMapper.class})
+@Mapper(componentModel = "spring", uses = {BookItemStateMapper.class})
 @DecoratedWith(BookReservingMapperDecorator.class)
 public interface BookReservingMapper {
 
-    @Mapping(target = "bookItem", ignore = true)
-    @Mapping(target = "member", ignore = true)
+    @Mapping(target = "bookItemState", ignore = true)
     BookReserving toModel(BookReservingEntity entity);
 
-    @Mapping(target = "bookItem", ignore = true)
-    @Mapping(target = "member", ignore = true)
+    @Mapping(target = "bookItemState", ignore = true)
     BookReservingEntity toEntity(BookReserving model);
 }

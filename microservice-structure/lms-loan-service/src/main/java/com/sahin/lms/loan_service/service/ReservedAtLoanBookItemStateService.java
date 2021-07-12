@@ -5,6 +5,7 @@ import com.sahin.lms.infra.enums.BookStatus;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.model.account.Member;
 import com.sahin.lms.infra.model.book.BookItem;
+import com.sahin.lms.infra.model.book.BookItemState;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import com.sahin.lms.infra.model.book.BookReserving;
 import com.sahin.lms.infra.util.DateTimeUtil;
@@ -22,13 +23,13 @@ import java.util.Optional;
 public class ReservedAtLoanBookItemStateService extends BookItemStateService {
 
     @Transactional
-    public BookLoaning checkOutBookItem(BookItem bookItem, Member member) {
-        throw new MyRuntimeException("NOT RETURNED", "The book with a barcode of " + bookItem.getBarcode()
+    public BookLoaning checkOutBookItem(BookItemState bookItemState, Member member) {
+        throw new MyRuntimeException("NOT RETURNED", "The book with a barcode of " + bookItemState.getBarcode()
                 + " has not returned yet.", HttpStatus.BAD_REQUEST);
     }
 
-    public BookReserving reserveBookItem(BookItem bookItem, Member member) {
-        throw new MyRuntimeException("ALREADY RESERVED", "The book with a barcode of " + bookItem.getBarcode()
+    public BookReserving reserveBookItem(BookItemState bookItemState, Member member) {
+        throw new MyRuntimeException("ALREADY RESERVED", "The book with a barcode of " + bookItemState.getBarcode()
                 + " has already been reserved by someone else.", HttpStatus.BAD_REQUEST);
     }
 
@@ -37,10 +38,10 @@ public class ReservedAtLoanBookItemStateService extends BookItemStateService {
         if (!loanedFor(member, bookLoaning))
             throw new MyRuntimeException("FORBIDDEN", "You cannot return a book that was not loaned by someone else", HttpStatus.FORBIDDEN);
 
-        bookLoaning.getBookItem().setStatus(BookStatus.RESERVED_AT_LIBRARY);
+        bookLoaning.getBookItemState().setStatus(BookStatus.RESERVED_AT_LIBRARY);
         bookLoaning.setReturnedAt(Instant.now().toEpochMilli());
 
-        Optional<BookReserving> bookReserving = bookReservingService.findLastByItem(bookLoaning.getBookItem());
+        Optional<BookReserving> bookReserving = bookReservingService.findLastByItem(bookLoaning.getBookItemState());
         if (!bookReserving.isPresent())
             throw new MyRuntimeException("NOT FOUND", "Book reservation is not available", HttpStatus.BAD_REQUEST);
 
@@ -50,7 +51,7 @@ public class ReservedAtLoanBookItemStateService extends BookItemStateService {
 
         bookReservingService.update(bookReserving.get());
         bookLoaningService.update(bookLoaning);
-        bookItemService.updateStatus(bookLoaning.getBookItem().getBarcode(), BookStatus.RESERVED_AT_LIBRARY);
+        this.updateStatus(bookLoaning.getBookItemState(), BookStatus.RESERVED_AT_LIBRARY);
     }
 
     public BookLoaning renewBookItem(BookLoaning bookLoaning, Member member) {

@@ -1,7 +1,5 @@
 package com.sahin.lms.infra.entity.loan.jpa;
 
-import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
-import com.sahin.lms.infra.entity.library.jpa.BookItemEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,12 +17,11 @@ public class BookLoaningEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "book_item_id", nullable = false)
-    private BookItemEntity bookItem;
+    @JoinColumn(name = "book_item_state_id", nullable = false)
+    private BookItemStateEntity bookItemState;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
-    private AccountEntity member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "loaned_at")
     private Long loanedAt;

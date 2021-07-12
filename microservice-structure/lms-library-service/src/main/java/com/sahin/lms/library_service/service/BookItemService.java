@@ -26,10 +26,9 @@ public class BookItemService {
     private BookItemMapper bookItemMapper;
 
     public BookItem createBookItem(BookItem bookItem) {
-        if (bookItem.getBarcode() != null || bookItem.getStatus() != null)
+        if (bookItem.getBarcode() != null)
             throw new MyRuntimeException("NOT CREATED", "Book item to be created cannot have a barcode or a state.", HttpStatus.BAD_REQUEST);
 
-        bookItem.setStatus(BookStatus.AVAILABLE);
         BookItemEntity entity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
         BookItemEntity createdEntity = bookItemRepository.save(entity);
         return bookItemMapper.toModel(createdEntity, new CyclePreventiveContext());

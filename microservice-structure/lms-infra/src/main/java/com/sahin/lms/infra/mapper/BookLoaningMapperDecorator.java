@@ -10,10 +10,7 @@ public abstract class BookLoaningMapperDecorator implements BookLoaningMapper {
     private BookLoaningMapper delegate;
 
     @Autowired
-    private BookItemMapper itemMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
+    private BookItemStateMapper itemStateMapper;
 
     @Override
     public BookLoaning toModel(BookLoaningEntity entity) {
@@ -22,16 +19,14 @@ public abstract class BookLoaningMapperDecorator implements BookLoaningMapper {
         if (loaning == null)
             return null;
 
-        loaning.setBookItem(itemMapper.toModel(entity.getBookItem(), new CyclePreventiveContext()));
-        loaning.setMember(accountMapper.toMemberModel(entity.getMember(), new CyclePreventiveContext()));
+        loaning.setBookItemState(itemStateMapper.toModel(entity.getBookItemState(), new CyclePreventiveContext()));
         return loaning;
     }
 
     @Override
     public BookLoaningEntity toEntity(BookLoaning model) {
         BookLoaningEntity entity = delegate.toEntity(model);
-        entity.setBookItem(itemMapper.toEntity(model.getBookItem(), new CyclePreventiveContext()));
-        entity.setMember(accountMapper.toEntity(model.getMember(), new CyclePreventiveContext()));
+        entity.setBookItemState(itemStateMapper.toEntity(model.getBookItemState(), new CyclePreventiveContext()));
         return entity;
     }
 }

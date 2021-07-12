@@ -3,7 +3,6 @@ package com.sahin.lms.loan_service.config;
 import com.sahin.lms.infra.authorization.JwtAuthenticationEntryPoint;
 import com.sahin.lms.infra.authorization.JwtTokenDecoderService;
 import com.sahin.lms.infra.authorization.TokenValidationFilter;
-import com.sahin.lms.infra.service.LibraryCardService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,12 +34,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final JwtTokenDecoderService jwtTokenDecoderService;
-    private final LibraryCardService libraryCardService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, LibraryCardService libraryCardService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    public JwtSecurityConfig(JwtTokenDecoderService jwtTokenDecoderService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.jwtTokenDecoderService = jwtTokenDecoderService;
-        this.libraryCardService = libraryCardService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 

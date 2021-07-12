@@ -14,10 +14,10 @@ public class BookReserving {
     private Long id;
 
     @NotNull
-    private BookItem bookItem;
+    private BookItemState bookItemState;
 
     @NotNull
-    private Member member;
+    private Long memberId;
     private Long reservedAt;
     private Long dueDate;
     private Long expectedLoanAt;

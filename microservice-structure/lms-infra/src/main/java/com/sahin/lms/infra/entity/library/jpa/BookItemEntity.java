@@ -26,8 +26,4 @@ public class BookItemEntity {
     @ManyToOne
     @JoinColumn(name = "rack_id", nullable = false)
     private RackEntity rack;
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private BookStatus status;
 }

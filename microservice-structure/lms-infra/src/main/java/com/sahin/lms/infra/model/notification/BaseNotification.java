@@ -13,6 +13,5 @@ import java.io.Serializable;
 public abstract class BaseNotification implements Serializable {
 
     protected NotificationEvent event;
-    protected String cardBarcode;
-    protected String mail;
+    protected Long memberId;
 }

@@ -10,24 +10,19 @@ public abstract class BookReservingMapperDecorator implements BookReservingMappe
     private BookReservingMapper delegate;
 
     @Autowired
-    private BookItemMapper itemMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
+    private BookItemStateMapper itemStateMapper;
 
     @Override
     public BookReserving toModel(BookReservingEntity entity) {
         BookReserving model = delegate.toModel(entity);
-        model.setBookItem(itemMapper.toModel(entity.getBookItem(), new CyclePreventiveContext()));
-        model.setMember(accountMapper.toMemberModel(entity.getMember(), new CyclePreventiveContext()));
+        model.setBookItemState(itemStateMapper.toModel(entity.getBookItemState(), new CyclePreventiveContext()));
         return model;
     }
 
     @Override
     public BookReservingEntity toEntity(BookReserving model) {
         BookReservingEntity entity = delegate.toEntity(model);
-        entity.setBookItem(itemMapper.toEntity(model.getBookItem(), new CyclePreventiveContext()));
-        entity.setMember(accountMapper.toEntity(model.getMember(), new CyclePreventiveContext()));
+        entity.setBookItemState(itemStateMapper.toEntity(model.getBookItemState(), new CyclePreventiveContext()));
         return entity;
     }
 }

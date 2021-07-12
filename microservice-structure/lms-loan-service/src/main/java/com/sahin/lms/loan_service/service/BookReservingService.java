@@ -1,16 +1,17 @@
 package com.sahin.lms.loan_service.service;
 
 import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.jpa.BookItemEntity;
-import com.sahin.lms.infra.entity.jpa.BookReservingEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookItemStateEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookReservingEntity;
 import com.sahin.lms.infra.enums.BookStatus;
 import com.sahin.lms.infra.exception.MyRuntimeException;
-import com.sahin.lms.infra.mapper.BookItemMapper;
+import com.sahin.lms.infra.mapper.BookItemStateMapper;
 import com.sahin.lms.infra.mapper.BookReservingMapper;
 import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.Member;
 import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.model.book.BookItem;
+import com.sahin.lms.infra.model.book.BookItemState;
 import com.sahin.lms.infra.model.book.BookReserving;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
@@ -56,7 +57,10 @@ public class BookReservingService {
     private BookReservingMapper bookReservingMapper;
 
     @Autowired
-    private BookItemMapper bookItemMapper;
+    private CommonBookItemStateService commonBookItemStateService;
+
+    @Autowired
+    private BookItemStateMapper bookItemStateMapper;
 
     @Autowired
     private ApiKeyConfig apiKeyConfig;
@@ -85,9 +89,10 @@ public class BookReservingService {
         if (bookItem == null)
             throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
-        BookItemStateService stateService = serviceMap.get(bookItem.getStatus());
+        BookItemState bookItemState = commonBookItemStateService.findById(bookItemBarcode);
+        BookItemStateService stateService = serviceMap.get(bookItemState.getStatus());
 
-        return stateService.reserveBookItem(bookItem, member);
+        return stateService.reserveBookItem(bookItemState, member);
     }
 
     @Transactional
@@ -113,10 +118,10 @@ public class BookReservingService {
     }
 
     @Transactional
-    public Optional<BookReserving> findLastByItem(BookItem bookItem) {
+    public Optional<BookReserving> findLastByItem(BookItemState bookItemState) {
 
-        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
-        Optional<BookReservingEntity> bookReservingEntity = bookReservingRepository.findTopByBookItemOrderByReservedAtDesc(bookItemEntity);
+        BookItemStateEntity bookItemEntity = bookItemStateMapper.toEntity(bookItemState, new CyclePreventiveContext());
+        Optional<BookReservingEntity> bookReservingEntity = bookReservingRepository.findTopByBookItemStateOrderByReservedAtDesc(bookItemEntity);
         return Optional.ofNullable(bookReservingMapper.toModel(bookReservingEntity.orElse(null)));
     }
 }

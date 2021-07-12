@@ -16,8 +16,8 @@ public class LoanNotification extends BaseNotification {
     private Long bookLoaningId;
     private Long bookLoaningDueDate;
 
-    public LoanNotification(Long id, Long dueDate, NotificationEvent event, String barcode, String email) {
-        super(event, barcode, email);
+    public LoanNotification(Long id, Long dueDate, NotificationEvent event, Long memberId) {
+        super(event, memberId);
         this.bookLoaningId = id;
         this.bookLoaningDueDate = dueDate;
     }

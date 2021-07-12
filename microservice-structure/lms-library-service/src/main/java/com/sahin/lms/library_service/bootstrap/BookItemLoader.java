@@ -30,52 +30,42 @@ public class BookItemLoader implements Loader<BookItemEntity> {
         BookItemEntity bookItem1 = new BookItemEntity();
         bookItem1.setBook(books.get(0));
         bookItem1.setRack(racks.get(0));
-        bookItem1.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem2 = new BookItemEntity();
         bookItem2.setBook(books.get(0));
         bookItem2.setRack(racks.get(0));
-        bookItem2.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem3 = new BookItemEntity();
         bookItem3.setBook(books.get(1));
         bookItem3.setRack(racks.get(0));
-        bookItem3.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem4 = new BookItemEntity();
         bookItem4.setBook(books.get(1));
         bookItem4.setRack(racks.get(0));
-        bookItem4.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem5 = new BookItemEntity();
         bookItem5.setBook(books.get(2));
         bookItem5.setRack(racks.get(0));
-        bookItem5.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem6 = new BookItemEntity();
         bookItem6.setBook(books.get(3));
         bookItem6.setRack(racks.get(0));
-        bookItem6.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem7 = new BookItemEntity();
         bookItem7.setBook(books.get(4));
         bookItem7.setRack(racks.get(0));
-        bookItem7.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem8 = new BookItemEntity();
         bookItem8.setBook(books.get(4));
         bookItem8.setRack(racks.get(0));
-        bookItem8.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem9 = new BookItemEntity();
         bookItem9.setBook(books.get(4));
         bookItem9.setRack(racks.get(0));
-        bookItem9.setStatus(BookStatus.AVAILABLE);
 
         BookItemEntity bookItem10 = new BookItemEntity();
         bookItem10.setBook(books.get(4));
         bookItem10.setRack(racks.get(0));
-        bookItem10.setStatus(BookStatus.AVAILABLE);
 
         bookItemRepository.save(bookItem1);
         bookItemRepository.save(bookItem2);

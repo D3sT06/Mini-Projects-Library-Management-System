@@ -32,8 +32,7 @@ public class NotificationService {
                 bookLoaning.getId(),
                 bookLoaning.getDueDate(),
                 event,
-                bookLoaning.getMember().getLibraryCard().getBarcode(),
-                bookLoaning.getMember().getEmail()
+                bookLoaning.getMemberId()
         );
 
         jmsTemplate.convertAndSend(activemqQueueName, loanNotification);

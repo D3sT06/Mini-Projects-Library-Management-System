@@ -1,18 +1,19 @@
 package com.sahin.lms.loan_service.service;
 
 import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.jpa.AccountEntity;
-import com.sahin.lms.infra.entity.jpa.BookItemEntity;
-import com.sahin.lms.infra.entity.jpa.BookLoaningEntity;
+import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookItemStateEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookLoaningEntity;
 import com.sahin.lms.infra.enums.BookStatus;
 import com.sahin.lms.infra.exception.MyRuntimeException;
 import com.sahin.lms.infra.mapper.AccountMapper;
-import com.sahin.lms.infra.mapper.BookItemMapper;
+import com.sahin.lms.infra.mapper.BookItemStateMapper;
 import com.sahin.lms.infra.mapper.BookLoaningMapper;
 import com.sahin.lms.infra.mapper.CyclePreventiveContext;
 import com.sahin.lms.infra.model.account.Member;
 import com.sahin.lms.infra.model.auth.ApiKeyConfig;
 import com.sahin.lms.infra.model.book.BookItem;
+import com.sahin.lms.infra.model.book.BookItemState;
 import com.sahin.lms.infra.model.book.BookLoaning;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
@@ -43,6 +44,9 @@ public class BookLoaningService {
     private NotificationService notificationService;
 
     @Autowired
+    private CommonBookItemStateService commonBookItemStateService;
+
+    @Autowired
     private AvailableBookItemStateService availableBookItemStateService;
 
     @Autowired
@@ -61,7 +65,7 @@ public class BookLoaningService {
     private BookLoaningMapper bookLoaningMapper;
 
     @Autowired
-    private BookItemMapper bookItemMapper;
+    private BookItemStateMapper bookItemStateMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -96,9 +100,10 @@ public class BookLoaningService {
         if (bookItem == null)
             throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
-        BookItemStateService stateService = serviceMap.get(bookItem.getStatus());
+        BookItemState bookItemState = commonBookItemStateService.findById(bookItemBarcode);
+        BookItemStateService stateService = serviceMap.get(bookItemState.getStatus());
 
-        return stateService.checkOutBookItem(bookItem, member);
+        return stateService.checkOutBookItem(bookItemState, member);
     }
 
     @Transactional
@@ -109,7 +114,7 @@ public class BookLoaningService {
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
         BookLoaning bookLoaning = getBookLoaning(bookItemBarcode);
-        BookItemStateService stateService = serviceMap.get(bookLoaning.getBookItem().getStatus());
+        BookItemStateService stateService = serviceMap.get(bookLoaning.getBookItemState().getStatus());
 
         stateService.returnBookItem(bookLoaning, member);
     }
@@ -122,7 +127,7 @@ public class BookLoaningService {
             throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
 
         BookLoaning bookLoaning = getBookLoaning(bookItemBarcode);
-        BookItemStateService stateService = serviceMap.get(bookLoaning.getBookItem().getStatus());
+        BookItemStateService stateService = serviceMap.get(bookLoaning.getBookItemState().getStatus());
 
         return stateService.renewBookItem(bookLoaning, member);
     }
@@ -155,10 +160,10 @@ public class BookLoaningService {
     }
 
     @Transactional
-    public Optional<BookLoaning> findLastByItem(BookItem bookItem) {
-        BookItemEntity bookItemEntity = bookItemMapper.toEntity(bookItem, new CyclePreventiveContext());
+    public Optional<BookLoaning> findLastByItem(BookItemState bookItemState) {
+        BookItemStateEntity bookItemEntity = bookItemStateMapper.toEntity(bookItemState, new CyclePreventiveContext());
         Optional<BookLoaningEntity> bookLoaningEntity = bookLoaningRepository
-                .findTopByBookItemBarcodeOrderByLoanedAtDesc(bookItemEntity.getBarcode());
+                .findTopByBookItemStateItemBarcodeOrderByLoanedAtDesc(bookItemEntity.getItemBarcode());
         return Optional.ofNullable(bookLoaningMapper.toModel(bookLoaningEntity.orElse(null)));
     }
 
@@ -169,12 +174,8 @@ public class BookLoaningService {
     }
 
     private BookLoaning getBookLoaning(String bookItemBarcode) {
-        BookItem bookItem = libraryFeignClient.getBookItemByBarcode(TokenUtils.getToken(), bookItemBarcode).getBody();
-
-        if (bookItem == null)
-            throw new MyRuntimeException("Book item is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
-
-        Optional<BookLoaning> bookLoaning = findLastByItem(bookItem);
+        BookItemState bookItemState = commonBookItemStateService.findById(bookItemBarcode);
+        Optional<BookLoaning> bookLoaning = findLastByItem(bookItemState);
 
         if (!bookLoaning.isPresent())
             throw new MyRuntimeException("NOT FOUND", "Book item has not loaned before.", HttpStatus.BAD_REQUEST);

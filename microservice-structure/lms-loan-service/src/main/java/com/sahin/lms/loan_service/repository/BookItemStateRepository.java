@@ -1,9 +1,9 @@
 package com.sahin.lms.loan_service.repository;
 
-import com.sahin.lms.infra.entity.jpa.BookItemEntity;
+import com.sahin.lms.infra.entity.loan.jpa.BookItemStateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookItemRepository extends JpaRepository<BookItemEntity, String> {
+public interface BookItemStateRepository extends JpaRepository<BookItemStateEntity, String> {
 }

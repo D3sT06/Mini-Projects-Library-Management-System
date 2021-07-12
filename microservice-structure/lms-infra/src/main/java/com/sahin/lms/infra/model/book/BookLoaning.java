@@ -16,10 +16,10 @@ public class BookLoaning {
     private Long id;
 
     @NotNull
-    private BookItem bookItem;
+    private BookItemState bookItemState;
 
     @NotNull
-    private Member member;
+    private Long memberId;
     private Long loanedAt;
     private Long dueDate;
     private Long returnedAt;

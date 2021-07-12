@@ -20,11 +20,10 @@ public class BookReservingEntity {
 
     @ManyToOne
     @JoinColumn(name = "book_item_id", nullable = false)
-    private BookItemEntity bookItem;
+    private BookItemStateEntity bookItemState;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
-    private AccountEntity member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "reserved_at")
     private Long reservedAt;

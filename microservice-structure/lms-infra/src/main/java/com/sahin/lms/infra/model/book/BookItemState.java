@@ -9,14 +9,12 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class BookItem {
+public class BookItemState {
 
     @NullableUUIDFormat
     private String barcode;
 
     @NotNull
-    private Book book;
+    private BookStatus status;
 
-    @NotNull
-    private Rack rack;
 }
