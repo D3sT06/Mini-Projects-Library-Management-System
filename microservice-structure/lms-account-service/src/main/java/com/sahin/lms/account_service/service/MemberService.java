@@ -118,6 +118,18 @@ public class MemberService {
         return (Member) accountMapper.toModel(entity);
     }
 
+    @Transactional
+    public Member getMemberById(Long id) {
+        AccountEntity entity = accountRepository
+                .findById(id)
+                .orElseThrow(()-> new MyRuntimeException("Member with id " + id + " not exist!", HttpStatus.BAD_REQUEST));
+
+        if (!(accountMapper.toModel(entity) instanceof Member))
+            throw new MyRuntimeException("The account is not for a member", HttpStatus.BAD_REQUEST);
+
+        return (Member) accountMapper.toModel(entity);
+    }
+
     public List<Member> getAll() {
         List<AccountEntity> entities = accountRepository
                 .getAll(AccountFor.MEMBER);
@@ -139,5 +151,4 @@ public class MemberService {
     public Member cache(AccountEntity entity) {
         return accountMapper.toMemberModel(entity, new CyclePreventiveContext());
     }
-
 }

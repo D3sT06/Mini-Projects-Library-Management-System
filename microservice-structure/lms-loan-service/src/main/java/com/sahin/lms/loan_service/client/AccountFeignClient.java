@@ -13,4 +13,8 @@ public interface AccountFeignClient {
     @GetMapping("api/members/get/{barcode}")
     ResponseEntity<Member> getMemberByBarcode(@RequestHeader(value = "x-api-key") String apiKey,
                                               @PathVariable("barcode") String barcode);
+
+    @GetMapping("api/members/get-by-id/{id}")
+    ResponseEntity<Member> getMemberById(@RequestHeader(value = "x-api-key") String apiKey,
+                                              @PathVariable("id") Long id);
 }

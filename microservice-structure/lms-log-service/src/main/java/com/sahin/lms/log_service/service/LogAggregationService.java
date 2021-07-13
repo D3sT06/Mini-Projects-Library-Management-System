@@ -1,6 +1,6 @@
 package com.sahin.lms.log_service.service;
 
-import com.sahin.lms.infra.entity.jpa.LogAggregationEntity;
+import com.sahin.lms.infra.entity.log.jpa.LogAggregationEntity;
 import com.sahin.lms.infra.enums.LogAction;
 import com.sahin.lms.infra.enums.QueryTerm;
 import com.sahin.lms.infra.enums.TimeUnit;

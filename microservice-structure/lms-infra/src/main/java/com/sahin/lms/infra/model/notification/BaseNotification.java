@@ -14,4 +14,5 @@ public abstract class BaseNotification implements Serializable {
 
     protected NotificationEvent event;
     protected Long memberId;
+    protected String mail;
 }

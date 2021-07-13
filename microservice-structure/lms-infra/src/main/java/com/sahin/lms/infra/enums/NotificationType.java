@@ -1,9 +1,9 @@
 package com.sahin.lms.infra.enums;
 
 public enum NotificationType {
-    RETURN_TIME_CLOSING("{1} remaining to return the book item with barcode {2}"),
-    RETURN_TIME_TODAY("Today is the day to return the book item with barcode {1}"),
-    RETURN_TIME_PASSED("{1} passed to return the book item with barcode {2}");
+    RETURN_TIME_CLOSING("{1} remaining to return the book item with member id {2}"),
+    RETURN_TIME_TODAY("Today is the day to return the book item with member id {1}"),
+    RETURN_TIME_PASSED("{1} passed to return the book item with member id {2}");
 
     private String content;
 

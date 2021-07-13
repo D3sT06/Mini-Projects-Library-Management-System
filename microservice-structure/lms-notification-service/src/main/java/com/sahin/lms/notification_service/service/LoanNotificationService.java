@@ -1,6 +1,6 @@
 package com.sahin.lms.notification_service.service;
 
-import com.sahin.lms.infra.entity.redis.NotificationEntity;
+import com.sahin.lms.infra.entity.notification.redis.NotificationEntity;
 import com.sahin.lms.infra.enums.NotificationType;
 import com.sahin.lms.infra.model.notification.BaseNotification;
 import com.sahin.lms.infra.model.notification.LoanNotification;
@@ -79,13 +79,13 @@ public class LoanNotificationService extends NotificationService {
         for (Map.Entry<Long, Long> entry : dueDateAmounts.entrySet()) {
 
             NotificationEntity entity = new NotificationEntity();
-            entity.setCardBarcode(notification.getCardBarcode());
+            entity.setMemberId(notification.getMemberId());
             entity.setMail(notification.getMail());
             entity.setType(NotificationType.RETURN_TIME_CLOSING);
             entity.setAboutId(LOAN_ID_PREFIX + notification.getBookLoaningId().toString());
             entity.setTimeToSend(entry.getValue());
             entity.setContent(entity.getType().getContent(entry.getKey().toString() + " day(s) ",
-                    notification.getCardBarcode()));
+                    notification.getMemberId().toString()));
 
             entities.add(entity);
         }
@@ -106,13 +106,13 @@ public class LoanNotificationService extends NotificationService {
         for (Map.Entry<Long, Long> entry : dueDateAmounts.entrySet()) {
 
             NotificationEntity entity = new NotificationEntity();
-            entity.setCardBarcode(notification.getCardBarcode());
+            entity.setMemberId(notification.getMemberId());
             entity.setMail(notification.getMail());
             entity.setType(NotificationType.RETURN_TIME_PASSED);
             entity.setAboutId(LOAN_ID_PREFIX + notification.getBookLoaningId().toString());
             entity.setTimeToSend(entry.getValue());
             entity.setContent(entity.getType().getContent(entry.getKey().toString() + " day(s) ",
-                    notification.getCardBarcode()));
+                    notification.getMemberId().toString()));
 
             entities.add(entity);
         }
@@ -123,12 +123,12 @@ public class LoanNotificationService extends NotificationService {
     private NotificationEntity createLoanNotificationForToday(LoanNotification notification) {
 
         NotificationEntity entity = new NotificationEntity();
-        entity.setCardBarcode(notification.getCardBarcode());
+        entity.setMemberId(notification.getMemberId());
         entity.setMail(notification.getMail());
         entity.setType(NotificationType.RETURN_TIME_TODAY);
         entity.setAboutId(LOAN_ID_PREFIX + notification.getBookLoaningId().toString());
         entity.setTimeToSend(notification.getBookLoaningDueDate());
-        entity.setContent(entity.getType().getContent(notification.getCardBarcode()));
+        entity.setContent(entity.getType().getContent(notification.getMemberId().toString()));
 
         return entity;
     }

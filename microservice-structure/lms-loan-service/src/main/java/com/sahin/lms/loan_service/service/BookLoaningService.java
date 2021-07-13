@@ -137,11 +137,16 @@ public class BookLoaningService {
         if (bookLoaning.getId() != null)
             throw new MyRuntimeException("Book reservation to be created cannot have an id.", HttpStatus.BAD_REQUEST);
 
+        Member member = accountFeignClient.getMemberById(apiKeyConfig.getValue(), bookLoaning.getMemberId()).getBody();
+        if (member == null)
+            throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
+
+
         BookLoaningEntity entity = bookLoaningMapper.toEntity(bookLoaning);
         entity = bookLoaningRepository.save(entity);
         BookLoaning loaning = bookLoaningMapper.toModel(entity);
 
-        notificationService.createLoanNotifications(loaning);
+        notificationService.createLoanNotifications(loaning, member.getEmail());
         return loaning;
     }
 
@@ -153,7 +158,11 @@ public class BookLoaningService {
         if (!bookLoaningRepository.findById(bookLoaning.getId()).isPresent())
             throw new MyRuntimeException("Book reservation with id \"" + bookLoaning.getId() + "\" not exist!", HttpStatus.BAD_REQUEST);
 
-        notificationService.deleteLoanNotifications(bookLoaning);
+        Member member = accountFeignClient.getMemberById(apiKeyConfig.getValue(), bookLoaning.getMemberId()).getBody();
+        if (member == null)
+            throw new MyRuntimeException("Member is unavailable", HttpStatus.SERVICE_UNAVAILABLE);
+
+        notificationService.deleteLoanNotifications(bookLoaning, member.getEmail());
 
         BookLoaningEntity entity = bookLoaningMapper.toEntity(bookLoaning);
         bookLoaningRepository.save(entity);

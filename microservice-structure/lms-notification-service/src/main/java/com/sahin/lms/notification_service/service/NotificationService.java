@@ -1,9 +1,8 @@
 package com.sahin.lms.notification_service.service;
 
-import com.sahin.lms.infra.entity.redis.NotificationEntity;
+import com.sahin.lms.infra.entity.notification.redis.NotificationEntity;
 import com.sahin.lms.infra.mapper.NotificationMapper;
 import com.sahin.lms.infra.model.notification.BaseNotification;
-import com.sahin.lms.infra.model.notification.LoanNotification;
 import com.sahin.lms.infra.model.notification.Notification;
 import com.sahin.lms.notification_service.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;

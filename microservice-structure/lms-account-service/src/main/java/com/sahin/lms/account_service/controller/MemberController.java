@@ -47,6 +47,12 @@ public class MemberController implements MemberSwaggerApi {
         return ResponseEntity.ok(memberService.getMemberByBarcode(barcode));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN')")
+    @GetMapping("get-by-id/{id}")
+    public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
+        return ResponseEntity.ok(memberService.getMemberById(id));
+    }
+
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @GetMapping("getAll")
     public ResponseEntity<List<Member>> getAll() {

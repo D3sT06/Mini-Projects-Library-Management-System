@@ -1,0 +1,169 @@
+version: "3.1"
+services:
+  service-discovery:
+    image: lms-service-discovery:latest
+    container_name: lms-service-discovery
+    restart: always
+    ports:
+    - 7000:7000
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - mongo
+      - rabbit
+      - redis
+      - activemq
+
+  api-gateway:
+    image: lms-api-gateway:latest
+    container_name: lms-api-gateway
+    environment:
+      PROFILE: swagger
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+      ACCOUNT_DB_URI: jdbc:h2:tcp://account-service:9090/mem:accountdb
+    restart: always
+    links:
+      - service-discovery
+      - account-service
+    ports:
+      - 7002:7002
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - service-discovery
+      - account-service
+
+  account-service:
+    image: lms-account-service:latest
+    container_name: lms-account-service
+    environment:
+      PROFILE: swagger
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+    restart: always
+    links:
+      - service-discovery
+    ports:
+      - 7003:7003
+      - 9090:9090
+    healthcheck:
+      test: "exit 0"
+
+  library-service:
+    image: lms-library-service:latest
+    container_name: lms-library-service
+    environment:
+      PROFILE: swagger
+      RABBIT_HOST: rabbit
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+    restart: always
+    links:
+      - service-discovery
+    ports:
+      - 7004:7004
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - api-gateway
+
+  loan-service:
+    image: lms-loan-service:latest
+    container_name: lms-loan-service
+    environment:
+      PROFILE: swagger
+      RABBIT_HOST: rabbit
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+    restart: always
+    links:
+      - service-discovery
+    ports:
+      - 7005:7005
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - api-gateway
+
+  log-service:
+    image: lms-log-service:latest
+    container_name: lms-log-service
+    environment:
+      PROFILE: swagger
+      MONGO_HOST: mongo
+      RABBIT_HOST: rabbit
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+    restart: always
+    links:
+      - service-discovery
+    ports:
+      - 7006:7006
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - api-gateway
+
+  notification-service:
+    image: lms-notification-service:latest
+    container_name: lms-notification-service
+    environment:
+      PROFILE: swagger
+      REDIS_HOST: redis
+      EUREKA_URI: http://service-discovery:7000/eureka
+    restart: always
+    links:
+      - service-discovery
+    ports:
+      - 7007:7007
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - api-gateway
+
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    restart: always
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    healthcheck:
+      test: "exit 0"
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    restart: always
+    ports:
+    - 5672:5672
+    - 15672:15672
+    healthcheck:
+      test: "exit 0"
+
+  redis:
+    image: redis:6
+    command: redis-server --requirepass password
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: "exit 0"
+
+  activemq:
+    image: webcenter/activemq:latest
+    container_name: activemq
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: root
+      ACTIVEMQ_ADMIN_PASSWORD: password
+    restart: always
+    ports:
+    - 8161:8161
+    - 61616:61616
+    - 61613:61613
+    healthcheck:
+      test: "exit 0"

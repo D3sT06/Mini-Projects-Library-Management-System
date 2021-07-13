@@ -1,9 +1,9 @@
 package com.sahin.lms.log_service.service;
 
-import com.sahin.lms.infra.factory.ChronoUnitFactory;
-import com.sahin.lms.infra.entity.document.MemberLogEntity;
+import com.sahin.lms.infra.entity.log.document.MemberLogEntity;
 import com.sahin.lms.infra.enums.QueryTerm;
 import com.sahin.lms.infra.enums.TimeUnit;
+import com.sahin.lms.infra.factory.ChronoUnitFactory;
 import com.sahin.lms.infra.mapper.MemberLogMapper;
 import com.sahin.lms.infra.model.log.MemberLog;
 import com.sahin.lms.infra.model.log.MemberLogAggregation;

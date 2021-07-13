@@ -22,7 +22,7 @@ public class NotificationEntity implements Serializable {
     @Indexed
     private String aboutId;
 
-    private String cardBarcode;
+    private Long memberId;
     private String mail;
     private NotificationType type;
     private Long timeToSend;

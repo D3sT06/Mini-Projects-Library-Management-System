@@ -19,20 +19,21 @@ public class NotificationService {
     @Value("${spring.activemq.queue.name}")
     private String activemqQueueName;
 
-    public void deleteLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning, NotificationEvent.LOAN_DELETE);
+    public void deleteLoanNotifications(BookLoaning loaning, String mail) {
+        sendToQueue(loaning, mail, NotificationEvent.LOAN_DELETE);
     }
 
-    public void createLoanNotifications(BookLoaning loaning) {
-        sendToQueue(loaning, NotificationEvent.LOAN_CREATE);
+    public void createLoanNotifications(BookLoaning loaning, String mail) {
+        sendToQueue(loaning, mail, NotificationEvent.LOAN_CREATE);
     }
 
-    public void sendToQueue(BookLoaning bookLoaning, NotificationEvent event) {
+    private void sendToQueue(BookLoaning bookLoaning, String mail, NotificationEvent event) {
         LoanNotification loanNotification = new LoanNotification(
                 bookLoaning.getId(),
                 bookLoaning.getDueDate(),
                 event,
-                bookLoaning.getMemberId()
+                bookLoaning.getMemberId(),
+                mail
         );
 
         jmsTemplate.convertAndSend(activemqQueueName, loanNotification);
