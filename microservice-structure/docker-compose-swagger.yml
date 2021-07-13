@@ -76,9 +76,11 @@ services:
       RABBIT_HOST: rabbit
       REDIS_HOST: redis
       EUREKA_URI: http://service-discovery:7000/eureka
+      ACTIVEMQ_URL: tcp://activemq:61616
     restart: always
     links:
       - service-discovery
+      - activemq
     ports:
       - 7005:7005
     healthcheck:
@@ -112,9 +114,11 @@ services:
       PROFILE: swagger
       REDIS_HOST: redis
       EUREKA_URI: http://service-discovery:7000/eureka
+      ACTIVEMQ_URL: tcp://activemq:61616
     restart: always
     links:
       - service-discovery
+      - activemq
     ports:
       - 7007:7007
     healthcheck:
