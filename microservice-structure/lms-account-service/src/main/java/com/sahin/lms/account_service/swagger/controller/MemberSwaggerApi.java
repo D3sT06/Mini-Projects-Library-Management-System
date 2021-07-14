@@ -43,6 +43,12 @@ public interface MemberSwaggerApi {
     ResponseEntity<Void> deleteMemberByBarcode(
             @ApiParam("Barcode of the card of the member") String barcode);
 
+    @ApiOperation(value = "Get the member by id",
+            response = Member.class,
+            authorizations = @Authorization(value = "bearer"))
+    ResponseEntity<Member> getMemberById(
+            @ApiParam("Id of the member") Long id);
+
     @ApiOperation(value = "Get the member by card barcode",
             response = Member.class,
             authorizations = @Authorization(value = "bearer"))
