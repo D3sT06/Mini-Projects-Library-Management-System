@@ -1,8 +1,8 @@
 package com.sahin.lms.log_service.config;
 
-import com.sahin.lms.infra.authorization.JwtAuthenticationEntryPoint;
-import com.sahin.lms.infra.authorization.JwtTokenDecoderService;
-import com.sahin.lms.infra.authorization.TokenValidationFilter;
+import com.sahin.lms.infra_authorization.entrypoint.JwtAuthenticationEntryPoint;
+import com.sahin.lms.infra_authorization.filter.TokenValidationFilter;
+import com.sahin.lms.infra_authorization.service.JwtTokenDecoderService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

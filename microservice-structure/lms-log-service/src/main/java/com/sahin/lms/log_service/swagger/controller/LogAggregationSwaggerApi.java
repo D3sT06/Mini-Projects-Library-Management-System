@@ -1,7 +1,8 @@
 package com.sahin.lms.log_service.swagger.controller;
 
-import com.sahin.lms.infra.enums.LogAction;
-import com.sahin.lms.infra.enums.QueryTerm;
+
+import com.sahin.lms.infra_enum.LogAction;
+import com.sahin.lms.infra_enum.QueryTerm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

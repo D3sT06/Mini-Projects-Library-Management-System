@@ -1,8 +1,8 @@
 package com.sahin.lms.infra_authentication.service;
 
-import com.sahin.lms.infra.entity.account.redis.TokenEntity;
-import com.sahin.lms.infra.model.account.LibraryCard;
 import com.sahin.lms.infra_authentication.repository.TokenRepository;
+import com.sahin.lms.infra_authorization.model.LibraryCard;
+import com.sahin.lms.infra_entity.account.redis.TokenEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;

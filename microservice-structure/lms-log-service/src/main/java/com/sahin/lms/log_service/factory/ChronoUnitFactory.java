@@ -1,6 +1,6 @@
 package com.sahin.lms.log_service.factory;
 
-import com.sahin.lms.infra.enums.TimeUnit;
+import com.sahin.lms.infra_enum.TimeUnit;
 import org.springframework.stereotype.Component;
 
 import java.time.temporal.ChronoUnit;

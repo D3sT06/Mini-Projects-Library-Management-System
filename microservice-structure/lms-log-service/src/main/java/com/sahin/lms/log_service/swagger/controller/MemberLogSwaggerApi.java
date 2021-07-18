@@ -1,10 +1,10 @@
 package com.sahin.lms.log_service.swagger.controller;
 
-import com.sahin.lms.infra.enums.QueryTerm;
-import com.sahin.lms.infra.enums.TimeUnit;
-import com.sahin.lms.infra.model.log.MemberLog;
-import com.sahin.lms.infra.model.log.MemberLogAggregation;
-import com.sahin.lms.infra.model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_enum.QueryTerm;
+import com.sahin.lms.infra_enum.TimeUnit;
+import com.sahin.lms.infra_model.log.MemberLogAggregation;
+import com.sahin.lms.infra_model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_service.member_log.model.MemberLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

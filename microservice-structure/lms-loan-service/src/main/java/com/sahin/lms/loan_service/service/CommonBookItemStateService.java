@@ -1,6 +1,10 @@
 package com.sahin.lms.loan_service.service;
 
 import com.sahin.lms.infra_entity.loan.jpa.BookItemStateEntity;
+import com.sahin.lms.infra_enum.BookStatus;
+import com.sahin.lms.infra_mapper.CyclePreventiveContext;
+import com.sahin.lms.infra_model.loan.BookItemState;
+import com.sahin.lms.loan_service.mapper.BookItemStateMapper;
 import com.sahin.lms.loan_service.repository.BookItemStateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.sahin.lms.notification_service.service;
 
-import com.sahin.lms.infra.model.notification.Notification;
+import com.sahin.lms.infra_model.notification.Notification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

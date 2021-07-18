@@ -1,6 +1,6 @@
 package com.sahin.lms.apigw.repository;
 
-import com.sahin.lms.infra.entity.account.jpa.LibraryCardEntity;
+import com.sahin.lms.infra_entity.account.jpa.LibraryCardEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package com.sahin.lms.infra_authentication.client;
 
-import com.sahin.lms.infra.model.auth.FacebookUser;
+import com.sahin.lms.infra_authorization.model.FacebookUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

@@ -1,9 +1,9 @@
 package com.sahin.lms.notification_service.service;
 
-import com.sahin.lms.infra.entity.notification.redis.NotificationEntity;
-import com.sahin.lms.infra.mapper.NotificationMapper;
-import com.sahin.lms.infra.model.notification.BaseNotification;
-import com.sahin.lms.infra.model.notification.Notification;
+import com.sahin.lms.infra_entity.notification.redis.NotificationEntity;
+import com.sahin.lms.infra_model.notification.BaseNotification;
+import com.sahin.lms.infra_model.notification.Notification;
+import com.sahin.lms.notification_service.mapper.NotificationMapper;
 import com.sahin.lms.notification_service.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

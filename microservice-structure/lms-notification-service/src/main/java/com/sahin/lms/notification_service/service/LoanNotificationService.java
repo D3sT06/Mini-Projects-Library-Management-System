@@ -1,9 +1,9 @@
 package com.sahin.lms.notification_service.service;
 
-import com.sahin.lms.infra.entity.notification.redis.NotificationEntity;
-import com.sahin.lms.infra.enums.NotificationType;
-import com.sahin.lms.infra.model.notification.BaseNotification;
-import com.sahin.lms.infra.model.notification.LoanNotification;
+import com.sahin.lms.infra_entity.notification.redis.NotificationEntity;
+import com.sahin.lms.infra_enum.NotificationType;
+import com.sahin.lms.infra_model.notification.BaseNotification;
+import com.sahin.lms.infra_model.notification.LoanNotification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -13,6 +13,10 @@ import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import com.sahin.lms.infra_model.*;
+
+import static com.sahin.lms.infra_enum.NotificationEvent.LOAN_CREATE;
+import static com.sahin.lms.infra_enum.NotificationEvent.LOAN_DELETE;
 
 @Slf4j
 @Service

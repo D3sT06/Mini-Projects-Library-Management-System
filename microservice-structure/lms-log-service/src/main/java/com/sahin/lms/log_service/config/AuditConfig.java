@@ -1,6 +1,6 @@
 package com.sahin.lms.log_service.config;
 
-import com.sahin.lms.infra.model.auth.AuditorAwareImpl;
+import com.sahin.lms.infra_audit.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

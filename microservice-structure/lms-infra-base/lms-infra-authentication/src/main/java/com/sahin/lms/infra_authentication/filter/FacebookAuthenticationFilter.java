@@ -1,14 +1,14 @@
 package com.sahin.lms.infra_authentication.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sahin.lms.infra.enums.LoginType;
-import com.sahin.lms.infra.exception.MyRuntimeException;
-import com.sahin.lms.infra.model.account.AccountLoginType;
-import com.sahin.lms.infra.model.auth.FacebookLoginModel;
-import com.sahin.lms.infra.model.auth.FacebookUser;
-import com.sahin.lms.infra.service.ILoginTypeService;
 import com.sahin.lms.infra_authentication.client.FacebookClient;
+import com.sahin.lms.infra_authentication.service.ILoginTypeService;
 import com.sahin.lms.infra_authentication.service.JwtTokenGenerationService;
+import com.sahin.lms.infra_authorization.model.AccountLoginType;
+import com.sahin.lms.infra_authorization.model.FacebookLoginModel;
+import com.sahin.lms.infra_authorization.model.FacebookUser;
+import com.sahin.lms.infra_enum.LoginType;
+import com.sahin.lms.infra_exception.MyRuntimeException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,12 +25,12 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
 
     private final ObjectMapper objectMapper;
     private final JwtTokenGenerationService jwtTokenGenerationService;
-    private final ILoginTypeService ILoginTypeService;
+    private final ILoginTypeService loginTypeService;
     private final FacebookClient facebookClient;
 
-    public FacebookAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, ILoginTypeService ILoginTypeService, FacebookClient facebookClient) {
+    public FacebookAuthenticationFilter(String loginUrl, AuthenticationManager authenticationManager, JwtTokenGenerationService jwtTokenGenerationService, ILoginTypeService loginTypeService, FacebookClient facebookClient) {
         super(new AntPathRequestMatcher(loginUrl, "POST"));
-        this.ILoginTypeService = ILoginTypeService;
+        this.loginTypeService = loginTypeService;
         this.facebookClient = facebookClient;
         this.objectMapper = new ObjectMapper();
         this.jwtTokenGenerationService = jwtTokenGenerationService;
@@ -43,7 +43,7 @@ public class FacebookAuthenticationFilter extends AbstractAuthenticationProcessi
 
         FacebookLoginModel facebookLoginModel = objectMapper.readValue(request.getInputStream(), FacebookLoginModel.class);
         FacebookUser facebookUser = facebookClient.getUser(facebookLoginModel.getAccessToken());
-        AccountLoginType loginType = ILoginTypeService.findByType(facebookUser.getId(), LoginType.FACEBOOK);
+        AccountLoginType loginType = loginTypeService.findByType(facebookUser.getId(), LoginType.FACEBOOK);
 
         if (loginType == null) {
             throw new MyRuntimeException("Facebook authentication not exists for this account");

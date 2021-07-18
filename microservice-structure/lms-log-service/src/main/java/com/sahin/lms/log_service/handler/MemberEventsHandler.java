@@ -1,11 +1,11 @@
 package com.sahin.lms.log_service.handler;
 
-import com.sahin.lms.infra.enums.AccountFor;
-import com.sahin.lms.infra.enums.LogAction;
-import com.sahin.lms.infra.enums.QueryTerm;
-import com.sahin.lms.infra.model.log.LogAggregation;
-import com.sahin.lms.infra.model.log.MemberLog;
-import com.sahin.lms.infra.model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_enum.AccountFor;
+import com.sahin.lms.infra_enum.LogAction;
+import com.sahin.lms.infra_enum.QueryTerm;
+import com.sahin.lms.infra_model.log.LogAggregation;
+import com.sahin.lms.infra_model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_service.member_log.model.MemberLog;
 import com.sahin.lms.log_service.config.RabbitMqConfig;
 import com.sahin.lms.log_service.service.LogAggregationService;
 import com.sahin.lms.log_service.service.MemberLogService;

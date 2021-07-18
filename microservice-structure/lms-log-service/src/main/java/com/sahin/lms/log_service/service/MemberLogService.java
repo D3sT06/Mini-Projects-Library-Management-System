@@ -1,13 +1,13 @@
 package com.sahin.lms.log_service.service;
 
-import com.sahin.lms.infra.entity.log.document.MemberLogEntity;
-import com.sahin.lms.infra.enums.QueryTerm;
-import com.sahin.lms.infra.enums.TimeUnit;
-import com.sahin.lms.infra.mapper.MemberLogMapper;
-import com.sahin.lms.infra.model.log.MemberLog;
-import com.sahin.lms.infra.model.log.MemberLogAggregation;
-import com.sahin.lms.infra.model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_entity.log.document.MemberLogEntity;
+import com.sahin.lms.infra_enum.QueryTerm;
+import com.sahin.lms.infra_enum.TimeUnit;
+import com.sahin.lms.infra_model.log.MemberLogAggregation;
+import com.sahin.lms.infra_model.log.MemberLogWithBarcodeAggregation;
+import com.sahin.lms.infra_service.member_log.model.MemberLog;
 import com.sahin.lms.log_service.factory.ChronoUnitFactory;
+import com.sahin.lms.log_service.mapper.MemberLogMapper;
 import com.sahin.lms.log_service.repository.MemberLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

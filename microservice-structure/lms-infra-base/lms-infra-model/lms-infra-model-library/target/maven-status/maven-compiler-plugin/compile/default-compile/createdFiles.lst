@@ -1,8 +1,8 @@
 com/sahin/lms/infra_model/library/model/Rack.class
 com/sahin/lms/infra_model/library/serializer/LocalDateSerializer.class
 com/sahin/lms/infra_model/library/model/Book.class
-com/sahin/lms/infra_model/library/model/BookCategory.class
 com/sahin/lms/infra_model/library/serializer/LocalDateDeserializer.class
+com/sahin/lms/infra_model/library/model/BookCategory.class
 com/sahin/lms/infra_model/library/model/Author.class
 com/sahin/lms/infra_model/library/model/BookFilter.class
 com/sahin/lms/infra_model/library/model/BookItem.class

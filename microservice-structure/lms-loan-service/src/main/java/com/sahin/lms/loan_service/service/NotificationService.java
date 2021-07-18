@@ -2,6 +2,7 @@ package com.sahin.lms.loan_service.service;
 
 import com.sahin.lms.infra_enum.NotificationEvent;
 import com.sahin.lms.infra_model.loan.BookLoaning;
+import com.sahin.lms.infra_model.notification.LoanNotification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

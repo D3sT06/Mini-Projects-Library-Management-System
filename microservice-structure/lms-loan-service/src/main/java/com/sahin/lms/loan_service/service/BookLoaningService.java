@@ -8,6 +8,7 @@ import com.sahin.lms.infra_enum.BookStatus;
 import com.sahin.lms.infra_exception.MyRuntimeException;
 import com.sahin.lms.infra_mapper.CyclePreventiveContext;
 import com.sahin.lms.infra_model.account.Member;
+import com.sahin.lms.infra_model.library.model.BookItem;
 import com.sahin.lms.infra_model.loan.BookItemState;
 import com.sahin.lms.infra_model.loan.BookLoaning;
 import com.sahin.lms.loan_service.client.AccountFeignClient;

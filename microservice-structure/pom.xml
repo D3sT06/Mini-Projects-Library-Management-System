@@ -19,7 +19,6 @@
         <module>lms-api-gateway</module>
         <module>lms-service-discovery</module>
         <module>lms-config-service</module>
-        <module>lms-infra</module>
         <module>lms-notification-service</module>
         <module>lms-infra-base</module>
     </modules>

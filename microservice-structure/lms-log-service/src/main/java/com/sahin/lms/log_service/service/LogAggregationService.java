@@ -1,12 +1,12 @@
 package com.sahin.lms.log_service.service;
 
-import com.sahin.lms.infra.entity.log.jpa.LogAggregationEntity;
-import com.sahin.lms.infra.enums.LogAction;
-import com.sahin.lms.infra.enums.QueryTerm;
-import com.sahin.lms.infra.enums.TimeUnit;
-import com.sahin.lms.infra.mapper.LogAggregationMapper;
-import com.sahin.lms.infra.model.log.LogAggregation;
+import com.sahin.lms.infra_entity.log.jpa.LogAggregationEntity;
+import com.sahin.lms.infra_enum.LogAction;
+import com.sahin.lms.infra_enum.QueryTerm;
+import com.sahin.lms.infra_enum.TimeUnit;
+import com.sahin.lms.infra_model.log.LogAggregation;
 import com.sahin.lms.log_service.factory.ChronoUnitFactory;
+import com.sahin.lms.log_service.mapper.LogAggregationMapper;
 import com.sahin.lms.log_service.repository.LogAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.sahin.lms.log_service.controller;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.enums.LogAction;
-import com.sahin.lms.infra.enums.QueryTerm;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_enum.LogAction;
+import com.sahin.lms.infra_enum.QueryTerm;
 import com.sahin.lms.log_service.service.LogAggregationService;
 import com.sahin.lms.log_service.swagger.controller.LogAggregationSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,3 +1,3 @@
-/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/model/LogAggregationCompositeKey.java
-/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/document/MemberLogEntity.java
-/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/jpa/LogAggregationEntity.java
+/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/document/MemberLogEntity.java
+/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/model/LogAggregationCompositeKey.java
+/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-log/src/main/java/com/sahin/lms/infra_entity/log/jpa/LogAggregationEntity.java
