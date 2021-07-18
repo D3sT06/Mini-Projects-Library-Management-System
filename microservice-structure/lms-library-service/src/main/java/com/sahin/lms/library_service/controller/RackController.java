@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.controller;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.model.book.Rack;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_model.library.model.Rack;
 import com.sahin.lms.library_service.service.RackService;
 import com.sahin.lms.library_service.swagger.controller.RackSwaggerApi;
 import com.sahin.lms.library_service.validator.RackValidator;

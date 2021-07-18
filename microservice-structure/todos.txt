@@ -2,9 +2,9 @@ DONE 1. Log service
 DONE 2. Notification service
 DONE 3. Account feign client, api-key kullansın.
 DONE 3. Multi database
+DONE 4. Docker & Docker compose
 
-4. Config service
-5. Infra division
-5. Docker and docker compose
-6. Hystrix
-7. Spring Boot Actuator
+5. Config service
+6. Infra division
+7. Hystrix
+8. Spring Boot Actuator

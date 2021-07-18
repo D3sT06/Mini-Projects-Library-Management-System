@@ -1,13 +1,13 @@
 package com.sahin.lms.library_service.service;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.library.jpa.BookEntity;
-import com.sahin.lms.infra.exception.MyRuntimeException;
-import com.sahin.lms.infra.mapper.BookMapper;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
-import com.sahin.lms.infra.model.book.Book;
-import com.sahin.lms.infra.model.search.BookFilter;
-import com.sahin.lms.infra.model.search.BookSpecification;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_entity.library.jpa.BookEntity;
+import com.sahin.lms.infra_exception.MyRuntimeException;
+import com.sahin.lms.infra_mapper.CyclePreventiveContext;
+import com.sahin.lms.infra_model.library.model.Book;
+import com.sahin.lms.infra_model.library.model.BookFilter;
+import com.sahin.lms.library_service.mapper.BookMapper;
+import com.sahin.lms.library_service.model.BookSpecification;
 import com.sahin.lms.library_service.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;

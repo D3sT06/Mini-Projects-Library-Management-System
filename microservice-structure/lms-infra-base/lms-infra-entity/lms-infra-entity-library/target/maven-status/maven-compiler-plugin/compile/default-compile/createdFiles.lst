@@ -1,0 +1,5 @@
+com/sahin/lms/infra_entity/library/jpa/BookEntity.class
+com/sahin/lms/infra_entity/library/jpa/BookCategoryEntity.class
+com/sahin/lms/infra_entity/library/jpa/BookItemEntity.class
+com/sahin/lms/infra_entity/library/jpa/RackEntity.class
+com/sahin/lms/infra_entity/library/jpa/AuthorEntity.class

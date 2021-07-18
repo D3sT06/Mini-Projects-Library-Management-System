@@ -2,8 +2,8 @@ package com.sahin.lms.account_service.controller;
 
 import com.sahin.lms.account_service.service.LibrarianService;
 import com.sahin.lms.account_service.swagger.controller.LibrarianSwaggerApi;
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.model.account.Librarian;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_model.account.Librarian;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,15 +1,15 @@
 package com.sahin.lms.loan_service.service;
 
-import com.sahin.lms.infra.entity.loan.jpa.BookItemStateEntity;
-import com.sahin.lms.infra.enums.BookStatus;
-import com.sahin.lms.infra.exception.MyRuntimeException;
-import com.sahin.lms.infra.mapper.BookItemStateMapper;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
-import com.sahin.lms.infra.model.account.Member;
-import com.sahin.lms.infra.model.book.BookItemState;
-import com.sahin.lms.infra.model.book.BookLoaning;
-import com.sahin.lms.infra.model.book.BookReserving;
+import com.sahin.lms.infra_entity.loan.jpa.BookItemStateEntity;
+import com.sahin.lms.infra_enum.BookStatus;
+import com.sahin.lms.infra_exception.MyRuntimeException;
+import com.sahin.lms.infra_mapper.CyclePreventiveContext;
+import com.sahin.lms.infra_model.account.Member;
+import com.sahin.lms.infra_model.loan.BookItemState;
+import com.sahin.lms.infra_model.loan.BookLoaning;
+import com.sahin.lms.infra_model.loan.BookReserving;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
+import com.sahin.lms.loan_service.mapper.BookItemStateMapper;
 import com.sahin.lms.loan_service.repository.BookItemStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

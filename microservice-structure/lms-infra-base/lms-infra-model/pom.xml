@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lms-infra-base</artifactId>
+        <groupId>com.sahin</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>lms-infra-model</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>lms-infra-model-account</module>
+        <module>lms-infra-model-library</module>
+        <module>lms-infra-model-loan</module>
+        <module>lms-infra-model-log</module>
+        <module>lms-infra-model-notification</module>
+    </modules>
+
+
+</project>

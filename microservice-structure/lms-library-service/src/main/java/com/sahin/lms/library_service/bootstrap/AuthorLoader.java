@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.bootstrap;
 
-import com.sahin.lms.infra.entity.library.jpa.AuthorEntity;
+import com.sahin.lms.infra_entity.library.jpa.AuthorEntity;
 import com.sahin.lms.library_service.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

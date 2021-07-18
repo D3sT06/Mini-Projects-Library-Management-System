@@ -1,6 +1,6 @@
 package com.sahin.lms.account_service.swagger.controller;
 
-import com.sahin.lms.infra.model.account.Member;
+import com.sahin.lms.infra_model.account.Member;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 

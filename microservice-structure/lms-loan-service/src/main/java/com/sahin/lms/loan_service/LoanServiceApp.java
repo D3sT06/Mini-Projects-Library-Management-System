@@ -13,9 +13,9 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-@ComponentScan({"com.sahin.lms.loan_service", "com.sahin.lms.infra"})
-@EntityScan({"com.sahin.lms.infra.entity.loan"})
-@EnableJpaRepositories({"com.sahin.lms.loan_service"})
+@ComponentScan({"com.sahin.lms"})
+@EntityScan({"com.sahin.lms"})
+@EnableJpaRepositories({"com.sahin.lms"})
 public class LoanServiceApp {
     public static void main(String[] args) {
         SpringApplication.run(LoanServiceApp.class, args);

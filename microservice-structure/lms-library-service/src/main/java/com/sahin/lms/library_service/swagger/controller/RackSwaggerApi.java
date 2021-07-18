@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.swagger.controller;
 
-import com.sahin.lms.infra.model.book.Rack;
+import com.sahin.lms.infra_model.library.model.Rack;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 

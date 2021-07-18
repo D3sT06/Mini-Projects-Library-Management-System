@@ -1,11 +1,11 @@
 package com.sahin.lms.account_service.bootstrap;
 
 import com.sahin.lms.account_service.repository.AccountRepository;
-import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
-import com.sahin.lms.infra.entity.account.jpa.AccountLoginTypeEntity;
-import com.sahin.lms.infra.entity.account.jpa.LibraryCardEntity;
-import com.sahin.lms.infra.enums.AccountFor;
-import com.sahin.lms.infra.enums.LoginType;
+import com.sahin.lms.infra_entity.account.jpa.AccountEntity;
+import com.sahin.lms.infra_entity.account.jpa.AccountLoginTypeEntity;
+import com.sahin.lms.infra_entity.account.jpa.LibraryCardEntity;
+import com.sahin.lms.infra_enum.AccountFor;
+import com.sahin.lms.infra_enum.LoginType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

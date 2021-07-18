@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.swagger.controller;
 
-import com.sahin.lms.infra.model.book.Book;
-import com.sahin.lms.infra.model.search.BookFilter;
+import com.sahin.lms.infra_model.library.model.Book;
+import com.sahin.lms.infra_model.library.model.BookFilter;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

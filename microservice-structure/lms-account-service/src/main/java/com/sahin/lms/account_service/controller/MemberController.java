@@ -2,8 +2,8 @@ package com.sahin.lms.account_service.controller;
 
 import com.sahin.lms.account_service.service.MemberService;
 import com.sahin.lms.account_service.swagger.controller.MemberSwaggerApi;
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.model.account.Member;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_model.account.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

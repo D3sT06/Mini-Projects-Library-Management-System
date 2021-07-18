@@ -1,6 +1,6 @@
 package com.sahin.lms.loan_service.repository;
 
-import com.sahin.lms.infra.entity.loan.jpa.BookLoaningEntity;
+import com.sahin.lms.infra_entity.loan.jpa.BookLoaningEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

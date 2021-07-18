@@ -1,7 +1,5 @@
 package com.sahin.lms.loan_service.swagger.controller;
 
-import com.sahin.lms.infra.model.account.LibraryCard;
-import com.sahin.lms.infra.model.book.BookLoaning;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.annotations.ApiIgnore;

@@ -1,8 +1,8 @@
 package com.sahin.lms.library_service.controller;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.model.book.Author;
-import com.sahin.lms.infra.projections.AuthorProjections;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_model.library.model.Author;
+import com.sahin.lms.library_service.projection.AuthorProjections;
 import com.sahin.lms.library_service.service.AuthorService;
 import com.sahin.lms.library_service.swagger.controller.AuthorSwaggerApi;
 import com.sahin.lms.library_service.validator.AuthorValidator;

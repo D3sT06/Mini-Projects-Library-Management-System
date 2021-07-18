@@ -1,8 +1,8 @@
 package com.sahin.lms.library_service.swagger.controller;
 
 
-import com.sahin.lms.infra.model.book.BookCategory;
-import com.sahin.lms.infra.projections.CategoryProjections;
+import com.sahin.lms.infra_model.library.model.BookCategory;
+import com.sahin.lms.library_service.projection.CategoryProjections;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 

@@ -1,22 +1,19 @@
 package com.sahin.lms.loan_service.service;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.entity.account.jpa.AccountEntity;
-import com.sahin.lms.infra.entity.loan.jpa.BookItemStateEntity;
-import com.sahin.lms.infra.entity.loan.jpa.BookLoaningEntity;
-import com.sahin.lms.infra.enums.BookStatus;
-import com.sahin.lms.infra.exception.MyRuntimeException;
-import com.sahin.lms.infra.mapper.AccountMapper;
-import com.sahin.lms.infra.mapper.BookItemStateMapper;
-import com.sahin.lms.infra.mapper.BookLoaningMapper;
-import com.sahin.lms.infra.mapper.CyclePreventiveContext;
-import com.sahin.lms.infra.model.account.Member;
-import com.sahin.lms.infra.model.auth.ApiKeyConfig;
-import com.sahin.lms.infra.model.book.BookItem;
-import com.sahin.lms.infra.model.book.BookItemState;
-import com.sahin.lms.infra.model.book.BookLoaning;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_authorization.model.ApiKeyConfig;
+import com.sahin.lms.infra_entity.loan.jpa.BookItemStateEntity;
+import com.sahin.lms.infra_entity.loan.jpa.BookLoaningEntity;
+import com.sahin.lms.infra_enum.BookStatus;
+import com.sahin.lms.infra_exception.MyRuntimeException;
+import com.sahin.lms.infra_mapper.CyclePreventiveContext;
+import com.sahin.lms.infra_model.account.Member;
+import com.sahin.lms.infra_model.loan.BookItemState;
+import com.sahin.lms.infra_model.loan.BookLoaning;
 import com.sahin.lms.loan_service.client.AccountFeignClient;
 import com.sahin.lms.loan_service.client.LibraryFeignClient;
+import com.sahin.lms.loan_service.mapper.BookItemStateMapper;
+import com.sahin.lms.loan_service.mapper.BookLoaningMapper;
 import com.sahin.lms.loan_service.repository.BookLoaningRepository;
 import com.sahin.lms.loan_service.utils.TokenUtils;
 import lombok.Getter;
@@ -66,9 +63,6 @@ public class BookLoaningService {
 
     @Autowired
     private BookItemStateMapper bookItemStateMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private ApiKeyConfig apiKeyConfig;
@@ -178,8 +172,7 @@ public class BookLoaningService {
 
     @Transactional
     public int countActiveLoansByMember(Member member) {
-        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
-        return bookLoaningRepository.countByMemberIdAndReturnedAtIsNull(entity.getId());
+        return bookLoaningRepository.countByMemberIdAndReturnedAtIsNull(member.getId());
     }
 
     private BookLoaning getBookLoaning(String bookItemBarcode) {

@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.validator;
 
-import com.sahin.lms.infra.entity.library.jpa.AuthorEntity;
-import com.sahin.lms.infra.model.book.Author;
+import com.sahin.lms.infra_entity.library.jpa.AuthorEntity;
+import com.sahin.lms.infra_model.library.model.Author;
 import com.sahin.lms.library_service.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

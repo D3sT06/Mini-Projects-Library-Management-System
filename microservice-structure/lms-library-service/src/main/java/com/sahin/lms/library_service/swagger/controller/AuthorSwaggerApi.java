@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.swagger.controller;
 
-import com.sahin.lms.infra.model.book.Author;
-import com.sahin.lms.infra.projections.AuthorProjections;
+import com.sahin.lms.infra_model.library.model.Author;
+import com.sahin.lms.library_service.projection.AuthorProjections;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 

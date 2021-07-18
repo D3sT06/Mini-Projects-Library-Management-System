@@ -1,15 +1,13 @@
 package com.sahin.lms.library_service.config;
 
-import com.sahin.lms.infra.enums.LogTopic;
-import com.sahin.lms.infra.factory.QueueFactory;
-import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
-import com.sahin.lms.infra.service.member_log.ConcreteMemberLogPublisherService;
-import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
-import com.sahin.lms.infra.service.member_log.VoidMemberLogPublisherService;
+import com.sahin.lms.infra_enum.LogTopic;
+import com.sahin.lms.infra_service.member_log.factory.QueueFactory;
+import com.sahin.lms.infra_service.member_log.service.ConcreteMemberLogPublisherService;
+import com.sahin.lms.infra_service.member_log.service.MemberLogPublisherService;
+import com.sahin.lms.infra_service.member_log.service.VoidMemberLogPublisherService;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.repository;
 
-import com.sahin.lms.infra.entity.library.jpa.AuthorEntity;
-import com.sahin.lms.infra.projections.AuthorProjections;
+import com.sahin.lms.infra_entity.library.jpa.AuthorEntity;
+import com.sahin.lms.library_service.projection.AuthorProjections;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.repository;
 
-import com.sahin.lms.infra.entity.library.jpa.RackEntity;
+import com.sahin.lms.infra_entity.library.jpa.RackEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.sahin.lms.library_service.validator;
 
-import com.sahin.lms.infra.entity.library.jpa.BookCategoryEntity;
-import com.sahin.lms.infra.model.book.BookCategory;
+import com.sahin.lms.infra_entity.library.jpa.BookCategoryEntity;
+import com.sahin.lms.infra_model.library.model.BookCategory;
 import com.sahin.lms.library_service.repository.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

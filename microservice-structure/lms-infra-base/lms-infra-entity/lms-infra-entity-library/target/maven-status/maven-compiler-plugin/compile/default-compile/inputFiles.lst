@@ -1,0 +1,5 @@
+/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-library/src/main/java/com/sahin/lms/infra_entity/library/jpa/BookItemEntity.java
+/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-library/src/main/java/com/sahin/lms/infra_entity/library/jpa/BookEntity.java
+/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-library/src/main/java/com/sahin/lms/infra_entity/library/jpa/RackEntity.java
+/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-library/src/main/java/com/sahin/lms/infra_entity/library/jpa/BookCategoryEntity.java
+/home/serkansa/workspace/practices/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-entity/lms-infra-entity-library/src/main/java/com/sahin/lms/infra_entity/library/jpa/AuthorEntity.java

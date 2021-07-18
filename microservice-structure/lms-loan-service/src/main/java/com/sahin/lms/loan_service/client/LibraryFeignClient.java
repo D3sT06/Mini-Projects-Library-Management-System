@@ -1,6 +1,6 @@
 package com.sahin.lms.loan_service.client;
 
-import com.sahin.lms.infra.model.book.BookItem;
+import com.sahin.lms.infra_model.library.model.BookItem;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

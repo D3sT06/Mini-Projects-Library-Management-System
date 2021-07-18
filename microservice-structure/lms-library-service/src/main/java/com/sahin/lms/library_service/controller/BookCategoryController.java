@@ -1,8 +1,8 @@
 package com.sahin.lms.library_service.controller;
 
-import com.sahin.lms.infra.annotation.LogExecutionTime;
-import com.sahin.lms.infra.model.book.BookCategory;
-import com.sahin.lms.infra.projections.CategoryProjections;
+import com.sahin.lms.infra_aop.annotation.LogExecutionTime;
+import com.sahin.lms.infra_model.library.model.BookCategory;
+import com.sahin.lms.library_service.projection.CategoryProjections;
 import com.sahin.lms.library_service.service.BookCategoryService;
 import com.sahin.lms.library_service.swagger.controller.BookCategorySwaggerApi;
 import com.sahin.lms.library_service.validator.BookCategoryValidator;

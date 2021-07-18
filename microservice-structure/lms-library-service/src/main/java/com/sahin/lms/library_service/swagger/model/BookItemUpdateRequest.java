@@ -1,6 +1,6 @@
 package com.sahin.lms.library_service.swagger.model;
 
-import com.sahin.lms.infra.enums.BookStatus;
+import com.sahin.lms.infra_enum.BookStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

@@ -1,10 +1,10 @@
 package com.sahin.lms.loan_service.config;
 
-import com.sahin.lms.infra.enums.LogTopic;
-import com.sahin.lms.infra.factory.QueueFactory;
-import com.sahin.lms.infra.service.member_log.ConcreteMemberLogPublisherService;
-import com.sahin.lms.infra.service.member_log.MemberLogPublisherService;
-import com.sahin.lms.infra.service.member_log.VoidMemberLogPublisherService;
+import com.sahin.lms.infra_enum.LogTopic;
+import com.sahin.lms.infra_service.member_log.factory.QueueFactory;
+import com.sahin.lms.infra_service.member_log.service.ConcreteMemberLogPublisherService;
+import com.sahin.lms.infra_service.member_log.service.MemberLogPublisherService;
+import com.sahin.lms.infra_service.member_log.service.VoidMemberLogPublisherService;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,10 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.EnumMap;
 import java.util.Map;
 
