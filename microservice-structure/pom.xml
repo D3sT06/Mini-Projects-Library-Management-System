@@ -17,7 +17,6 @@
         <module>lms-loan-service</module>
         <module>lms-api-gateway</module>
         <module>lms-service-discovery</module>
-        <module>lms-config-service</module>
         <module>lms-infra-base</module>
     </modules>
 
