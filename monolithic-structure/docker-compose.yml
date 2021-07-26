@@ -7,7 +7,6 @@ services:
       PROFILE: swagger
       MONGO_HOST: mongo
       RABBIT_HOST: rabbit
-      REDIS_HOST: redis
     restart: always
     ports:
     - 7001:7001
@@ -16,7 +15,6 @@ services:
     depends_on:
       - mongo
       - rabbit
-      - redis
 
   mongo:
     image: mongo:4
@@ -37,15 +35,5 @@ services:
     ports:
     - 5672:5672
     - 15672:15672
-    healthcheck:
-      test: "exit 0"
-
-  redis:
-    image: redis:6
-    command: redis-server --requirepass password
-    container_name: redis
-    restart: always
-    ports:
-      - 6379:6379
     healthcheck:
       test: "exit 0"

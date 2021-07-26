@@ -37,9 +37,6 @@ public class BookLoaningService {
     private MemberService memberService;
 
     @Autowired
-    private NotificationService notificationService;
-
-    @Autowired
     private AvailableBookItemStateService availableBookItemStateService;
 
     @Autowired
@@ -111,7 +108,6 @@ public class BookLoaningService {
         entity = bookLoaningRepository.save(entity);
         BookLoaning loaning = bookLoaningMapper.toModel(entity);
 
-        notificationService.createLoanNotifications(loaning);
         return loaning;
     }
 
@@ -122,8 +118,6 @@ public class BookLoaningService {
 
         if (!bookLoaningRepository.findById(bookLoaning.getId()).isPresent())
             throw new MyRuntimeException("Book reservation with id \"" + bookLoaning.getId() + "\" not exist!", HttpStatus.BAD_REQUEST);
-
-        notificationService.deleteLoanNotifications(bookLoaning);
 
         BookLoaningEntity entity = bookLoaningMapper.toEntity(bookLoaning);
         bookLoaningRepository.save(entity);

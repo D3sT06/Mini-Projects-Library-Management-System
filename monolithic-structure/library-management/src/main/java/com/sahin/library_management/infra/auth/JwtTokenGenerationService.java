@@ -1,11 +1,8 @@
 package com.sahin.library_management.infra.auth;
 
-import com.sahin.library_management.infra.entity.redis.TokenEntity;
 import com.sahin.library_management.infra.model.account.LibraryCard;
-import com.sahin.library_management.repository.redis.TokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class JwtTokenGenerationService {
@@ -24,21 +20,10 @@ public class JwtTokenGenerationService {
     @Value("${app.security.jwt.ttl}")
     private long ttl;
 
-    @Autowired
-    private TokenRepository tokenRepository;
-
     public String getToken(Authentication authentication) {
 
         String cardBarcode = ((LibraryCard) authentication.getPrincipal()).getBarcode();
-        Optional<String> tokenFromCache = getTokenFromCache(cardBarcode);
-        if (tokenFromCache.isPresent())
-            return tokenFromCache.get();
-
-        String token = generateToken(authentication, cardBarcode);
-
-        saveTokenIntoCache(cardBarcode, token);
-
-        return token;
+        return generateToken(authentication, cardBarcode);
     }
 
     private String generateToken(Authentication authentication, String cardBarcode) {
@@ -56,20 +41,5 @@ public class JwtTokenGenerationService {
 
         token = String.format("Bearer %s", token);
         return token;
-    }
-
-    private void saveTokenIntoCache(String cardBarcode, String token) {
-
-        TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.setToken(token);
-        tokenEntity.setCardBarcode(cardBarcode);
-        tokenEntity.setTtl(this.ttl);
-
-        tokenRepository.save(tokenEntity);
-    }
-
-    private Optional<String> getTokenFromCache(String cardBarcode) {
-        Optional<TokenEntity> optionalToken = tokenRepository.findById(cardBarcode);
-        return optionalToken.map(TokenEntity::getToken);
     }
 }
