@@ -15,11 +15,9 @@
         <module>lms-library-service</module>
         <module>lms-account-service</module>
         <module>lms-loan-service</module>
-        <module>lms-log-service</module>
         <module>lms-api-gateway</module>
         <module>lms-service-discovery</module>
         <module>lms-config-service</module>
-        <module>lms-notification-service</module>
         <module>lms-infra-base</module>
     </modules>
 

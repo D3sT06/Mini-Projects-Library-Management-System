@@ -88,44 +88,6 @@ services:
     depends_on:
       - api-gateway
 
-  log-service:
-    image: lms-log-service:latest
-    container_name: lms-log-service
-    environment:
-      PROFILE: swagger
-      MONGO_HOST: mongo
-      RABBIT_HOST: rabbit
-      REDIS_HOST: redis
-      EUREKA_URI: http://service-discovery:7000/eureka
-    restart: always
-    links:
-      - service-discovery
-    ports:
-      - 7006:7006
-    healthcheck:
-      test: "exit 0"
-    depends_on:
-      - api-gateway
-
-  notification-service:
-    image: lms-notification-service:latest
-    container_name: lms-notification-service
-    environment:
-      PROFILE: swagger
-      REDIS_HOST: redis
-      EUREKA_URI: http://service-discovery:7000/eureka
-      ACTIVEMQ_URL: tcp://activemq:61616
-    restart: always
-    links:
-      - service-discovery
-      - activemq
-    ports:
-      - 7007:7007
-    healthcheck:
-      test: "exit 0"
-    depends_on:
-      - api-gateway
-
   mongo:
     image: mongo:4
     container_name: mongo
