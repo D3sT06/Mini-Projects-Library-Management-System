@@ -1,7 +1,5 @@
 /etc/
-/target/
-/monolithic-structure/target/
-/monolithic-structure/library-management/target/
+target/
 /.idea/
 *.iml
 
