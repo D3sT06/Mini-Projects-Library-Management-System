@@ -1,7 +1,0 @@
-com/sahin/lms/infra_authentication/repository/TokenRepository.class
-com/sahin/lms/infra_authentication/component/MyAuthenticationProvider.class
-com/sahin/lms/infra_authentication/filter/PasswordAuthenticationFilter.class
-com/sahin/lms/infra_authentication/service/ILoginTypeService.class
-com/sahin/lms/infra_authentication/service/JwtTokenGenerationService.class
-com/sahin/lms/infra_authentication/filter/FacebookAuthenticationFilter.class
-com/sahin/lms/infra_authentication/client/FacebookClient.class
