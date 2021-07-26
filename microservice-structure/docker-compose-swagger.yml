@@ -50,24 +50,6 @@ services:
     healthcheck:
       test: "exit 0"
 
-  library-service:
-    image: lms-library-service:latest
-    container_name: lms-library-service
-    environment:
-      PROFILE: swagger
-      RABBIT_HOST: rabbit
-      REDIS_HOST: redis
-      EUREKA_URI: http://service-discovery:7000/eureka
-    restart: always
-    links:
-      - service-discovery
-    ports:
-      - 7004:7004
-    healthcheck:
-      test: "exit 0"
-    depends_on:
-      - api-gateway
-
   mongo:
     image: mongo:4
     container_name: mongo
