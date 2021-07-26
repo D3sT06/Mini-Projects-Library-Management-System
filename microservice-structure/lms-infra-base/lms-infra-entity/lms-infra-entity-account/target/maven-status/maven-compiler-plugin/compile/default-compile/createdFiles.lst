@@ -1,4 +1,0 @@
-com/sahin/lms/infra_entity/account/redis/TokenEntity.class
-com/sahin/lms/infra_entity/account/jpa/AccountEntity.class
-com/sahin/lms/infra_entity/account/jpa/AccountLoginTypeEntity.class
-com/sahin/lms/infra_entity/account/jpa/LibraryCardEntity.class
