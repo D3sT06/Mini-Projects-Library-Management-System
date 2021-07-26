@@ -14,26 +14,6 @@ services:
       - redis
       - activemq
 
-  api-gateway:
-    image: lms-api-gateway:latest
-    container_name: lms-api-gateway
-    environment:
-      PROFILE: swagger
-      REDIS_HOST: redis
-      EUREKA_URI: http://service-discovery:7000/eureka
-      ACCOUNT_DB_URI: jdbc:h2:tcp://account-service:9090/mem:accountdb
-    restart: always
-    links:
-      - service-discovery
-      - account-service
-    ports:
-      - 7002:7002
-    healthcheck:
-      test: "exit 0"
-    depends_on:
-      - service-discovery
-      - account-service
-
   account-service:
     image: lms-account-service:latest
     container_name: lms-account-service
