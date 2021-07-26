@@ -17,7 +17,6 @@ services:
       - mongo
       - rabbit
       - redis
-      - activemq
 
   mongo:
     image: mongo:4
@@ -48,19 +47,5 @@ services:
     restart: always
     ports:
       - 6379:6379
-    healthcheck:
-      test: "exit 0"
-
-  activemq:
-    image: webcenter/activemq:latest
-    container_name: activemq
-    environment:
-      ACTIVEMQ_ADMIN_LOGIN: root
-      ACTIVEMQ_ADMIN_PASSWORD: password
-    restart: always
-    ports:
-    - 8161:8161
-    - 61616:61616
-    - 61613:61613
     healthcheck:
       test: "exit 0"

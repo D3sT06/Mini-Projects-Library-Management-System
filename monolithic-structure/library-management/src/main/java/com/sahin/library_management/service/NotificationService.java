@@ -3,15 +3,11 @@ package com.sahin.library_management.service;
 import com.sahin.library_management.infra.entity.redis.NotificationEntity;
 import com.sahin.library_management.infra.enums.NotificationType;
 import com.sahin.library_management.infra.model.book.BookLoaning;
-import com.sahin.library_management.infra.model.notification.Notification;
 import com.sahin.library_management.mapper.NotificationMapper;
 import com.sahin.library_management.repository.redis.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.*;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -36,12 +32,6 @@ public class NotificationService {
 
     @Autowired
     private NotificationMapper notificationMapper;
-
-    @Autowired
-    private JmsTemplate jmsTemplate;
-
-    @Value("${spring.activemq.queue.name}")
-    private String activemqQueueName;
 
     @PostConstruct
     void init() {
@@ -69,19 +59,6 @@ public class NotificationService {
             redisTemplate.opsForZSet().remove(timeToSendKey, entities.stream()
                     .map(NotificationEntity::getId)
                     .toArray());
-    }
-
-    @Scheduled(fixedDelay = 10000)
-    public void processNotifications() {
-
-        long currentTime = Instant.now().toEpochMilli();
-
-        List<NotificationEntity> entities = getNotificationsBeforeTime(currentTime);
-
-        List<Notification> notifications = notificationMapper.toModels(entities);
-        sendToQueue(notifications);
-
-        deleteFromCache(entities, currentTime);
     }
 
     private List<NotificationEntity> createLoanNotificationsBeforeDueDate(BookLoaning loaning) {
@@ -190,10 +167,5 @@ public class NotificationService {
         notificationRepository.deleteAll(entities);
         redisTemplate.opsForZSet().removeRangeByScore(timeToSendKey, Double.MIN_VALUE, time);
         log.info(entities.size() + " items has deleted from cache");
-    }
-
-    private void sendToQueue(List<Notification> notifications) {
-        notifications.forEach(entity -> jmsTemplate.convertAndSend(activemqQueueName, entity));
-        log.info(notifications.size() + " items has pushed to the queue");
     }
 }
