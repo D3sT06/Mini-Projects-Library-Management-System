@@ -24,15 +24,6 @@ app:
       password-login: /api/auth/login/default
       facebook-login: /api/auth/login/facebook
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:7000/eureka}
-
 aspect:
   enabled:
     log-execution-time: true

@@ -1,18 +1,5 @@
 version: "3.1"
 services:
-  service-discovery:
-    image: lms-service-discovery:latest
-    container_name: lms-service-discovery
-    restart: always
-    ports:
-    - 7000:7000
-    healthcheck:
-      test: "exit 0"
-    depends_on:
-      - mongo
-      - rabbit
-      - redis
-      - activemq
 
   account-service:
     image: lms-account-service:latest
@@ -20,10 +7,7 @@ services:
     environment:
       PROFILE: swagger
       REDIS_HOST: redis
-      EUREKA_URI: http://service-discovery:7000/eureka
     restart: always
-    links:
-      - service-discovery
     ports:
       - 7003:7003
       - 9090:9090
