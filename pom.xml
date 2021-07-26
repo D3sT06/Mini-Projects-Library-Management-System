@@ -10,7 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>monolithic-structure</module>
-        <module>microservice-structure</module>
     </modules>
 
     <properties>
