@@ -12,6 +12,7 @@
     <artifactId>microservice-structure</artifactId>
 
     <modules>
+        <module>lms-account-service</module>
         <module>lms-infra-base</module>
     </modules>
 

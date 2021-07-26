@@ -1,0 +1,61 @@
+version: "3.1"
+services:
+
+  account-service:
+    image: lms-account-service:latest
+    container_name: lms-account-service
+    environment:
+      PROFILE: swagger
+      REDIS_HOST: redis
+    restart: always
+    ports:
+      - 7003:7003
+      - 9090:9090
+    healthcheck:
+      test: "exit 0"
+
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    restart: always
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    healthcheck:
+      test: "exit 0"
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    restart: always
+    ports:
+    - 5672:5672
+    - 15672:15672
+    healthcheck:
+      test: "exit 0"
+
+  redis:
+    image: redis:6
+    command: redis-server --requirepass password
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: "exit 0"
+
+  activemq:
+    image: webcenter/activemq:latest
+    container_name: activemq
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: root
+      ACTIVEMQ_ADMIN_PASSWORD: password
+    restart: always
+    ports:
+    - 8161:8161
+    - 61616:61616
+    - 61613:61613
+    healthcheck:
+      test: "exit 0"
