@@ -1,5 +1,0 @@
-/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-service-member-log/src/main/java/com/sahin/lms/infra_service/member_log/service/ConcreteMemberLogPublisherService.java
-/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-service-member-log/src/main/java/com/sahin/lms/infra_service/member_log/model/MemberLog.java
-/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-service-member-log/src/main/java/com/sahin/lms/infra_service/member_log/service/MemberLogPublisherService.java
-/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-service-member-log/src/main/java/com/sahin/lms/infra_service/member_log/factory/QueueFactory.java
-/Users/Serkan/Documents/Workspace/Mini-Projects-Library-Management-System/microservice-structure/lms-infra-base/lms-infra-service-member-log/src/main/java/com/sahin/lms/infra_service/member_log/service/VoidMemberLogPublisherService.java
