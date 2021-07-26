@@ -1,18 +1,7 @@
 /etc/
 /target/
-/microservice-structure/target/
 /monolithic-structure/target/
 /monolithic-structure/library-management/target/
-/microservice-structure/lms-account-service/target/
-/microservice-structure/lms-api-gateway/target/
-/microservice-structure/lms-config-service/target/
-/microservice-structure/lms-infra/target/
-/microservice-structure/lms-infra-auth/target/
-/microservice-structure/lms-library-service/target/
-/microservice-structure/lms-loan-service/target/
-/microservice-structure/lms-notification-service/target/
-/microservice-structure/lms-log-service/target/
-/microservice-structure/lms-service-discovery/target/
 /.idea/
 *.iml
 
