@@ -1,7 +1,6 @@
 package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.projections.AuthorProjections;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,8 +60,8 @@ public class AuthorModelController {
     @GetMapping("/authors/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        AuthorProjections.AuthorView authorView = authorService.getAuthorById(id);
-        model.addAttribute("author", authorView);
+        Author author = authorService.getAuthorById(id);
+        model.addAttribute("author", author);
         return "update-author";
     }
 }

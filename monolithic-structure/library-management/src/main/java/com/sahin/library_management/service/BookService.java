@@ -4,15 +4,10 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.search.BookFilter;
-import com.sahin.library_management.infra.model.search.BookSpecification;
 import com.sahin.library_management.mapper.BookMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,13 +24,6 @@ public class BookService {
 
     @Autowired
     private BookMapper bookMapper;
-
-    @Transactional
-    public Page<Book> searchBook(Pageable pageable, BookFilter bookFilter) {
-        Specification<BookEntity> specification = BookSpecification.create(bookFilter);
-        Page<BookEntity> entities = bookRepository.findAll(specification, pageable);
-        return bookMapper.toPages(entities, new CyclePreventiveContext());
-    }
 
     @Transactional
     public Book createBook(Book book) {

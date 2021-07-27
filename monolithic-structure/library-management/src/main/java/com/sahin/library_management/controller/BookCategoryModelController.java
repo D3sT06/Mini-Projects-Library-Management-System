@@ -2,7 +2,6 @@ package com.sahin.library_management.controller;
 
 import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.service.BookCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +69,8 @@ public class BookCategoryModelController {
     @GetMapping("/categories/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        CategoryProjections.CategoryView entity = categoryService.getCategoryById(id);
-        model.addAttribute("category", entity);
+        BookCategory category = categoryService.getCategoryById(id);
+        model.addAttribute("category", category);
         return "update-category";
     }
 }

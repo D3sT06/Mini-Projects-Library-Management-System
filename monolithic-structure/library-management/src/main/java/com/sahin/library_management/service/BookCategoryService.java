@@ -4,7 +4,6 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.mapper.BookCategoryMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.BookCategoryRepository;
@@ -59,15 +58,18 @@ public class BookCategoryService {
     }
 
     @Transactional
-    public CategoryProjections.CategoryView getCategoryById(Long categoryId) {
-        return categoryRepository
-                .findProjectedById(categoryId)
+    public BookCategory getCategoryById(Long categoryId) {
+        BookCategoryEntity entity = categoryRepository
+                .findById(categoryId)
                 .orElseThrow(()-> setExceptionWhenCategoryNotExist(categoryId));
+
+        return categoryMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
-    public List<CategoryProjections.CategoryView> getAll() {
-        return categoryRepository.findAllProjectedBy();
+    public List<BookCategory> getAll() {
+        List<BookCategoryEntity> entities = categoryRepository.findAll();
+        return categoryMapper.toModelsList(entities, new CyclePreventiveContext());
     }
 
     private MyRuntimeException setExceptionWhenCategoryNotExist(Long categoryId) {
