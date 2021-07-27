@@ -9,9 +9,6 @@ import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
 
-    Optional<AuthorEntity> findByNameAndSurname(String name, String surname);
-    Optional<AuthorEntity> findByNameAndSurnameAndIdIsNot(String name, String surname, Long id);
-
     List<AuthorProjections.AuthorView> findAllProjectedBy();
 
     Optional<AuthorProjections.AuthorView> findProjectedById(Long id);
