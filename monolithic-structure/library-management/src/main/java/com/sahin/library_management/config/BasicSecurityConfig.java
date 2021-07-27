@@ -20,7 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
-            "/h2-console/**"
+            "/h2-console/**",
+            "/model/**"
     };
 
     private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
