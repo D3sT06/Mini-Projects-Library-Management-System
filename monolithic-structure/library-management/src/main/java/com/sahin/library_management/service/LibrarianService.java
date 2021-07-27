@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @LogExecutionTime
@@ -107,8 +108,12 @@ public class LibrarianService {
     @Transactional
     public List<Librarian> getAll() {
         List<AccountEntity> entities = accountRepository
-                .getAll(AccountFor.LIBRARIAN);
+                .findAll();
 
-        return accountMapper.toLibrarianModels(entities);
+        List<AccountEntity> filteredEntities = entities.stream()
+                .filter(accountEntity -> accountEntity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
+                .collect(Collectors.toList());
+
+        return accountMapper.toLibrarianModels(filteredEntities);
     }
 }

@@ -2,11 +2,8 @@ package com.sahin.library_management.restcontroller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -47,14 +44,5 @@ public class BookController {
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
         Book book = bookService.getBookById(bookId);
         return ResponseEntity.ok(book);
-    }
-
-
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_LIBRARIAN')")
-    @PostMapping("search")
-    public ResponseEntity<Page<Book>> getAll(@RequestBody @Valid BookFilter bookFilter, Pageable pageable) {
-
-        Page<Book> books = bookService.searchBook(pageable, bookFilter);
-        return ResponseEntity.ok(books);
     }
 }

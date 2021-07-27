@@ -6,7 +6,6 @@ import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.helper.CategoryViewHelper;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,7 +71,7 @@ public class BookCategoryIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        CategoryViewHelper[] categories = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper[].class);
+                        BookCategory[] categories = objectMapper.readValue(result.getResponse().getContentAsString(), BookCategory[].class);
                         assertEquals(expectedResult, categories.length);
                     });
         }
@@ -91,7 +90,7 @@ public class BookCategoryIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        CategoryViewHelper category = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryViewHelper.class);
+                        BookCategory category = objectMapper.readValue(result.getResponse().getContentAsString(), BookCategory.class);
                         assertNotNull(category);
                     });
         }

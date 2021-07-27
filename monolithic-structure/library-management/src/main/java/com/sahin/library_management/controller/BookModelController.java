@@ -3,8 +3,6 @@ package com.sahin.library_management.controller;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.book.BookCategory;
-import com.sahin.library_management.infra.projections.AuthorProjections;
-import com.sahin.library_management.infra.projections.CategoryProjections;
 import com.sahin.library_management.infra.viewmapper.BookViewModelMapper;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import com.sahin.library_management.service.AuthorService;
@@ -87,23 +85,13 @@ public class BookModelController {
 
         books.forEach(book -> {
 
-            AuthorProjections.AuthorView authorView = authorService.getAuthorById(book.getAuthor().getId());
-            Author author = new Author();
-            author.setId(authorView.getId());
-            author.setName(authorView.getName());
-            author.setSurname(authorView.getSurname());
-
+            Author author = authorService.getAuthorById(book.getAuthor().getId());
             book.setAuthor(author);
             Set<BookCategory> categories = new HashSet<>(book.getCategories());
 
             book.setCategories(new HashSet<>());
             categories.forEach(category -> {
-
-                CategoryProjections.CategoryView categoryView = categoryService.getCategoryById(category.getId());
-                BookCategory bookCategory = new BookCategory();
-                bookCategory.setId(categoryView.getId());
-                bookCategory.setName(categoryView.getName());
-
+                BookCategory bookCategory = categoryService.getCategoryById(category.getId());
                 book.getCategories().add(bookCategory);
             });
         });
@@ -135,23 +123,14 @@ public class BookModelController {
 
         Book bookModel = bookService.getBookById(id);
 
-        AuthorProjections.AuthorView authorView = authorService.getAuthorById(bookModel.getAuthor().getId());
-        Author author = new Author();
-        author.setId(authorView.getId());
-        author.setName(authorView.getName());
-        author.setSurname(authorView.getSurname());
+        Author author = authorService.getAuthorById(bookModel.getAuthor().getId());
 
         bookModel.setAuthor(author);
         Set<BookCategory> categories = new HashSet<>(bookModel.getCategories());
 
         bookModel.setCategories(new HashSet<>());
         categories.forEach(category -> {
-
-            CategoryProjections.CategoryView categoryView = categoryService.getCategoryById(category.getId());
-            BookCategory bookCategory = new BookCategory();
-            bookCategory.setId(categoryView.getId());
-            bookCategory.setName(categoryView.getName());
-
+            BookCategory bookCategory = categoryService.getCategoryById(category.getId());
             bookModel.getCategories().add(bookCategory);
         });
 

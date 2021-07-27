@@ -24,7 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,66 +75,9 @@ class BookIT {
         }
 
         @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
-        @DisplayName("Then user can find all the books without using any filter")
-        @Order(1)
-        void searchBooksWithNoFilter() throws Exception {
-
-            long expectedResult = bookLoader.getAll().size();
-
-            mockMvc
-                    .perform(
-                            post("/api/books/search?page=0&size=10&sort=title,ASC")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content("{}"))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-                        PageHelper<Book> page = objectMapper.readValue(result.getResponse().getContentAsString(), PageHelper.class);
-                        assertEquals(expectedResult, page.getContent().size());
-                    });
-        }
-
-        @Test
-        @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
-        @DisplayName("Then user can find the book he wants by using filters")
-        @Order(2)
-        void searchBooksWithFilter() throws Exception {
-
-            long expectedResult = ((List<BookEntity>) bookLoader.getAll()).stream()
-                    .filter(entity -> entity.getTitle().contains("19"))
-                    .filter(entity -> entity.getCategories().stream()
-                            .map(BookCategoryEntity::getId)
-                            .collect(Collectors.toList())
-                            .contains(1L))
-                    .filter(entity -> entity.getAuthor().getId().equals(3L))
-                    .count();
-
-            mockMvc
-                    .perform(
-                            post("/api/books/search?page=0&size=10&sort=title,ASC")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content(
-                                            "{\n" +
-                                                    "    \"title\": \"19\",\n" +
-                                                    "    \"categoryIds\": [\n" +
-                                                "            1\n" +
-                                                    "    ],\n" +
-                                                    "    \"authorIds\": [\n" +
-                                                "            3\n" +
-                                                    "    ]\n" +
-                                                    "}"))
-                    .andExpect(status().isOk())
-                    .andExpect(result -> {
-
-                        PageHelper<Book> page = objectMapper.readValue(result.getResponse().getContentAsString(), PageHelper.class);
-                        assertEquals(expectedResult, page.getContent().size());
-                    });
-        }
-
-        @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can create a book")
-        @Order(3)
+        @Order(1)
         void createBook() throws Exception {
 
             BookCategoryEntity category = (BookCategoryEntity) categoryLoader.getAll().get(0);
@@ -164,7 +108,7 @@ class BookIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can update a book")
-        @Order(4)
+        @Order(2)
         void updateBook() throws Exception {
 
             BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
@@ -195,7 +139,7 @@ class BookIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"LIBRARIAN"})
         @DisplayName("Then a librarian can delete a book")
-        @Order(5)
+        @Order(3)
         void deleteBookById() throws Exception {
 
             BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
@@ -210,7 +154,7 @@ class BookIT {
         @Test
         @WithMockUser(username = "${UUID.randomUUID().toString()}", roles = {"MEMBER", "LIBRARIAN"})
         @DisplayName("Then user can get a book")
-        @Order(6)
+        @Order(4)
         void getBookById() throws Exception {
             BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
 
@@ -225,8 +169,6 @@ class BookIT {
                         assertNotNull(book);
                     });
         }
-
-
     }
 
     @Nested

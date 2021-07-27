@@ -5,7 +5,6 @@ import com.sahin.library_management.LibraryManagementApp;
 import com.sahin.library_management.bootstrap.Loader;
 import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
 import com.sahin.library_management.infra.exception.ErrorResponse;
-import com.sahin.library_management.infra.helper.AuthorViewHelper;
 import com.sahin.library_management.infra.model.book.Author;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,7 +70,7 @@ public class AuthorIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        AuthorViewHelper[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper[].class);
+                        Author[] authors = objectMapper.readValue(result.getResponse().getContentAsString(), Author[].class);
                         assertEquals(expectedResult, authors.length);
                     });
         }
@@ -90,7 +89,7 @@ public class AuthorIT {
                                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(result -> {
-                        AuthorViewHelper author = objectMapper.readValue(result.getResponse().getContentAsString(), AuthorViewHelper.class);
+                        Author author = objectMapper.readValue(result.getResponse().getContentAsString(), Author.class);
                         assertNotNull(author);
                     });
         }
