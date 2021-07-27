@@ -5,7 +5,6 @@ import com.sahin.library_management.infra.model.book.Book;
 import com.sahin.library_management.infra.model.search.BookFilter;
 import com.sahin.library_management.infra.validator.BookValidator;
 import com.sahin.library_management.service.BookService;
-import com.sahin.library_management.swagger.controller.BookSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("api/books")
 @LogExecutionTime
-public class BookController implements BookSwaggerApi {
+public class BookController {
 
     @Autowired
     private BookService bookService;

@@ -2,7 +2,6 @@ package com.sahin.library_management.infra.projections;
 
 import com.fasterxml.jackson.annotation.*;
 import com.sahin.library_management.infra.entity.jpa.BookEntity;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -22,7 +21,6 @@ public class CategoryProjections {
                 property = "id")
         @JsonIdentityReference(alwaysAsId = true)
         @JsonProperty("bookIds")
-        @ApiModelProperty(dataType = "[Ljava.lang.Long;")
         Set<BookEntity> getBooks();
     }
 }

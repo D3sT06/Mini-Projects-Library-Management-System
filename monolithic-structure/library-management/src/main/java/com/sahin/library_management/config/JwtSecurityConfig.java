@@ -146,16 +146,6 @@ public class JwtSecurityConfig {
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private static final String[] AUTH_WHITELIST = {
-                // -- swagger ui
-                "/swagger/**",
-                "/swagger-resources",
-                "/swagger-resources/**",
-                "/configuration",
-                "/configuration/**",
-                "/swagger-ui/**",
-                "/webjars/**",
-                "/model/**",
-                // other public endpoints of your API may be appended to this array
                 "/h2-console/**"
         };
 

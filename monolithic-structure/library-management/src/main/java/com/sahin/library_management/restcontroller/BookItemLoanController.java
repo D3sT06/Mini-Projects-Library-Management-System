@@ -4,7 +4,6 @@ import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import com.sahin.library_management.infra.model.book.BookLoaning;
 import com.sahin.library_management.service.BookLoaningService;
-import com.sahin.library_management.swagger.controller.BookItemLoanSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("api/book-items/loan")
 @LogExecutionTime
-public class BookItemLoanController implements BookItemLoanSwaggerApi {
+public class BookItemLoanController {
 
     @Autowired
     private BookLoaningService bookLoaningService;

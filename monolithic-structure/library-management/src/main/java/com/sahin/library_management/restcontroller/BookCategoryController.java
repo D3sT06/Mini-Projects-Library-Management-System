@@ -1,6 +1,5 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.swagger.controller.BookCategorySwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.infra.projections.CategoryProjections;
@@ -18,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/categories")
 @LogExecutionTime
-public class BookCategoryController implements BookCategorySwaggerApi {
+public class BookCategoryController {
 
     @Autowired
     private BookCategoryService categoryService;

@@ -1,6 +1,5 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.swagger.controller.RackSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Rack;
 import com.sahin.library_management.infra.validator.RackValidator;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/racks")
 @LogExecutionTime
-public class RackController implements RackSwaggerApi {
+public class RackController {
 
     @Autowired
     private RackService rackService;

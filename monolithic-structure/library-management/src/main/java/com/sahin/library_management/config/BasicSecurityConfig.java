@@ -21,16 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
-            // -- swagger ui
-            "/swagger/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration",
-            "/configuration/**",
-            "/swagger-ui/**",
-            "/webjars/**",
-            "/model/**",
-            // other public endpoints of your API may be appended to this array
             "/h2-console/**"
     };
 

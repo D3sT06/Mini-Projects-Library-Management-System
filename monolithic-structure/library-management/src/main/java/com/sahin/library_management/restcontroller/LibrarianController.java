@@ -1,6 +1,5 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.swagger.controller.LibrarianSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.account.Librarian;
 import com.sahin.library_management.service.LibrarianService;
@@ -15,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/librarians")
 @LogExecutionTime
-public class LibrarianController implements LibrarianSwaggerApi {
+public class LibrarianController {
 
     @Autowired
     private LibrarianService librarianService;

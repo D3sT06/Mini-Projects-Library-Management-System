@@ -1,6 +1,5 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.swagger.controller.AuthorSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.infra.projections.AuthorProjections;
@@ -18,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/authors")
 @LogExecutionTime
-public class AuthorController implements AuthorSwaggerApi {
+public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
