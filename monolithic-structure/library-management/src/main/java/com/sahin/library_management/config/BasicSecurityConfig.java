@@ -1,6 +1,5 @@
 package com.sahin.library_management.config;
 
-import com.sahin.library_management.infra.auth.MyBasicAuthenticationEntryPoint;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,11 +21,9 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
             "/model/**"
     };
 
-    private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
     private final PasswordEncoder passwordEncoder;
 
-    public BasicSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint, PasswordEncoder passwordEncoder) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
+    public BasicSecurityConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -55,7 +52,6 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated().and()
-                .httpBasic().and()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+                .httpBasic();
     }
 }
