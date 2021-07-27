@@ -16,20 +16,18 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
-    private final PasswordEncoder passwordEncoder;
 
-    public BasicSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint, PasswordEncoder passwordEncoder) {
+    public BasicSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint) {
         this.authenticationEntryPoint = authenticationEntryPoint;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("librarian").password(passwordEncoder.encode("1234")).roles("LIBRARIAN")
+                .withUser("librarian").password("{noop}1234").roles("LIBRARIAN")
                 .and()
-                .withUser("member").password(passwordEncoder.encode("1234")).roles("MEMBER");
+                .withUser("member").password("{noop}1234").roles("MEMBER");
     }
 
     @Override
