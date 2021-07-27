@@ -5,7 +5,6 @@ import com.sahin.library_management.infra.model.log.MemberLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -21,10 +20,5 @@ public class MemberEventsHandler {
     @RabbitListener(queues = {"#{bookQueue.name}", "#{itemQueue.name}", "#{loanQueue.name}", "#{reservationQueue.name}"})
     public void receiveMessages(MemberLog memberLog) throws InterruptedException {
         memberLogsQueue.put(memberLog);
-    }
-
-    @Scheduled(fixedDelay = 10000)
-    public void saveLogs() {
-        log.info("Member logs queue size: " + memberLogsQueue.size());
     }
 }
