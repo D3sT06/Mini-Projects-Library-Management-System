@@ -1,6 +1,5 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
@@ -26,7 +25,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@LogExecutionTime
 public class LibrarianService {
 
     @Autowired

@@ -1,6 +1,5 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
 import com.sahin.library_management.infra.enums.LoginType;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@LogExecutionTime
 public class AccountLoginTypeService {
 
     @Autowired

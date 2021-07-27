@@ -1,6 +1,5 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.service.BookItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/book-items")
-@LogExecutionTime
 public class BookItemController {
 
     @Autowired

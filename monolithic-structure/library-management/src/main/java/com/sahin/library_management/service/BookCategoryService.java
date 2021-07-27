@@ -1,6 +1,5 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.exception.MyRuntimeException;
 import com.sahin.library_management.infra.model.book.BookCategory;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@LogExecutionTime
 public class BookCategoryService {
 
     @Autowired
