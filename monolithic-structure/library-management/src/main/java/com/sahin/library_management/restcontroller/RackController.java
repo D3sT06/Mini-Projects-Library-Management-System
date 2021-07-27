@@ -2,12 +2,10 @@ package com.sahin.library_management.restcontroller;
 
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Rack;
-import com.sahin.library_management.infra.validator.RackValidator;
 import com.sahin.library_management.service.RackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,14 +18,6 @@ public class RackController {
 
     @Autowired
     private RackService rackService;
-
-    @Autowired
-    private RackValidator rackValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(rackValidator);
-    }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")

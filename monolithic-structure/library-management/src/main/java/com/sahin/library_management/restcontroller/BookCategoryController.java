@@ -3,12 +3,10 @@ package com.sahin.library_management.restcontroller;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookCategory;
 import com.sahin.library_management.infra.projections.CategoryProjections;
-import com.sahin.library_management.infra.validator.BookCategoryValidator;
 import com.sahin.library_management.service.BookCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,14 +19,6 @@ public class BookCategoryController {
 
     @Autowired
     private BookCategoryService categoryService;
-
-    @Autowired
-    private BookCategoryValidator bookCategoryValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(bookCategoryValidator);
-    }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")

@@ -3,12 +3,10 @@ package com.sahin.library_management.restcontroller;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.Author;
 import com.sahin.library_management.infra.projections.AuthorProjections;
-import com.sahin.library_management.infra.validator.AuthorValidator;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,14 +19,6 @@ public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
-
-    @Autowired
-    private AuthorValidator authorValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(authorValidator);
-    }
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
