@@ -1,15 +1,10 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.enums.LogAction;
-import com.sahin.library_management.infra.enums.LogTopic;
-import com.sahin.library_management.infra.model.log.MemberLog;
-import com.sahin.library_management.service.member_log.MemberLogPublisherService;
-import com.sahin.library_management.swagger.controller.BookItemSwaggerApi;
 import com.sahin.library_management.infra.annotation.LogExecutionTime;
 import com.sahin.library_management.infra.model.book.BookItem;
 import com.sahin.library_management.service.BookItemService;
+import com.sahin.library_management.swagger.controller.BookItemSwaggerApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +19,6 @@ public class BookItemController implements BookItemSwaggerApi {
 
     @Autowired
     private BookItemService bookItemService;
-
-    @Autowired
-    private MemberLogPublisherService memberLogPublisherService;
 
     @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @PostMapping("create")
@@ -53,13 +45,6 @@ public class BookItemController implements BookItemSwaggerApi {
     @GetMapping("get/{barcode}")
     public ResponseEntity<BookItem> getBookItemByBarcode(@PathVariable String barcode) {
         BookItem bookItem = bookItemService.getBookItemByBarcode(barcode);
-
-        memberLogPublisherService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
-                .action(LogAction.GET_ITEM, barcode)
-                .httpStatus(HttpStatus.OK)
-                .build()
-        );
-
         return ResponseEntity.ok(bookItem);
     }
 
@@ -67,13 +52,6 @@ public class BookItemController implements BookItemSwaggerApi {
     @GetMapping("get-by-book/{bookId}")
     public ResponseEntity<List<BookItem>> getBookItemsByBook(@PathVariable Long bookId) {
         List<BookItem> bookItems = bookItemService.getBookItemByBookId(bookId);
-
-        memberLogPublisherService.send(LogTopic.BOOK_ITEM, new MemberLog.Builder()
-                .action(LogAction.GET_ITEM_BY_BOOK, bookId.toString())
-                .httpStatus(HttpStatus.OK)
-                .build()
-        );
-
         return ResponseEntity.ok(bookItems);
     }
 }
