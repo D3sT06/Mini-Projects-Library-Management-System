@@ -112,6 +112,7 @@ class BookIT {
         void updateBook() throws Exception {
 
             BookEntity bookEntity = (BookEntity) bookLoader.getAll().get(0);
+            BookCategoryEntity category = (BookCategoryEntity) categoryLoader.getAll().get(0);
 
             mockMvc
                     .perform(
@@ -122,7 +123,7 @@ class BookIT {
                                             "    \"title\": \"Test\",\n" +
                                             "    \"publicationDate\": \"12/10/1990\",\n" +
                                             "    \"categories\": [{\n" +
-                                            "        \"id\": " + bookEntity.getCategories().iterator().next().getId() + "\n" +
+                                            "        \"id\": " + category.getId() + "\n" +
                                             "    }],\n" +
                                             "    \"author\": {\n" +
                                             "        \"id\": " + bookEntity.getAuthor().getId() + "\n" +
