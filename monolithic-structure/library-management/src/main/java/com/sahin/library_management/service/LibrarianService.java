@@ -11,7 +11,6 @@ import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,9 +30,6 @@ public class LibrarianService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Transactional
     public void createLibrarian(Librarian librarian) {
         String password = PasswordUtil.createRandomPassword();
@@ -42,7 +38,7 @@ public class LibrarianService {
         card.setIssuedAt(Instant.now().toEpochMilli());
         card.setActive(true);
         card.setAccountFor(AccountFor.LIBRARIAN);
-        card.setPassword(passwordEncoder.encode(password));
+        card.setPassword(password);
 
         AccountLoginType passwordType = new AccountLoginType();
         passwordType.setType(LoginType.PASSWORD);

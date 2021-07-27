@@ -8,7 +8,6 @@ import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
 import com.sahin.library_management.repository.jpa.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -22,9 +21,6 @@ public class AccountLoader implements Loader<AccountEntity> {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public void loadDb() {
         loadLibrarians();
@@ -37,19 +33,19 @@ public class AccountLoader implements Loader<AccountEntity> {
         libraryCardEntity1.setAccountFor(AccountFor.LIBRARIAN);
         libraryCardEntity1.setActive(true);
         libraryCardEntity1.setIssuedAt(Instant.now().toEpochMilli());
-        libraryCardEntity1.setPassword(passwordEncoder.encode("1234"));
+        libraryCardEntity1.setPassword("1234");
 
         LibraryCardEntity libraryCardEntity2 = new LibraryCardEntity();
         libraryCardEntity2.setAccountFor(AccountFor.LIBRARIAN);
         libraryCardEntity2.setActive(true);
         libraryCardEntity2.setIssuedAt(Instant.now().toEpochMilli());
-        libraryCardEntity2.setPassword(passwordEncoder.encode("1234"));
+        libraryCardEntity2.setPassword("1234");
 
         LibraryCardEntity libraryCardEntity3 = new LibraryCardEntity();
         libraryCardEntity3.setAccountFor(AccountFor.LIBRARIAN);
         libraryCardEntity3.setActive(true);
         libraryCardEntity3.setIssuedAt(Instant.now().toEpochMilli());
-        libraryCardEntity3.setPassword(passwordEncoder.encode("1234"));
+        libraryCardEntity3.setPassword("1234");
 
         AccountLoginTypeEntity accountLoginType1 = new AccountLoginTypeEntity();
         accountLoginType1.setLibraryCard(libraryCardEntity1);
@@ -99,13 +95,13 @@ public class AccountLoader implements Loader<AccountEntity> {
         libraryCardEntity1.setAccountFor(AccountFor.MEMBER);
         libraryCardEntity1.setActive(true);
         libraryCardEntity1.setIssuedAt(Instant.now().toEpochMilli());
-        libraryCardEntity1.setPassword(passwordEncoder.encode("1234"));
+        libraryCardEntity1.setPassword("1234");
 
         LibraryCardEntity libraryCardEntity2 = new LibraryCardEntity();
         libraryCardEntity2.setAccountFor(AccountFor.MEMBER);
         libraryCardEntity2.setActive(true);
         libraryCardEntity2.setIssuedAt(Instant.now().toEpochMilli());
-        libraryCardEntity2.setPassword(passwordEncoder.encode("1234"));
+        libraryCardEntity2.setPassword("1234");
 
         AccountLoginTypeEntity accountLoginType1 = new AccountLoginTypeEntity();
         accountLoginType1.setLibraryCard(libraryCardEntity1);
