@@ -13,15 +13,10 @@ import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Arrays;
@@ -31,7 +26,6 @@ import java.util.Optional;
 
 @Service
 @LogExecutionTime
-@CacheConfig(cacheNames = "accounts")
 public class MemberService {
 
     @Autowired
@@ -42,9 +36,6 @@ public class MemberService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Resource
-    private MemberService self;
 
     @Transactional
     public void createMember(Member member) {
@@ -67,8 +58,7 @@ public class MemberService {
         member.setLibraryCard(card);
 
         AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
-        entity = accountRepository.save(entity);
-        self.cache(entity);
+        accountRepository.save(entity);
     }
 
     @Transactional
@@ -87,12 +77,10 @@ public class MemberService {
         AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
         entity.setLibraryCard(optionalEntity.get().getLibraryCard());
         entity.setType(AccountFor.MEMBER);
-        entity = accountRepository.save(entity);
-        self.cache(entity);
+        accountRepository.save(entity);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"libraryCards", "accounts"}, key = "#barcode")
     public void deleteMemberByBarcode(String barcode) {
         Optional<AccountEntity> optionalEntity = accountRepository.findByLibraryCardBarcode(barcode);
 
@@ -106,7 +94,6 @@ public class MemberService {
     }
 
     @Transactional
-    @Cacheable(key = "#barcode")
     public Member getMemberByBarcode(String barcode) {
         AccountEntity entity = accountRepository
                 .findByLibraryCardBarcode(barcode)
@@ -122,22 +109,6 @@ public class MemberService {
         List<AccountEntity> entities = accountRepository
                 .getAll(AccountFor.MEMBER);
 
-        List<Member> models = accountMapper.toMemberModels(entities);
-
-        for (Member model : models)
-            self.cache(model);
-
-        return models;
+        return accountMapper.toMemberModels(entities);
     }
-
-    @CachePut(key = "#member.libraryCard.barcode")
-    public Member cache(Member member) {
-        return member;
-    }
-
-    @CachePut(key = "#entity.libraryCard.barcode")
-    public Member cache(AccountEntity entity) {
-        return accountMapper.toMemberModel(entity, new CyclePreventiveContext());
-    }
-
 }

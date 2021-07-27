@@ -9,30 +9,22 @@ import com.sahin.library_management.mapper.BookCategoryMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @LogExecutionTime
-@CacheConfig(cacheNames = "categories")
 public class BookCategoryService {
+
     @Autowired
     private BookCategoryRepository categoryRepository;
 
     @Autowired
     private BookCategoryMapper categoryMapper;
-
-    @Resource
-    private BookCategoryService self;
 
     @Transactional
     public BookCategory createCategory(BookCategory category) {
@@ -53,12 +45,10 @@ public class BookCategoryService {
             throw setExceptionWhenCategoryNotExist(category.getId());
 
         BookCategoryEntity entity = categoryMapper.toEntity(category, new CyclePreventiveContext());
-        entity = categoryRepository.save(entity);
-        self.cacheEvict(entity);
+        categoryRepository.save(entity);
     }
 
     @Transactional
-    @CacheEvict(key = "#categoryId")
     public void deleteCategoryById(Long categoryId) {
         Optional<BookCategoryEntity> optionalEntity = categoryRepository.findById(categoryId);
 
@@ -69,7 +59,6 @@ public class BookCategoryService {
     }
 
     @Transactional
-    @Cacheable(key = "#categoryId")
     public CategoryProjections.CategoryView getCategoryById(Long categoryId) {
         return categoryRepository
                 .findProjectedById(categoryId)
@@ -78,22 +67,8 @@ public class BookCategoryService {
 
     @Transactional
     public List<CategoryProjections.CategoryView> getAll() {
-
-        List<CategoryProjections.CategoryView> categoryViews = categoryRepository.findAllProjectedBy();
-
-        for (CategoryProjections.CategoryView view : categoryViews)
-            self.cache(view);
-
-        return categoryViews;
+        return categoryRepository.findAllProjectedBy();
     }
-
-    @CachePut(key = "#view.id")
-    public CategoryProjections.CategoryView cache(CategoryProjections.CategoryView view) {
-        return view;
-    }
-
-    @CacheEvict(key = "#entity.id")
-    public void cacheEvict(BookCategoryEntity entity) {}
 
     private MyRuntimeException setExceptionWhenCategoryNotExist(Long categoryId) {
         return new MyRuntimeException("NOT FOUND", "Category with id \"" + categoryId + "\" not exist!", HttpStatus.BAD_REQUEST);

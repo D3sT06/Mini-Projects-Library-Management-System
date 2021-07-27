@@ -9,20 +9,14 @@ import com.sahin.library_management.mapper.BookItemMapper;
 import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.BookItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @LogExecutionTime
-@CacheConfig(cacheNames = "bookItems")
 public class BookItemService {
 
     @Autowired
@@ -30,9 +24,6 @@ public class BookItemService {
 
     @Autowired
     private BookItemMapper bookItemMapper;
-
-    @Resource
-    private BookItemService self;
 
     public BookItem createBookItem(BookItem bookItem) {
         if (bookItem.getBarcode() != null || bookItem.getStatus() != null)
@@ -44,7 +35,6 @@ public class BookItemService {
         return bookItemMapper.toModel(createdEntity, new CyclePreventiveContext());
     }
 
-    @CachePut(key = "#bookItem.barcode")
     public BookItem updateBookItem(BookItem bookItem) {
         if (bookItem.getBarcode() == null)
             throw new MyRuntimeException("NOT UPDATED", "Book item to be created must have a barcode.", HttpStatus.BAD_REQUEST);
@@ -58,7 +48,6 @@ public class BookItemService {
         return bookItemMapper.toModel(updatedEntity, new CyclePreventiveContext());
     }
 
-    @CacheEvict(key = "#barcode")
     public void deleteBookItemByBarcode(String barcode) {
         Optional<BookItemEntity> optionalEntity = bookItemRepository.findById(barcode);
 
@@ -68,7 +57,6 @@ public class BookItemService {
         bookItemRepository.deleteById(barcode);
     }
 
-    @Cacheable(key = "#barcode")
     public BookItem getBookItemByBarcode(String barcode) {
         BookItemEntity entity = bookItemRepository
                 .findById(barcode)
@@ -81,15 +69,6 @@ public class BookItemService {
         List<BookItemEntity> entities = bookItemRepository
                 .findByBookId(bookId);
 
-        List<BookItem> bookItems = bookItemMapper.toModels(entities, new CyclePreventiveContext());
-        for (BookItem item : bookItems)
-            self.cache(item);
-
-        return bookItems;
-    }
-
-    @CachePut(key = "#bookItem.barcode")
-    public BookItem cache(BookItem bookItem) {
-        return bookItem;
+        return bookItemMapper.toModels(entities, new CyclePreventiveContext());
     }
 }

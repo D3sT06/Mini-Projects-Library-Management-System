@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,34 +37,25 @@ public class JwtSecurityConfig {
         private final JwtTokenGenerationService jwtTokenGenerationService;
         private final LibraryCardService libraryCardService;
         private final PasswordEncoder passwordEncoder;
-        private final UserCache userCache;
         private final AccountLoginTypeService loginTypeService;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
         public PasswordAuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
                                                     LibraryCardService libraryCardService, PasswordEncoder passwordEncoder,
-                                                    UserCache userCache, AccountLoginTypeService loginTypeService,
+                                                    AccountLoginTypeService loginTypeService,
                                                     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
             this.jwtTokenGenerationService = jwtTokenService;
             this.libraryCardService = libraryCardService;
             this.passwordEncoder = passwordEncoder;
-            this.userCache = userCache;
             this.loginTypeService = loginTypeService;
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         }
 
         @Bean
-        public UserDetailsService myUserDetailsService() {
-            CachingUserDetailsService cachingUserDetailsService = new CachingUserDetailsService(libraryCardService);
-            cachingUserDetailsService.setUserCache(userCache);
-            return cachingUserDetailsService;
-        }
-
-        @Bean
         public AuthenticationProvider authenticationProvider() {
             MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.passwordEncoder);
-            myAuthenticationProvider.setUserDetailsService(myUserDetailsService());
+            myAuthenticationProvider.setUserDetailsService(libraryCardService);
             return myAuthenticationProvider;
         }
 
@@ -100,24 +89,24 @@ public class JwtSecurityConfig {
         private final AccountLoginTypeService loginTypeService;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
         private final FacebookClient facebookClient;
-        private final UserDetailsService myUserDetailsService;
+        private final LibraryCardService libraryCardService;
 
 
         public SocialAuthenticationSecurityConfig(JwtTokenGenerationService jwtTokenService,
                                                   PasswordEncoder noEncoder, AccountLoginTypeService loginTypeService,
                                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                                  FacebookClient facebookClient, UserDetailsService myUserDetailsService) {
+                                                  FacebookClient facebookClient, LibraryCardService libraryCardService) {
             this.jwtTokenGenerationService = jwtTokenService;
             this.noEncoder = noEncoder;
             this.loginTypeService = loginTypeService;
             this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
             this.facebookClient = facebookClient;
-            this.myUserDetailsService = myUserDetailsService;
+            this.libraryCardService = libraryCardService;
         }
 
         private AuthenticationProvider authenticationProvider() {
             MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider(this.noEncoder);
-            myAuthenticationProvider.setUserDetailsService(myUserDetailsService);
+            myAuthenticationProvider.setUserDetailsService(libraryCardService);
             return myAuthenticationProvider;
         }
 
