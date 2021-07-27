@@ -3,7 +3,6 @@ package com.sahin.library_management.infra.auth;
 import com.sahin.library_management.infra.model.account.LibraryCard;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,8 @@ import java.util.Map;
 @Service
 public class JwtTokenGenerationService {
 
-    @Value("${app.security.jwt.privateKey}")
-    private String privateKey;
-
-    @Value("${app.security.jwt.ttl}")
-    private long ttl;
+    private final String privateKey = "ssahin";
+    private final long ttl = 3600;
 
     public String getToken(Authentication authentication) {
 

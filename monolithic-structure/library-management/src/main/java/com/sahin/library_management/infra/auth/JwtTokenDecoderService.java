@@ -2,7 +2,6 @@ package com.sahin.library_management.infra.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +11,7 @@ import java.util.Date;
 @Service
 public class JwtTokenDecoderService {
 
-    @Value("${app.security.jwt.privateKey}")
-    private String privateKey;
+    private final String privateKey = "ssahin";
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = this.getUsernameFromToken(token);

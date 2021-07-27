@@ -1,31 +1,13 @@
 server:
   port: 7001
 
-app:
-  security:
-    url:
-      password-login: /api/auth/login/default
-      facebook-login: /api/auth/login/facebook
-    jwt:
-      privateKey: ssahin
-      ttl: 3600
-
 spring:
   jpa:
     show-sql: true
 
-aspect:
-  enabled:
-    log-execution-time: true
-    log-null-parameters: true
-
 logging:
   level:
     com.sahin.library_management: debug
-
-security:
-  authentication:
-    basic: false
 
 
 

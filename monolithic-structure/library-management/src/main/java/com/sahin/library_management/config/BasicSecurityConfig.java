@@ -1,23 +1,14 @@
 package com.sahin.library_management.config;
 
 import com.sahin.library_management.infra.auth.MyBasicAuthenticationEntryPoint;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true
-)
-@ConditionalOnProperty(name = "security.authentication.basic", havingValue = "true")
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {

@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 @Aspect
 @Component
 @Slf4j
-@ConditionalOnExpression("${aspect.enabled.log-execution-time}")
 public class LogExecutionAspect {
 
     @Pointcut("execution(public * *(..))")

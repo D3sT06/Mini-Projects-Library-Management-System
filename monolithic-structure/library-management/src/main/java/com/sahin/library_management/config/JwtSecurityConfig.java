@@ -3,8 +3,6 @@ package com.sahin.library_management.config;
 import com.sahin.library_management.infra.auth.*;
 import com.sahin.library_management.service.AccountLoginTypeService;
 import com.sahin.library_management.service.LibraryCardService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,16 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
-@ConditionalOnMissingBean(BasicSecurityConfig.class)
 public class JwtSecurityConfig {
 
     @Configuration
     @Order(1)
-    @ConditionalOnMissingBean(BasicSecurityConfig.class)
     public static class PasswordAuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Value("${app.security.url.password-login}")
-        private String passwordLoginUrl;
+        private final String passwordLoginUrl = "/api/auth/login/default";
 
         private final JwtTokenGenerationService jwtTokenGenerationService;
         private final LibraryCardService libraryCardService;
@@ -78,11 +73,9 @@ public class JwtSecurityConfig {
 
     @Configuration
     @Order(2)
-    @ConditionalOnMissingBean(BasicSecurityConfig.class)
     public static class SocialAuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Value("${app.security.url.facebook-login}")
-        private String facebookLoginUrl;
+        private final String facebookLoginUrl = "/api/auth/login/facebook";
 
         private final JwtTokenGenerationService jwtTokenGenerationService;
         private final PasswordEncoder noEncoder;
@@ -131,7 +124,6 @@ public class JwtSecurityConfig {
 
     @Configuration
     @Order(3)
-    @ConditionalOnMissingBean(BasicSecurityConfig.class)
     public static class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private static final String[] AUTH_WHITELIST = {

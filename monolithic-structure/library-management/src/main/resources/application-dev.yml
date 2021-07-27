@@ -4,8 +4,6 @@ spring:
     driver-class-name: org.h2.Driver
     username: root
     password: password
-  #  platform: sim
-
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -15,7 +13,3 @@ spring:
   h2:
     console:
       enabled: true
-
-security:
-  authentication:
-    basic: false
