@@ -5,9 +5,5 @@ spring:
   jpa:
     show-sql: true
 
-logging:
-  level:
-    com.sahin.library_management: debug
-
 
 
