@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @EnableWebSecurity
@@ -24,18 +24,20 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    private final PasswordEncoder passwordEncoder;
 
-    public BasicSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint) {
+    public BasicSecurityConfig(MyBasicAuthenticationEntryPoint authenticationEntryPoint, PasswordEncoder passwordEncoder) {
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("librarian").password("{noop}1234").roles("LIBRARIAN")
+                .withUser("librarian").password(passwordEncoder.encode("1234")).roles("LIBRARIAN")
                 .and()
-                .withUser("member").password("{noop}1234").roles("MEMBER");
+                .withUser("member").password(passwordEncoder.encode("1234")).roles("MEMBER");
     }
 
     @Override
