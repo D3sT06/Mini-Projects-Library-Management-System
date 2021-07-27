@@ -2,7 +2,6 @@ package com.sahin.library_management.repository.jpa;
 
 import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.infra.projections.CategoryProjections;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,10 +12,8 @@ public interface BookCategoryRepository extends JpaRepository<BookCategoryEntity
     Optional<BookCategoryEntity> findByName(String name);
     Optional<BookCategoryEntity> findByNameAndIdIsNot(String name, Long id);
 
-    @EntityGraph(attributePaths = {"books"})
     List<CategoryProjections.CategoryView> findAllProjectedBy();
 
-    @EntityGraph(attributePaths = {"books"})
     Optional<CategoryProjections.CategoryView> findProjectedById(Long id);
 
 }
