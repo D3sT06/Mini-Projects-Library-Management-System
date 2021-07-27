@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Table(name = "account", schema = "library_management")
 @Getter
 @Setter
-public class AccountEntity extends Auditable<String> implements Serializable {
+public class AccountEntity implements Serializable {
 
     private static final long serialVersionUID = 2214233152061235312L;
 
