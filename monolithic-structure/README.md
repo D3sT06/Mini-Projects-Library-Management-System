@@ -4,6 +4,7 @@ it contains some useful non-Spring libraries. Below, you can find
 the main titles of these modules, in which features of these are used
 and in which classes they are used.
 
+CUSTOMAUTHORITYDESERIALIZER'I INCELE VE DURUMA GORE BRANCH'LERDEN KALDIR!!!
 
 #
 #
@@ -101,8 +102,37 @@ and in which classes they are used.
 - Logging levels
 
 *10-AOP*
+- Custom annotation
+- @Aspect
+- @Pointcut
+- @Around
+- @Before
+- JoinPoint
+- ProceedingJoinPoint
 
 *11-Testing*
+- Maven Surefire plugin
+- Excluding JUnit4
+- JUnit5 and Mockito dependencies
+- Maven Failsafe plugin
+- @SpringBootTest
+- @AutoConfigureMockMvc
+- @ExtendWith(MockitoExtension.class)
+- @ExtendWith(SpringExtension.class)
+- @ActiveProfiles
+- @DisplayName
+- @Nested
+- @TestMethodOrder
+- @TestInstance
+- @Order
+- @BeforeAll
+- @AfterAll
+- @Test
+- @RepeatedTest
+- @WithMockUser
+- @Qualifier
+- Assertions
+- MockMvc
 
 **MODULE-2: SPRING INTERMEDIATE**
 
