@@ -4,6 +4,25 @@ it contains some useful non-Spring libraries. Below, you can find
 the main titles of these modules, in which features of these are used
 and in which classes they are used.
 
+
+#
+#
+# **PROJECT MODULES AND CONTENT OF BRANCHES**
+
+**MODULE-1: SPRING BASICS**
+*1-Spring Boot*
+*2-Lombok*
+*3-Web MVC*
+*4-Thymeleaf*
+*5-Data JPA*
+*6-Mapstruct & Jackson*
+*7-Validation*
+*8-Security*
+*9-Exception Handling & Logging*
+*10-AOP*
+*11-Testing*
+
+
 #
 #
 # **SPRING MODULES**
