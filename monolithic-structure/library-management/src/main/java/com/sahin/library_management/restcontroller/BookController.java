@@ -25,13 +25,13 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete/{bookId}")
+    @DeleteMapping("delete/{barcode}")
     public ResponseEntity<Void> deleteBookById(@PathVariable String barcode) {
         bookService.deleteBookById(barcode);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("get/{bookId}")
+    @GetMapping("get/{barcode}")
     public ResponseEntity<BookEntity> getBookById(@PathVariable String barcode) {
         BookEntity book = bookService.getBookById(barcode);
         return ResponseEntity.ok(book);
