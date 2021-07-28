@@ -52,6 +52,7 @@ CUSTOMAUTHORITYDESERIALIZER'I INCELE VE DURUMA GORE BRANCH'LERDEN KALDIR!!!
 - Datasource
 - H2 in-memory database
 - @Repository
+- @Transactional
 - JpaRepository
 - Hibernate ORM
 - @Entity
@@ -75,6 +76,7 @@ CUSTOMAUTHORITYDESERIALIZER'I INCELE VE DURUMA GORE BRANCH'LERDEN KALDIR!!!
 - @Context
 - CyclePreventiveContext
 - default (methods)
+- @BeforeMapping
 - @JsonIgnore
 - @JsonProperty
 - @JsonSerialize
@@ -89,6 +91,8 @@ CUSTOMAUTHORITYDESERIALIZER'I INCELE VE DURUMA GORE BRANCH'LERDEN KALDIR!!!
 *8-Security*
 - Basic security
 - WebSecurityConfigurerAdapter
+- @EnableWebSecurity
+- @EnableGlobalMethodSecurity
 - PasswordEncoder
 - @PreAuthorize
 - Granted Authorities
@@ -137,30 +141,111 @@ CUSTOMAUTHORITYDESERIALIZER'I INCELE VE DURUMA GORE BRANCH'LERDEN KALDIR!!!
 **MODULE-2: SPRING INTERMEDIATE**
 
 *1-Data JPA*
+- Projections
+- Predicates
+- Specifications
+- @JsonCreator
+- PagingAndSortingRepository
+- JpaSpecificationExecutor
+- @EntityGraph
+- @Query
+- join fetch
 
 *2-Auditing*
+- @EnableJpaAuditing
+- AuditorAware
+- @MappedSuperclass
+- @EntityListeners
+- @CreatedBy
+- @CreatedDate
+- @LastModifiedBy
+- @LastModifiedDate
 
 *3-Mapstruct & Jackson*
+- @JsonIdentityInfo
+- @JsonIdentityReference
+- @JsonPropertyOrder
+- @DecoratedWith
 
 *4-Validation*
+- @InitBinder
+- WebDataBinder
+- Validator
+- ConstraintValidator
+- @Constraint
 
 *5-Security*
+- @Order
+- AuthenticationProvider
+- JWT Generation with Password
+- JWT Generation with Facebook Authentication
+- JWT Validation
+- AuthenticationEntryPoint
+- AbstractAuthenticationProcessingFilter
+- UserDetails
+- UserDetailsService
+- @AuthenticationPrincipal
+- @RestTemplate
+- @Primary
 
 *6-Configuration*
+- @ConditionalOnProperty
+- @ConditionalOnMissingBean
+- @ConditionalOnExpression
+- @Value
 
 *7-Caching*
+- @EnableCaching
+- @CacheConfig
+- @CachePut
+- @Cacheable
+- @CacheEvict
+- CacheManager
+- UserCache
+- CachingUserDetailsService
+- @Resource
 
 *8-Testing*
+- @MockBean
+- @BeforeEach
+- @AfterEach
+- @ContextConfiguration
+- RepetitionInfo
+- @WithUserDetails
 
 *9-Swagger*
+- @EnableSwagger2
+- @Api
+- @ApiOperation
+- @Authorization
+- @ApiImplicitParams
+- @ApiImplicitParam
+- @ApiParam
+- @ApiModel
+- @ApiModelProperty
+- Grouping
+- Resolved types
 
 **MODULE-3: SPRING ADVANCED**
 
 *1-AMQP*
+- @EnableRabbit
+- TopicExchange
+- Declarables
+- Queue
+- RabbitTemplate
+- @RabbitListener
 
 *2-Docker*
+- Docker Compose
+- Dockerfile
+- Docker Maven plugin
 
 *3-Scheduling*
+- @EnableScheduling
+- @EnableAsync
+- ThreadPoolTaskScheduler
+- @Scheduled
 
 *4-Mongo DB*
 
