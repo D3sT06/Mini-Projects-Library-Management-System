@@ -1,6 +1,6 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
+import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

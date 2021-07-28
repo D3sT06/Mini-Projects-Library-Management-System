@@ -1,7 +1,2 @@
 server:
   port: 7001
-
-spring:
-  jpa:
-    show-sql: true
-

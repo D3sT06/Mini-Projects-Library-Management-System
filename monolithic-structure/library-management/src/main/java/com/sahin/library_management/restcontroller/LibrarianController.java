@@ -1,6 +1,6 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.entity.jpa.AccountEntity;
+import com.sahin.library_management.infra.entity.AccountEntity;
 import com.sahin.library_management.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

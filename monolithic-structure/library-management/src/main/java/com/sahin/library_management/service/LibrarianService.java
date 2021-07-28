@@ -1,11 +1,12 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.jpa.AccountEntity;
-import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
-import com.sahin.library_management.infra.entity.jpa.LibraryCardEntity;
+import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.repository.jpa.AccountRepository;
+import com.sahin.library_management.repository.LibraryRepository;
+import com.sahin.library_management.repository.jpa.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,8 @@ import java.util.stream.Collectors;
 public class LibrarianService {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private LibraryRepository libraryRepository;
 
-    @Transactional
     public void createLibrarian(AccountEntity librarian) {
         String password = PasswordUtil.createRandomPassword();
 
@@ -44,26 +44,22 @@ public class LibrarianService {
         accountRepository.save(librarian);
     }
 
-    @Transactional
     public void updateLibrarian(AccountEntity librarian) {
         Optional<AccountEntity> optionalEntity = accountRepository.findById(librarian.getId());
         librarian.setLibraryCard(optionalEntity.get().getLibraryCard());
         accountRepository.save(librarian);
     }
 
-    @Transactional
     public void deleteLibrarianByBarcode(String barcode) {
         accountRepository.deleteByLibraryCardBarcode(barcode);
     }
 
-    @Transactional
     public AccountEntity getLibrarianByBarcode(String barcode) {
         return accountRepository
                 .findByLibraryCardBarcode(barcode)
                 .get();
     }
 
-    @Transactional
     public List<AccountEntity> getAll() {
         List<AccountEntity> entities = accountRepository
                 .findAll();

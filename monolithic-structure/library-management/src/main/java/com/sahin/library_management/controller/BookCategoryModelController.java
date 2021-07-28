@@ -1,6 +1,6 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.service.BookCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

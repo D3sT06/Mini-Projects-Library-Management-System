@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.viewmapper;
 
-import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
-import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
-import com.sahin.library_management.infra.entity.jpa.BookEntity;
+import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.infra.entity.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import org.springframework.stereotype.Component;
 

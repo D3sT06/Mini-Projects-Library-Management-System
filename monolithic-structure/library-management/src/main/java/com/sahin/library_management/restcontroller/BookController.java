@@ -1,6 +1,6 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.entity.jpa.BookEntity;
+import com.sahin.library_management.infra.entity.BookEntity;
 import com.sahin.library_management.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

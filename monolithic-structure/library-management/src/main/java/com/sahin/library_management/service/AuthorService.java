@@ -1,43 +1,40 @@
 package com.sahin.library_management.service;
 
-import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
-import com.sahin.library_management.repository.jpa.AuthorRepository;
+import com.sahin.library_management.infra.entity.AuthorEntity;
+import com.sahin.library_management.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
 
     @Autowired
-    private AuthorRepository authorRepository;
+    private LibraryRepository libraryRepository;
 
-    @Transactional
-    public AuthorEntity createAuthor(AuthorEntity author) {
-        return authorRepository.save(author);
+    public void createAuthor(AuthorEntity author) {
+        libraryRepository.save(author);
     }
 
-    @Transactional
     public void updateAuthor(AuthorEntity author) {
-        authorRepository.save(author);
+        libraryRepository.update(author);
     }
 
-    @Transactional
-    public void deleteAuthorById(Long authorId) {
-        authorRepository.deleteById(authorId);
+    public void deleteAuthorById(String barcode) {
+        libraryRepository.deleteById(barcode, AuthorEntity.class);
     }
 
-    @Transactional
-    public AuthorEntity getAuthorById(Long authorId) {
-        return authorRepository
-                .findById(authorId)
-                .get();
+    public AuthorEntity getAuthorById(String barcode) {
+        return (AuthorEntity) libraryRepository
+                .findById(barcode, AuthorEntity.class);
     }
 
-    @Transactional
     public List<AuthorEntity> getAll() {
-        return authorRepository.findAll();
+        return libraryRepository.findAll(AuthorEntity.class)
+                .stream()
+                .map(entity -> (AuthorEntity) entity)
+                .collect(Collectors.toList());
     }
 }
