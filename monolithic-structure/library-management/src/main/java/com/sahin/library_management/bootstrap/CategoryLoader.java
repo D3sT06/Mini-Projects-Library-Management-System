@@ -39,11 +39,6 @@ public class CategoryLoader implements Loader<BookCategoryEntity> {
     }
 
     @Override
-    public void clearDb() {
-        categoryRepository.deleteAll();
-    }
-
-    @Override
     public List<BookCategoryEntity> getAll() {
         return categoryRepository.findAll();
     }
