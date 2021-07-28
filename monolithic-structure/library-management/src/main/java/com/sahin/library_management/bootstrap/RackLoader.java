@@ -21,11 +21,6 @@ public class RackLoader implements Loader<RackEntity> {
     }
 
     @Override
-    public void clearDb() {
-        rackRepository.deleteAll();
-    }
-
-    @Override
     public List<RackEntity> getAll() {
         return rackRepository.findAll();
     }

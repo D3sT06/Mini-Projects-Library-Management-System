@@ -133,11 +133,6 @@ public class AccountLoader implements Loader<AccountEntity> {
     }
 
     @Override
-    public void clearDb() {
-        accountRepository.deleteAll();
-    }
-
-    @Override
     public List<AccountEntity> getAll() {
         return accountRepository.findAll();
     }
