@@ -20,9 +20,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
             registry.addResourceHandler("/**").addResourceLocations(STATIC_RESOURCE);
         }
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }
