@@ -11,19 +11,15 @@ import org.springframework.stereotype.Component;
 public class DatabaseLoader implements CommandLineRunner {
 
     private AuthorLoader authorLoader;
-    private BookItemLoader itemLoader;
     private BookLoader bookLoader;
     private CategoryLoader categoryLoader;
     private AccountLoader accountLoader;
-    private RackLoader rackLoader;
 
     @Override
     public void run(String... args) throws Exception {
           accountLoader.loadDb();
           authorLoader.loadDb();
           categoryLoader.loadDb();
-          rackLoader.loadDb();
           bookLoader.loadDb();
-          itemLoader.loadDb();
     }
 }

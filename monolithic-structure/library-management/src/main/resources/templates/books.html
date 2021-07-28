@@ -46,13 +46,13 @@
                     </thead>
                     <tbody>
                     <tr th:each="book : ${books}">
-                        <td th:text="${book.id}"></td>
+                        <td th:text="${book.barcode}"></td>
                         <td th:text="${book.title}"></td>
                         <td th:text="${book.publicationDate}"></td>
                         <td th:text="${book.authorFullname}"></td>
                         <td th:text="${book.categoryNames}"></td>
-                        <td><a th:href="@{/model/books/edit/{id}(id=${book.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                        <td><a th:href="@{/model/books/delete/{id}(id=${book.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                        <td><a th:href="@{/model/books/edit/{id}(id=${book.barcode})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                        <td><a th:href="@{/model/books/delete/{id}(id=${book.barcode})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                     </tr>
                     </tbody>
                 </table>

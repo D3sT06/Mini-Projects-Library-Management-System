@@ -16,9 +16,9 @@ public class BookCategoryController {
     private BookCategoryService categoryService;
 
     @PostMapping("create")
-    public ResponseEntity<BookCategoryEntity> createCategory(@RequestBody BookCategoryEntity bookCategory) {
-        BookCategoryEntity createdCategory = categoryService.createCategory(bookCategory);
-        return ResponseEntity.ok(createdCategory);
+    public ResponseEntity<Void> createCategory(@RequestBody BookCategoryEntity bookCategory) {
+        categoryService.createCategory(bookCategory);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
@@ -28,14 +28,14 @@ public class BookCategoryController {
     }
 
     @DeleteMapping("delete/{categoryId}")
-    public ResponseEntity<Void> deleteCategoryById(@PathVariable Long categoryId) {
-        categoryService.deleteCategoryById(categoryId);
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable String barcode) {
+        categoryService.deleteCategoryById(barcode);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("get/{categoryId}")
-    public ResponseEntity<BookCategoryEntity> getCategoryById(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
+    public ResponseEntity<BookCategoryEntity> getCategoryById(@PathVariable String barcode) {
+        return ResponseEntity.ok(categoryService.getCategoryById(barcode));
     }
 
     @GetMapping("getAll")

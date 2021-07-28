@@ -42,10 +42,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="category : ${categories}">
-                        <td th:text="${category.id}"></td>
+                        <td th:text="${category.barcode}"></td>
                         <td th:text="${category.name}"></td>
-                        <td><a th:href="@{/model/categories/edit/{id}(id=${category.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                        <td><a th:href="@{/model/categories/delete/{id}(id=${category.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                        <td><a th:href="@{/model/categories/edit/{id}(id=${category.barcode})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                        <td><a th:href="@{/model/categories/delete/{id}(id=${category.barcode})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                     </tr>
                     </tbody>
                 </table>

@@ -27,20 +27,20 @@ public class BookCategoryModelController {
         return "redirect:/model/categories";
     }
 
-    @PostMapping("/categories/update/{id}")
-    public String updateCategory(BookCategoryEntity category, @PathVariable Long id, Model model) {
+    @PostMapping("/categories/update/{barcode}")
+    public String updateCategory(BookCategoryEntity category, @PathVariable String barcode, Model model) {
 
-        category.setId(categoryService.getCategoryById(id).getId());
+        category.setBarcode(categoryService.getCategoryById(barcode).getBarcode());
         categoryService.updateCategory(category);
         model.addAttribute("categories", categoryService.getAll());
 
         return "redirect:/model/categories";
     }
 
-    @GetMapping("/categories/delete/{id}")
-    public String deleteCategoryById(@PathVariable Long id, Model model) {
+    @GetMapping("/categories/delete/{barcode}")
+    public String deleteCategoryById(@PathVariable String barcode, Model model) {
 
-        categoryService.deleteCategoryById(id);
+        categoryService.deleteCategoryById(barcode);
         model.addAttribute("categories", categoryService.getAll());
 
         return "redirect:/model/categories";
@@ -65,10 +65,10 @@ public class BookCategoryModelController {
         return "add-category";
     }
 
-    @GetMapping("/categories/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    @GetMapping("/categories/edit/{barcode}")
+    public String showEditForm(@PathVariable String barcode, Model model) {
 
-        BookCategoryEntity category = categoryService.getCategoryById(id);
+        BookCategoryEntity category = categoryService.getCategoryById(barcode);
         model.addAttribute("category", category);
         return "update-category";
     }

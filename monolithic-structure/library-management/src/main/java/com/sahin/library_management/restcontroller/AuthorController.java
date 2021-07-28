@@ -16,9 +16,9 @@ public class AuthorController {
     private AuthorService authorService;
 
     @PostMapping("create")
-    public ResponseEntity<AuthorEntity> createAuthor(@RequestBody AuthorEntity author) {
-        AuthorEntity createdAuthor = authorService.createAuthor(author);
-        return ResponseEntity.ok(createdAuthor);
+    public ResponseEntity<Void> createAuthor(@RequestBody AuthorEntity author) {
+        authorService.createAuthor(author);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
@@ -28,14 +28,14 @@ public class AuthorController {
     }
 
     @DeleteMapping("delete/{authorId}")
-    public ResponseEntity<Void> deleteAuthorById(@PathVariable Long authorId) {
-        authorService.deleteAuthorById(authorId);
+    public ResponseEntity<Void> deleteAuthorById(@PathVariable String barcode) {
+        authorService.deleteAuthorById(barcode);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("get/{authorId}")
-    public ResponseEntity<AuthorEntity> getAuthorById(@PathVariable Long authorId) {
-        return ResponseEntity.ok(authorService.getAuthorById(authorId));
+    public ResponseEntity<AuthorEntity> getAuthorById(@PathVariable String barcode) {
+        return ResponseEntity.ok(authorService.getAuthorById(barcode));
     }
 
     @GetMapping("getAll")

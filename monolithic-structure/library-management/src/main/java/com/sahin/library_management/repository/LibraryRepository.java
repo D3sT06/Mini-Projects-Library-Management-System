@@ -4,31 +4,24 @@ import com.sahin.library_management.infra.entity.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class LibraryRepository {
 
-    private Map<String, LibraryCardEntity> libraryCards = new HashMap<>();
-    private Map<Long, AccountEntity> accounts = new HashMap<>();
+    private Map<Long, MemberEntity> accounts = new HashMap<>();
+    private Map<Long, AuthorEntity> authors = new HashMap<>();
     private Map<Long, BookCategoryEntity> categories = new HashMap<>();
-    private Map<String, BookItemEntity> bookItems = new HashMap<>();
     private Map<Long, BookEntity> books = new HashMap<>();
-    private Map<Long, RackEntity> racks = new HashMap<>();
 
     private Map<Class, Map> classMap = new HashMap<>();
 
     @PostConstruct
     void init() {
-        classMap.put(LibraryCardEntity.class, libraryCards);
-        classMap.put(AccountEntity.class, accounts);
+        classMap.put(MemberEntity.class, accounts);
         classMap.put(BookCategoryEntity.class, categories);
         classMap.put(BookEntity.class, books);
-        classMap.put(BookItemEntity.class, bookItems);
-        classMap.put(RackEntity.class, racks);
+        classMap.put(AuthorEntity.class, authors);
     }
 
     public void save(EntityWithUUID entity) {
@@ -50,7 +43,7 @@ public class LibraryRepository {
 
     public List<EntityWithUUID> findAll(Class clazz) {
         Map map = classMap.get(clazz);
-        return (List<EntityWithUUID>) map.values();
+        return new ArrayList<EntityWithUUID>(map.values());
     }
 
     public EntityWithUUID findById(String barcode, Class clazz) {

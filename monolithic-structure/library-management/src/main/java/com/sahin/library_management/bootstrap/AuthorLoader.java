@@ -1,17 +1,18 @@
 package com.sahin.library_management.bootstrap;
 
 import com.sahin.library_management.infra.entity.AuthorEntity;
-import com.sahin.library_management.repository.jpa.jpa.AuthorRepository;
+import com.sahin.library_management.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AuthorLoader implements Loader<AuthorEntity> {
 
     @Autowired
-    private AuthorRepository authorRepository;
+    private LibraryRepository libraryRepository;
 
     @Override
     public void loadDb() {
@@ -31,18 +32,22 @@ public class AuthorLoader implements Loader<AuthorEntity> {
         author4.setName("Stephen");
         author4.setSurname("Hawking");
 
-        authorRepository.save(author1);
-        authorRepository.save(author2);
-        authorRepository.save(author3);
-        authorRepository.save(author4);
+        libraryRepository.save(author1);
+        libraryRepository.save(author2);
+        libraryRepository.save(author3);
+        libraryRepository.save(author4);
     }
 
     @Override
     public void clearDb() {
-        authorRepository.deleteAll();
+        List<AuthorEntity> entities = this.getAll();
+        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), AuthorEntity.class));
     }
 
     public List<AuthorEntity> getAll() {
-        return authorRepository.findAll();
+        return libraryRepository.findAll(AuthorEntity.class)
+                .stream()
+                .map(entity -> (AuthorEntity) entity)
+                .collect(Collectors.toList());
     }
 }

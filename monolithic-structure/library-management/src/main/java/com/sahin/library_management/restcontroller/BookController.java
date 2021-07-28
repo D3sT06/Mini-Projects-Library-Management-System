@@ -14,26 +14,26 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("create")
-    public ResponseEntity<BookEntity> createBook(@RequestBody BookEntity book) {
-        BookEntity createdBook = bookService.createBook(book);
-        return ResponseEntity.ok(createdBook);
+    public ResponseEntity<Void> createBook(@RequestBody BookEntity book) {
+        bookService.createBook(book);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
     public ResponseEntity<BookEntity> updateBook(@RequestBody BookEntity book) {
-        BookEntity updatedBook = bookService.updateBook(book);
-        return ResponseEntity.ok(updatedBook);
+        bookService.updateBook(book);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("delete/{bookId}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable Long bookId) {
-        bookService.deleteBookById(bookId);
+    public ResponseEntity<Void> deleteBookById(@PathVariable String barcode) {
+        bookService.deleteBookById(barcode);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("get/{bookId}")
-    public ResponseEntity<BookEntity> getBookById(@PathVariable Long bookId) {
-        BookEntity book = bookService.getBookById(bookId);
+    public ResponseEntity<BookEntity> getBookById(@PathVariable String barcode) {
+        BookEntity book = bookService.getBookById(barcode);
         return ResponseEntity.ok(book);
     }
 }

@@ -2,12 +2,11 @@ package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.repository.LibraryRepository;
-import com.sahin.library_management.repository.jpa.jpa.BookCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookCategoryService {
@@ -15,25 +14,27 @@ public class BookCategoryService {
     @Autowired
     private LibraryRepository libraryRepository;
 
-    public BookCategoryEntity createCategory(BookCategoryEntity category) {
-        return categoryRepository.save(category);
+    public void createCategory(BookCategoryEntity category) {
+        libraryRepository.save(category);
     }
 
     public void updateCategory(BookCategoryEntity category) {
-        categoryRepository.save(category);
+        libraryRepository.update(category);
     }
 
-    public void deleteCategoryById(Long categoryId) {
-        categoryRepository.deleteById(categoryId);
+    public void deleteCategoryById(String barcode) {
+        libraryRepository.deleteById(barcode, BookCategoryEntity.class);
     }
 
-    public BookCategoryEntity getCategoryById(Long categoryId) {
-        return categoryRepository
-                .findById(categoryId)
-                .get();
+    public BookCategoryEntity getCategoryById(String barcode) {
+        return (BookCategoryEntity) libraryRepository
+                .findById(barcode, BookCategoryEntity.class);
     }
 
     public List<BookCategoryEntity> getAll() {
-        return categoryRepository.findAll();
+        return libraryRepository.findAll(BookCategoryEntity.class)
+                .stream()
+                .map(entity -> (BookCategoryEntity) entity)
+                .collect(Collectors.toList());
     }
 }

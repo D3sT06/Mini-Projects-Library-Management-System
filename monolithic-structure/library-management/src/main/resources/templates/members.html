@@ -47,13 +47,13 @@
                     </thead>
                     <tbody>
                     <tr th:each="member : ${members}">
-                        <td th:text="${member.id}"></td>
+                        <td th:text="${member.barcode}"></td>
                         <td th:text="${member.name}"></td>
                         <td th:text="${member.surname}"></td>
                         <td th:text="${member.email}"></td>
                         <td th:text="${member.phone}"></td>
-                        <td><a th:href="@{/model/members/edit/{barcode}(barcode=${member.libraryCard.barcode})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-                        <td><a th:href="@{/model/members/delete/{barcode}(barcode=${member.libraryCard.barcode})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+                        <td><a th:href="@{/model/members/edit/{barcode}(barcode=${member.barcode})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                        <td><a th:href="@{/model/members/delete/{barcode}(barcode=${member.barcode})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
                     </tr>
                     </tbody>
                 </table>

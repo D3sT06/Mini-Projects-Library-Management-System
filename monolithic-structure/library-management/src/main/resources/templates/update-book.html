@@ -14,7 +14,7 @@
     <h2 class="mb-5">Update Book</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/model/books/update/{id}(id=${book.id})}" th:object="${book}" method="post">
+            <form action="#" th:action="@{/model/books/update/{id}(id=${book.barcode})}" th:object="${book}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="title" class="col-form-label">Title</label>
@@ -29,14 +29,14 @@
                     <div class="form-group col-md-6">
                         <label for="author" class="col-form-label">Author</label>
                         <select type="text" th:field="*{authorId}" class="form-control" id="author" placeholder="Author">
-                            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                            <option th:each="author : ${authors}" th:value="${author.barcode}" th:text="${author.name}"></option>
                         </select>
                         <span th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="categories" class="col-form-label">Categories</label>
                         <select type="text" th:field="*{categoryIds}" class="form-control" id="categories" placeholder="Categories" multiple="multiple">
-                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                            <option th:each="category : ${categories}" th:value="${category.barcode}" th:text="${category.name}"></option>
                         </select>
                         <span th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" class="text-danger"></span>
                     </div>

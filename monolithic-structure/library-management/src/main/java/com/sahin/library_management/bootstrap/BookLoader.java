@@ -3,18 +3,21 @@ package com.sahin.library_management.bootstrap;
 import com.sahin.library_management.infra.entity.AuthorEntity;
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
 import com.sahin.library_management.infra.entity.BookEntity;
-import com.sahin.library_management.repository.jpa.jpa.BookRepository;
+import com.sahin.library_management.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BookLoader implements Loader<BookEntity> {
 
     @Autowired
-    private BookRepository bookRepository;
+    private LibraryRepository libraryRepository;
 
     @Autowired
     private AuthorLoader authorLoader;
@@ -57,20 +60,23 @@ public class BookLoader implements Loader<BookEntity> {
         book5.setCategories(new HashSet<>(Arrays.asList(categories.get(4))));
         book5.setPublicationDate(LocalDate.of(2010, 7, 1));
 
-        bookRepository.save(book1);
-        bookRepository.save(book2);
-        bookRepository.save(book3);
-        bookRepository.save(book4);
-        bookRepository.save(book5);
+        libraryRepository.save(book1);
+        libraryRepository.save(book2);
+        libraryRepository.save(book3);
+        libraryRepository.save(book4);
+        libraryRepository.save(book5);
     }
 
     @Override
     public void clearDb() {
-        bookRepository.deleteAll();
+        List<BookEntity> entities = this.getAll();
+        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), BookEntity.class));
     }
 
-    @Override
     public List<BookEntity> getAll() {
-        return (ArrayList<BookEntity>) bookRepository.findAll();
+        return libraryRepository.findAll(BookEntity.class)
+                .stream()
+                .map(entity -> (BookEntity) entity)
+                .collect(Collectors.toList());
     }
 }

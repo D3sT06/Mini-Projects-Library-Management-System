@@ -19,12 +19,12 @@ public class BookViewModelMapper {
     public BookViewModel toViewModel(BookEntity model) {
 
         BookViewModel viewModel = new BookViewModel();
-        viewModel.setId(model.getId());
+        viewModel.setBarcode(model.getBarcode());
         viewModel.setTitle(model.getTitle());
-        viewModel.setAuthorId(model.getAuthor().getId());
+        viewModel.setAuthorId(model.getAuthor().getBarcode());
         viewModel.setAuthorFullname(model.getAuthor().getName() + " " + model.getAuthor().getSurname());
         viewModel.setCategoryIds((model.getCategories().stream()
-                .map(BookCategoryEntity::getId)
+                .map(BookCategoryEntity::getBarcode)
                 .collect(Collectors.toSet())));
         viewModel.setCategoryNames(model.getCategories().stream()
                 .map(BookCategoryEntity::getName)
@@ -36,7 +36,7 @@ public class BookViewModelMapper {
 
     public BookEntity toModel(BookViewModel viewModel) {
         BookEntity model = new BookEntity();
-        model.setId(viewModel.getId());
+        model.setBarcode(viewModel.getBarcode());
         model.setTitle(viewModel.getTitle());
 
         LocalDate localDate = LocalDate.parse(viewModel.getPublicationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -44,12 +44,12 @@ public class BookViewModelMapper {
         model.setCategories(new HashSet<>());
 
         AuthorEntity author = new AuthorEntity();
-        author.setId(viewModel.getAuthorId());
+        author.setBarcode(viewModel.getAuthorId());
         model.setAuthor(author);
 
-        for (Long categoryId : viewModel.getCategoryIds()) {
+        for (String categoryId : viewModel.getCategoryIds()) {
             BookCategoryEntity category = new BookCategoryEntity();
-            category.setId(categoryId);
+            category.setBarcode(categoryId);
             model.getCategories().add(category);
         }
 

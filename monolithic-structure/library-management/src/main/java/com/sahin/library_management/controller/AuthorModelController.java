@@ -26,20 +26,20 @@ public class AuthorModelController {
         return "redirect:/model/authors";
     }
 
-    @PostMapping("/authors/update/{id}")
-    public String updateAuthor(AuthorEntity author, @PathVariable Long id, Model model) {
+    @PostMapping("/authors/update/{barcode}")
+    public String updateAuthor(AuthorEntity author, @PathVariable String barcode, Model model) {
 
-        author.setId(authorService.getAuthorById(id).getId());
+        author.setBarcode(authorService.getAuthorById(barcode).getBarcode());
         authorService.updateAuthor(author);
         model.addAttribute("authors", authorService.getAll());
 
         return "redirect:/model/authors";
     }
 
-    @GetMapping("/authors/delete/{id}")
-    public String deleteAuthorById(@PathVariable Long id, Model model) {
+    @GetMapping("/authors/delete/{barcode}")
+    public String deleteAuthorById(@PathVariable String barcode, Model model) {
 
-        authorService.deleteAuthorById(id);
+        authorService.deleteAuthorById(barcode);
         model.addAttribute("authors", authorService.getAll());
 
         return "redirect:/model/authors";
@@ -57,10 +57,10 @@ public class AuthorModelController {
         return "add-author";
     }
 
-    @GetMapping("/authors/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    @GetMapping("/authors/edit/{barcode}")
+    public String showEditForm(@PathVariable String barcode, Model model) {
 
-        AuthorEntity author = authorService.getAuthorById(id);
+        AuthorEntity author = authorService.getAuthorById(barcode);
         model.addAttribute("author", author);
         return "update-author";
     }

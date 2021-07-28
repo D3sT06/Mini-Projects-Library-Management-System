@@ -49,12 +49,12 @@ public class BookModelController {
         return "redirect:/model/books";
     }
 
-    @PostMapping("/books/update/{id}")
-    public String updateBook(BookViewModel book, @PathVariable Long id, Model model) {
+    @PostMapping("/books/update/{barcode}")
+    public String updateBook(BookViewModel book, @PathVariable String barcode, Model model) {
 
         BookEntity bookModel = bookViewModelMapper.toModel(book);
 
-        bookModel.setId(bookService.getBookById(id).getId());
+        bookModel.setBarcode(bookService.getBookById(barcode).getBarcode());
         bookService.updateBook(bookModel);
 
         List<BookEntity> books = bookService.getAll();
@@ -63,10 +63,10 @@ public class BookModelController {
         return "redirect:/model/books";
     }
 
-    @GetMapping("/books/delete/{id}")
-    public String deleteBookById(@PathVariable Long id, Model model) {
+    @GetMapping("/books/delete/{barcode}")
+    public String deleteBookById(@PathVariable String barcode, Model model) {
 
-        bookService.deleteBookById(id);
+        bookService.deleteBookById(barcode);
 
         List<BookEntity> books = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(books));
@@ -85,13 +85,13 @@ public class BookModelController {
 
         books.forEach(book -> {
 
-            AuthorEntity author = authorService.getAuthorById(book.getAuthor().getId());
+            AuthorEntity author = authorService.getAuthorById(book.getAuthor().getBarcode());
             book.setAuthor(author);
             Set<BookCategoryEntity> categories = new HashSet<>(book.getCategories());
 
             book.setCategories(new HashSet<>());
             categories.forEach(category -> {
-                BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getId());
+                BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getBarcode());
                 book.getCategories().add(bookCategory);
             });
         });
@@ -118,19 +118,19 @@ public class BookModelController {
 //        return "add-book";
 //    }
 
-    @GetMapping("/books/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    @GetMapping("/books/edit/{barcode}")
+    public String showEditForm(@PathVariable String barcode, Model model) {
 
-        BookEntity bookModel = bookService.getBookById(id);
+        BookEntity bookModel = bookService.getBookById(barcode);
 
-        AuthorEntity author = authorService.getAuthorById(bookModel.getAuthor().getId());
+        AuthorEntity author = authorService.getAuthorById(bookModel.getAuthor().getBarcode());
 
         bookModel.setAuthor(author);
         Set<BookCategoryEntity> categories = new HashSet<>(bookModel.getCategories());
 
         bookModel.setCategories(new HashSet<>());
         categories.forEach(category -> {
-            BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getId());
+            BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getBarcode());
             bookModel.getCategories().add(bookCategory);
         });
 

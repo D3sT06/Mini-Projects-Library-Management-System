@@ -1,17 +1,18 @@
 package com.sahin.library_management.bootstrap;
 
 import com.sahin.library_management.infra.entity.BookCategoryEntity;
-import com.sahin.library_management.repository.jpa.jpa.BookCategoryRepository;
+import com.sahin.library_management.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CategoryLoader implements Loader<BookCategoryEntity> {
 
     @Autowired
-    private BookCategoryRepository categoryRepository;
+    private LibraryRepository libraryRepository;
 
     @Override
     public void loadDb() {
@@ -31,20 +32,23 @@ public class CategoryLoader implements Loader<BookCategoryEntity> {
         BookCategoryEntity category5 = new BookCategoryEntity();
         category5.setName("Bilim");
 
-        categoryRepository.save(category1);
-        categoryRepository.save(category2);
-        categoryRepository.save(category3);
-        categoryRepository.save(category4);
-        categoryRepository.save(category5);
+        libraryRepository.save(category1);
+        libraryRepository.save(category2);
+        libraryRepository.save(category3);
+        libraryRepository.save(category4);
+        libraryRepository.save(category5);
     }
 
     @Override
     public void clearDb() {
-        categoryRepository.deleteAll();
+        List<BookCategoryEntity> entities = this.getAll();
+        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), BookCategoryEntity.class));
     }
 
-    @Override
     public List<BookCategoryEntity> getAll() {
-        return categoryRepository.findAll();
+        return libraryRepository.findAll(BookCategoryEntity.class)
+                .stream()
+                .map(entity -> (BookCategoryEntity) entity)
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.entity.AccountEntity;
+import com.sahin.library_management.infra.entity.MemberEntity;
 import com.sahin.library_management.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("create")
-    public ResponseEntity<Void> createMember(@RequestBody AccountEntity member) {
+    public ResponseEntity<Void> createMember(@RequestBody MemberEntity member) {
         memberService.createMember(member);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateMember(@RequestBody AccountEntity member) {
+    public ResponseEntity<Void> updateMember(@RequestBody MemberEntity member) {
         memberService.updateMember(member);
         return ResponseEntity.ok().build();
     }
@@ -34,12 +34,12 @@ public class MemberController {
     }
 
     @GetMapping("get/{barcode}")
-    public ResponseEntity<AccountEntity> getMemberByBarcode(@PathVariable String barcode) {
+    public ResponseEntity<MemberEntity> getMemberByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(memberService.getMemberByBarcode(barcode));
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<AccountEntity>> getAll() {
+    public ResponseEntity<List<MemberEntity>> getAll() {
         return ResponseEntity.ok(memberService.getAll());
     }
 }

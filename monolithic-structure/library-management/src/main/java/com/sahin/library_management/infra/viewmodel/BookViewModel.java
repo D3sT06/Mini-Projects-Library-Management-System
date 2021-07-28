@@ -9,11 +9,11 @@ import java.util.Set;
 @Setter
 public class BookViewModel {
 
-    private Long id;
+    private String barcode;
     private String title;
     private String publicationDate;
-    private Set<Long> categoryIds;
+    private Set<String> categoryIds;
     private String categoryNames;
-    private Long authorId;
+    private String authorId;
     private String authorFullname;
 }
