@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class BookCategoryController {
     private BookCategoryService categoryService;
 
     @PostMapping("create")
-    public ResponseEntity<BookCategory> createCategory(@RequestBody @Valid BookCategory bookCategory) {
+    public ResponseEntity<BookCategory> createCategory(@RequestBody BookCategory bookCategory) {
         BookCategory createdCategory = categoryService.createCategory(bookCategory);
         return ResponseEntity.ok(createdCategory);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateCategory(@RequestBody @Valid BookCategory bookCategory) {
+    public ResponseEntity<Void> updateCategory(@RequestBody BookCategory bookCategory) {
         categoryService.updateCategory(bookCategory);
         return ResponseEntity.ok().build();
     }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("create")
-    public ResponseEntity<Void> createMember(@RequestBody @Valid Member member) {
+    public ResponseEntity<Void> createMember(@RequestBody Member member) {
         memberService.createMember(member);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateMember(@RequestBody @Valid Member member) {
+    public ResponseEntity<Void> updateMember(@RequestBody Member member) {
         memberService.updateMember(member);
         return ResponseEntity.ok().build();
     }

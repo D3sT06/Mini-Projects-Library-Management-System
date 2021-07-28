@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class LibrarianController {
     private LibrarianService librarianService;
 
     @PostMapping("create")
-    public ResponseEntity<Void> createLibrarian(@RequestBody @Valid Librarian librarian) {
+    public ResponseEntity<Void> createLibrarian(@RequestBody Librarian librarian) {
         librarianService.createLibrarian(librarian);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateLibrarian(@RequestBody @Valid Librarian librarian) {
+    public ResponseEntity<Void> updateLibrarian(@RequestBody Librarian librarian) {
         librarianService.updateLibrarian(librarian);
         return ResponseEntity.ok().build();
     }

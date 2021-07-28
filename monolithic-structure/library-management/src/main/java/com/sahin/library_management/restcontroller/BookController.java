@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
 @RequestMapping("api/books")
 public class BookController {
@@ -16,13 +14,13 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("create")
-    public ResponseEntity<Book> createBook(@RequestBody @Valid Book book) {
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
         Book createdBook = bookService.createBook(book);
         return ResponseEntity.ok(createdBook);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Book> updateBook(@RequestBody @Valid Book book) {
+    public ResponseEntity<Book> updateBook(@RequestBody Book book) {
         Book updatedBook = bookService.updateBook(book);
         return ResponseEntity.ok(updatedBook);
     }

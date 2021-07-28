@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class RackController {
     private RackService rackService;
 
     @PostMapping("create")
-    public ResponseEntity<Rack> createRack(@RequestBody @Valid Rack rack) {
+    public ResponseEntity<Rack> createRack(@RequestBody Rack rack) {
         Rack createdRack = rackService.createRack(rack);
         return ResponseEntity.ok(createdRack);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Rack> updateRack(@RequestBody @Valid Rack rack) {
+    public ResponseEntity<Rack> updateRack(@RequestBody Rack rack) {
         Rack updatedRack = rackService.updateRack(rack);
         return ResponseEntity.ok(updatedRack);
     }

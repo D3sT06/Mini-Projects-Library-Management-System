@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class AuthorController {
     private AuthorService authorService;
 
     @PostMapping("create")
-    public ResponseEntity<Author> createAuthor(@RequestBody @Valid Author author) {
+    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         Author createdAuthor = authorService.createAuthor(author);
         return ResponseEntity.ok(createdAuthor);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateAuthor(@RequestBody @Valid Author author) {
+    public ResponseEntity<Void> updateAuthor(@RequestBody Author author) {
         authorService.updateAuthor(author);
         return ResponseEntity.ok().build();
     }
