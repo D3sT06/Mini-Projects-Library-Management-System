@@ -39,12 +39,6 @@ public class CategoryLoader implements Loader<BookCategoryEntity> {
         libraryRepository.save(category5);
     }
 
-    @Override
-    public void clearDb() {
-        List<BookCategoryEntity> entities = this.getAll();
-        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), BookCategoryEntity.class));
-    }
-
     public List<BookCategoryEntity> getAll() {
         return libraryRepository.findAll(BookCategoryEntity.class)
                 .stream()

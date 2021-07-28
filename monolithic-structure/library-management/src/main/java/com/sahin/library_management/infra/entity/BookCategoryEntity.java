@@ -10,5 +10,4 @@ import java.util.Set;
 public class BookCategoryEntity extends EntityWithUUID {
 
     private String name;
-    private Set<BookEntity> books;
 }
