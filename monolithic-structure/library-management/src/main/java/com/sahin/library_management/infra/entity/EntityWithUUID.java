@@ -1,10 +1,13 @@
 package com.sahin.library_management.infra.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class EntityWithUUID {
     private String barcode;
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 }

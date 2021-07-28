@@ -11,11 +11,6 @@
 
     <artifactId>library-management</artifactId>
 
-    <properties>
-        <org.projectlombok.version>1.18.12</org.projectlombok.version>
-        <org.junit.version>5.6.2</org.junit.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -25,13 +20,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${org.projectlombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
@@ -52,12 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${org.projectlombok.version}</version>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
