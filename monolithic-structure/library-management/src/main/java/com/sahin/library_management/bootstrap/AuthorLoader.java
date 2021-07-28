@@ -38,12 +38,6 @@ public class AuthorLoader implements Loader<AuthorEntity> {
         libraryRepository.save(author4);
     }
 
-    @Override
-    public void clearDb() {
-        List<AuthorEntity> entities = this.getAll();
-        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), AuthorEntity.class));
-    }
-
     public List<AuthorEntity> getAll() {
         return libraryRepository.findAll(AuthorEntity.class)
                 .stream()
