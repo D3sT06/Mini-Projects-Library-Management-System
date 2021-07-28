@@ -37,11 +37,6 @@ public class AuthorLoader implements Loader<AuthorEntity> {
         authorRepository.save(author4);
     }
 
-    @Override
-    public void clearDb() {
-        authorRepository.deleteAll();
-    }
-
     public List<AuthorEntity> getAll() {
         return authorRepository.findAll();
     }

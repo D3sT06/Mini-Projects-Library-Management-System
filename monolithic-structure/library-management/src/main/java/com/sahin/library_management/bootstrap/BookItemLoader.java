@@ -90,11 +90,6 @@ public class BookItemLoader implements Loader<BookItemEntity> {
     }
 
     @Override
-    public void clearDb() {
-        bookItemRepository.deleteAll();
-    }
-
-    @Override
     public List<BookItemEntity> getAll() {
         return bookItemRepository.findAll();
     }
