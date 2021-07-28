@@ -29,7 +29,7 @@
                     <div class="form-group col-md-6">
                         <label for="author" class="col-form-label">Author</label>
                         <select type="text" th:field="*{authorId}" class="form-control" id="author" placeholder="Author">
-                            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name} + ' ' + ${author.surname}"></option>
                         </select>
                         <span th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" class="text-danger"></span>
                     </div>
