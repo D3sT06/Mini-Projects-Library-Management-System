@@ -12,28 +12,99 @@ and in which classes they are used.
 **MODULE-1: SPRING BASICS**
 
 *1-Spring Boot*
+- @SpringBootApplication
+- Starter Packs
+- @Autowired (Field Injection)
+- Constructor Injection
+- @Component
+- @PostConstruct
+- @Profile
+- yml file
 
 *2-Lombok*
+- Compiler plugin
+- @Getter
+- @Setter
+- @AllArgsConstructor
 
 *3-Web MVC*
+- @RestController
+- @RequestMapping
+- @PostMapping
+- @PutMapping
+- @GetMapping
+- @DeleteMapping
+- @RequestBody
+- @PathVariable
+- @Service
+- @EnableWebMVC
 
 *4-Thymeleaf*
+- @Controller
+- WebMvcConfigurer
+- Model
+- ModelAndView
+- ModelMap
+- HTML template files
 
 *5-Data JPA*
+- Datasource
+- H2 in-memory database
+- @Repository
+- JpaRepository
+- Hibernate ORM
+- @Entity
+- @Table
+- @Id
+- @GeneratedValue
+- @Column
+- @OneToOne
+- @JoinColumn
+- @Enumerated
+- @ManyToOne
+- @OneToMany
+- @ManyToMany
+- @JoinTable
+- @GenericGenerator
 
 *6-Mapstruct & Jackson*
+- Compiler plugin
+- @Mapper
+- @Mapping
+- @Context
+- CyclePreventiveContext
+- default (methods)
+- @JsonIgnore
+- @JsonProperty
+- @JsonSerialize
+- @JsonDeserialize
 
 *7-Validation*
+- @Valid
+- @NotNull
+- @Past
+- Hibernate validator dependency
 
 *8-Security*
+- Basic security
+- WebSecurityConfigurerAdapter
+- PasswordEncoder
+- @PreAuthorize
+- Granted Authorities
 
 *9-Exception Handling & Logging*
+- @RestControllerAdvice
+- @Slf4j
+- @ExceptionHandler
+- @ResponseStatus
+- BasicAuthenticationEntryPoint
+- Logging levels
 
 *10-AOP*
 
 *11-Testing*
 
-**MODULE-2: SPRING INTERMEDIATE
+**MODULE-2: SPRING INTERMEDIATE**
 
 *1-Data JPA*
 
