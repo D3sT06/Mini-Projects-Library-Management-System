@@ -1,13 +1,10 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity.jpa.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.jpa.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.infra.model.account.AccountLoginType;
-import com.sahin.library_management.infra.model.account.LibraryCard;
-import com.sahin.library_management.infra.model.account.Member;
-import com.sahin.library_management.mapper.AccountMapper;
-import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,37 +24,32 @@ public class MemberService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountMapper accountMapper;
-
     @Transactional
-    public void createMember(Member member) {
+    public void createMember(AccountEntity member) {
         String password = PasswordUtil.createRandomPassword();
 
-        LibraryCard card = new LibraryCard();
+        LibraryCardEntity card = new LibraryCardEntity();
         card.setIssuedAt(Instant.now().toEpochMilli());
         card.setActive(true);
         card.setAccountFor(AccountFor.MEMBER);
         card.setPassword(password);
 
-        AccountLoginType passwordType = new AccountLoginType();
+        AccountLoginTypeEntity passwordType = new AccountLoginTypeEntity();
         passwordType.setType(LoginType.PASSWORD);
         passwordType.setLibraryCard(card);
 
         card.setLoginTypes(new HashSet<>(Arrays.asList(passwordType)));
         member.setLibraryCard(card);
 
-        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
-        accountRepository.save(entity);
+        accountRepository.save(member);
     }
 
     @Transactional
-    public void updateMember(Member member) {
+    public void updateMember(AccountEntity member) {
         Optional<AccountEntity> optionalEntity = accountRepository.findById(member.getId());
-        AccountEntity entity = accountMapper.toEntity(member, new CyclePreventiveContext());
-        entity.setLibraryCard(optionalEntity.get().getLibraryCard());
-        entity.setType(AccountFor.MEMBER);
-        accountRepository.save(entity);
+        member.setLibraryCard(optionalEntity.get().getLibraryCard());
+        member.setType(AccountFor.MEMBER);
+        accountRepository.save(member);
     }
 
     @Transactional
@@ -66,22 +58,18 @@ public class MemberService {
     }
 
     @Transactional
-    public Member getMemberByBarcode(String barcode) {
-        AccountEntity entity = accountRepository
+    public AccountEntity getMemberByBarcode(String barcode) {
+        return accountRepository
                 .findByLibraryCardBarcode(barcode)
                 .get();
-
-        return (Member) accountMapper.toModel(entity);
     }
 
-    public List<Member> getAll() {
+    public List<AccountEntity> getAll() {
         List<AccountEntity> entities = accountRepository
                 .findAll();
 
-        List<AccountEntity> filteredEntities = entities.stream()
+        return entities.stream()
                 .filter(accountEntity -> accountEntity.getLibraryCard().getAccountFor().equals(AccountFor.MEMBER))
                 .collect(Collectors.toList());
-
-        return accountMapper.toMemberModels(filteredEntities);
     }
 }

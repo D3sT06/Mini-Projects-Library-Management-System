@@ -1,8 +1,8 @@
 package com.sahin.library_management.infra.viewmapper;
 
-import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Component
 public class BookViewModelMapper {
 
-    public BookViewModel toViewModel(Book model) {
+    public BookViewModel toViewModel(BookEntity model) {
 
         BookViewModel viewModel = new BookViewModel();
         viewModel.setId(model.getId());
@@ -24,18 +24,18 @@ public class BookViewModelMapper {
         viewModel.setAuthorId(model.getAuthor().getId());
         viewModel.setAuthorFullname(model.getAuthor().getName() + " " + model.getAuthor().getSurname());
         viewModel.setCategoryIds((model.getCategories().stream()
-                .map(BookCategory::getId)
+                .map(BookCategoryEntity::getId)
                 .collect(Collectors.toSet())));
         viewModel.setCategoryNames(model.getCategories().stream()
-                .map(BookCategory::getName)
+                .map(BookCategoryEntity::getName)
                 .collect(Collectors.joining(", ")));
         viewModel.setPublicationDate(model.getPublicationDate().toString());
 
         return viewModel;
     }
 
-    public Book toModel(BookViewModel viewModel) {
-        Book model = new Book();
+    public BookEntity toModel(BookViewModel viewModel) {
+        BookEntity model = new BookEntity();
         model.setId(viewModel.getId());
         model.setTitle(viewModel.getTitle());
 
@@ -43,12 +43,12 @@ public class BookViewModelMapper {
         model.setPublicationDate(localDate);
         model.setCategories(new HashSet<>());
 
-        Author author = new Author();
+        AuthorEntity author = new AuthorEntity();
         author.setId(viewModel.getAuthorId());
         model.setAuthor(author);
 
         for (Long categoryId : viewModel.getCategoryIds()) {
-            BookCategory category = new BookCategory();
+            BookCategoryEntity category = new BookCategoryEntity();
             category.setId(categoryId);
             model.getCategories().add(category);
         }
@@ -56,7 +56,7 @@ public class BookViewModelMapper {
         return model;
     }
 
-    public List<BookViewModel> toViewModels(List<Book> models) {
+    public List<BookViewModel> toViewModels(List<BookEntity> models) {
 
         List<BookViewModel> modelCollection = new ArrayList<>();
 

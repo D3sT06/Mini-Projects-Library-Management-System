@@ -1,12 +1,11 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.model.account.Librarian;
+import com.sahin.library_management.infra.entity.jpa.AccountEntity;
 import com.sahin.library_management.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class LibrarianController {
     private LibrarianService librarianService;
 
     @PostMapping("create")
-    public ResponseEntity<Void> createLibrarian(@RequestBody @Valid Librarian librarian) {
+    public ResponseEntity<Void> createLibrarian(@RequestBody AccountEntity librarian) {
         librarianService.createLibrarian(librarian);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateLibrarian(@RequestBody @Valid Librarian librarian) {
+    public ResponseEntity<Void> updateLibrarian(@RequestBody AccountEntity librarian) {
         librarianService.updateLibrarian(librarian);
         return ResponseEntity.ok().build();
     }
@@ -35,12 +34,12 @@ public class LibrarianController {
     }
 
     @GetMapping("get/{barcode}")
-    public ResponseEntity<Librarian> getLibrarianByBarcode(@PathVariable String barcode) {
+    public ResponseEntity<AccountEntity> getLibrarianByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(librarianService.getLibrarianByBarcode(barcode));
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<Librarian>> getAll() {
+    public ResponseEntity<List<AccountEntity>> getAll() {
         return ResponseEntity.ok(librarianService.getAll());
     }
 }

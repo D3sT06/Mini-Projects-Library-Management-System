@@ -1,13 +1,10 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity.jpa.AccountEntity;
+import com.sahin.library_management.infra.entity.jpa.AccountLoginTypeEntity;
+import com.sahin.library_management.infra.entity.jpa.LibraryCardEntity;
 import com.sahin.library_management.infra.enums.AccountFor;
 import com.sahin.library_management.infra.enums.LoginType;
-import com.sahin.library_management.infra.model.account.AccountLoginType;
-import com.sahin.library_management.infra.model.account.Librarian;
-import com.sahin.library_management.infra.model.account.LibraryCard;
-import com.sahin.library_management.mapper.AccountMapper;
-import com.sahin.library_management.mapper.CyclePreventiveContext;
 import com.sahin.library_management.repository.jpa.AccountRepository;
 import com.sahin.library_management.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,36 +24,31 @@ public class LibrarianService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountMapper accountMapper;
-
     @Transactional
-    public void createLibrarian(Librarian librarian) {
+    public void createLibrarian(AccountEntity librarian) {
         String password = PasswordUtil.createRandomPassword();
 
-        LibraryCard card = new LibraryCard();
+        LibraryCardEntity card = new LibraryCardEntity();
         card.setIssuedAt(Instant.now().toEpochMilli());
         card.setActive(true);
         card.setAccountFor(AccountFor.LIBRARIAN);
         card.setPassword(password);
 
-        AccountLoginType passwordType = new AccountLoginType();
+        AccountLoginTypeEntity passwordType = new AccountLoginTypeEntity();
         passwordType.setType(LoginType.PASSWORD);
         passwordType.setLibraryCard(card);
 
         card.setLoginTypes(new HashSet<>(Arrays.asList(passwordType)));
         librarian.setLibraryCard(card);
 
-        AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
-        accountRepository.save(entity);
+        accountRepository.save(librarian);
     }
 
     @Transactional
-    public void updateLibrarian(Librarian librarian) {
+    public void updateLibrarian(AccountEntity librarian) {
         Optional<AccountEntity> optionalEntity = accountRepository.findById(librarian.getId());
-        AccountEntity entity = accountMapper.toEntity(librarian, new CyclePreventiveContext());
-        entity.setLibraryCard(optionalEntity.get().getLibraryCard());
-        accountRepository.save(entity);
+        librarian.setLibraryCard(optionalEntity.get().getLibraryCard());
+        accountRepository.save(librarian);
     }
 
     @Transactional
@@ -65,23 +57,19 @@ public class LibrarianService {
     }
 
     @Transactional
-    public Librarian getLibrarianByBarcode(String barcode) {
-        AccountEntity entity = accountRepository
+    public AccountEntity getLibrarianByBarcode(String barcode) {
+        return accountRepository
                 .findByLibraryCardBarcode(barcode)
                 .get();
-
-        return (Librarian) accountMapper.toModel(entity);
     }
 
     @Transactional
-    public List<Librarian> getAll() {
+    public List<AccountEntity> getAll() {
         List<AccountEntity> entities = accountRepository
                 .findAll();
 
-        List<AccountEntity> filteredEntities = entities.stream()
+        return entities.stream()
                 .filter(accountEntity -> accountEntity.getLibraryCard().getAccountFor().equals(AccountFor.LIBRARIAN))
                 .collect(Collectors.toList());
-
-        return accountMapper.toLibrarianModels(filteredEntities);
     }
 }

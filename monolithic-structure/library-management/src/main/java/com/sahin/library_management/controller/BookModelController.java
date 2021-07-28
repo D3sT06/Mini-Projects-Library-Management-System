@@ -1,8 +1,8 @@
 package com.sahin.library_management.controller;
 
-import com.sahin.library_management.infra.model.book.Author;
-import com.sahin.library_management.infra.model.book.Book;
-import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
+import com.sahin.library_management.infra.entity.jpa.BookEntity;
 import com.sahin.library_management.infra.viewmapper.BookViewModelMapper;
 import com.sahin.library_management.infra.viewmodel.BookViewModel;
 import com.sahin.library_management.service.AuthorService;
@@ -40,10 +40,10 @@ public class BookModelController {
     @PostMapping("/books/create")
     public String createBook(BookViewModel book, Model model) {
 
-        Book bookModel = bookViewModelMapper.toModel(book);
+        BookEntity bookModel = bookViewModelMapper.toModel(book);
         bookService.createBook(bookModel);
 
-        List<Book> booksList = bookService.getAll();
+        List<BookEntity> booksList = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(booksList));
 
         return "redirect:/model/books";
@@ -52,12 +52,12 @@ public class BookModelController {
     @PostMapping("/books/update/{id}")
     public String updateBook(BookViewModel book, @PathVariable Long id, Model model) {
 
-        Book bookModel = bookViewModelMapper.toModel(book);
+        BookEntity bookModel = bookViewModelMapper.toModel(book);
 
         bookModel.setId(bookService.getBookById(id).getId());
         bookService.updateBook(bookModel);
 
-        List<Book> books = bookService.getAll();
+        List<BookEntity> books = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
         return "redirect:/model/books";
@@ -68,7 +68,7 @@ public class BookModelController {
 
         bookService.deleteBookById(id);
 
-        List<Book> books = bookService.getAll();
+        List<BookEntity> books = bookService.getAll();
         model.addAttribute("books", bookViewModelMapper.toViewModels(books));
 
         return "redirect:/model/books";
@@ -81,17 +81,17 @@ public class BookModelController {
 
     @GetMapping({"books", "books.html"})
     public String books(Model model) {
-        List<Book> books = bookService.getAll();
+        List<BookEntity> books = bookService.getAll();
 
         books.forEach(book -> {
 
-            Author author = authorService.getAuthorById(book.getAuthor().getId());
+            AuthorEntity author = authorService.getAuthorById(book.getAuthor().getId());
             book.setAuthor(author);
-            Set<BookCategory> categories = new HashSet<>(book.getCategories());
+            Set<BookCategoryEntity> categories = new HashSet<>(book.getCategories());
 
             book.setCategories(new HashSet<>());
             categories.forEach(category -> {
-                BookCategory bookCategory = categoryService.getCategoryById(category.getId());
+                BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getId());
                 book.getCategories().add(bookCategory);
             });
         });
@@ -121,16 +121,16 @@ public class BookModelController {
     @GetMapping("/books/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        Book bookModel = bookService.getBookById(id);
+        BookEntity bookModel = bookService.getBookById(id);
 
-        Author author = authorService.getAuthorById(bookModel.getAuthor().getId());
+        AuthorEntity author = authorService.getAuthorById(bookModel.getAuthor().getId());
 
         bookModel.setAuthor(author);
-        Set<BookCategory> categories = new HashSet<>(bookModel.getCategories());
+        Set<BookCategoryEntity> categories = new HashSet<>(bookModel.getCategories());
 
         bookModel.setCategories(new HashSet<>());
         categories.forEach(category -> {
-            BookCategory bookCategory = categoryService.getCategoryById(category.getId());
+            BookCategoryEntity bookCategory = categoryService.getCategoryById(category.getId());
             bookModel.getCategories().add(bookCategory);
         });
 

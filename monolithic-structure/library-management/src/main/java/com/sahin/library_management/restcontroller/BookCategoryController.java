@@ -1,12 +1,11 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.model.book.BookCategory;
+import com.sahin.library_management.infra.entity.jpa.BookCategoryEntity;
 import com.sahin.library_management.service.BookCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class BookCategoryController {
     private BookCategoryService categoryService;
 
     @PostMapping("create")
-    public ResponseEntity<BookCategory> createCategory(@RequestBody @Valid BookCategory bookCategory) {
-        BookCategory createdCategory = categoryService.createCategory(bookCategory);
+    public ResponseEntity<BookCategoryEntity> createCategory(@RequestBody BookCategoryEntity bookCategory) {
+        BookCategoryEntity createdCategory = categoryService.createCategory(bookCategory);
         return ResponseEntity.ok(createdCategory);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateCategory(@RequestBody @Valid BookCategory bookCategory) {
+    public ResponseEntity<Void> updateCategory(@RequestBody BookCategoryEntity bookCategory) {
         categoryService.updateCategory(bookCategory);
         return ResponseEntity.ok().build();
     }
@@ -35,12 +34,12 @@ public class BookCategoryController {
     }
 
     @GetMapping("get/{categoryId}")
-    public ResponseEntity<BookCategory> getCategoryById(@PathVariable Long categoryId) {
+    public ResponseEntity<BookCategoryEntity> getCategoryById(@PathVariable Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<BookCategory>> getAll() {
+    public ResponseEntity<List<BookCategoryEntity>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 }

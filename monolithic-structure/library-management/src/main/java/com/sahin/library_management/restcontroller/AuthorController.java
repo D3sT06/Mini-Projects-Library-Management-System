@@ -1,12 +1,11 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.model.book.Author;
+import com.sahin.library_management.infra.entity.jpa.AuthorEntity;
 import com.sahin.library_management.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,13 +16,13 @@ public class AuthorController {
     private AuthorService authorService;
 
     @PostMapping("create")
-    public ResponseEntity<Author> createAuthor(@RequestBody @Valid Author author) {
-        Author createdAuthor = authorService.createAuthor(author);
+    public ResponseEntity<AuthorEntity> createAuthor(@RequestBody AuthorEntity author) {
+        AuthorEntity createdAuthor = authorService.createAuthor(author);
         return ResponseEntity.ok(createdAuthor);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Void> updateAuthor(@RequestBody @Valid Author author) {
+    public ResponseEntity<Void> updateAuthor(@RequestBody AuthorEntity author) {
         authorService.updateAuthor(author);
         return ResponseEntity.ok().build();
     }
@@ -35,12 +34,12 @@ public class AuthorController {
     }
 
     @GetMapping("get/{authorId}")
-    public ResponseEntity<Author> getAuthorById(@PathVariable Long authorId) {
+    public ResponseEntity<AuthorEntity> getAuthorById(@PathVariable Long authorId) {
         return ResponseEntity.ok(authorService.getAuthorById(authorId));
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<Author>> getAll() {
+    public ResponseEntity<List<AuthorEntity>> getAll() {
         return ResponseEntity.ok(authorService.getAll());
     }
 }

@@ -1,9 +1,6 @@
 package com.sahin.library_management.service;
 
 import com.sahin.library_management.infra.entity.jpa.RackEntity;
-import com.sahin.library_management.infra.model.book.Rack;
-import com.sahin.library_management.mapper.CyclePreventiveContext;
-import com.sahin.library_management.mapper.RackMapper;
 import com.sahin.library_management.repository.jpa.RackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,21 +14,14 @@ public class RackService {
     @Autowired
     private RackRepository rackRepository;
 
-    @Autowired
-    private RackMapper rackMapper;
-
     @Transactional
-    public Rack createRack(Rack rack) {
-        RackEntity entity = rackMapper.toEntity(rack, new CyclePreventiveContext());
-        entity = rackRepository.save(entity);
-        return rackMapper.toModel(entity, new CyclePreventiveContext());
+    public RackEntity createRack(RackEntity rack) {
+        return rackRepository.save(rack);
     }
 
     @Transactional
-    public Rack updateRack(Rack rack) {
-        RackEntity entity = rackMapper.toEntity(rack, new CyclePreventiveContext());
-        entity = rackRepository.save(entity);
-        return rackMapper.toModel(entity, new CyclePreventiveContext());
+    public RackEntity updateRack(RackEntity rack) {
+        return rackRepository.save(rack);
     }
 
     @Transactional
@@ -40,17 +30,14 @@ public class RackService {
     }
 
     @Transactional
-    public Rack getRackById(Long rackId) {
-        RackEntity entity = rackRepository
+    public RackEntity getRackById(Long rackId) {
+        return rackRepository
                 .findById(rackId)
                 .get();
-
-        return rackMapper.toModel(entity, new CyclePreventiveContext());
     }
 
     @Transactional
-    public List<Rack> getAll() {
-        List<RackEntity> entities = rackRepository.findAll();
-        return rackMapper.toModels(entities, new CyclePreventiveContext());
+    public List<RackEntity> getAll() {
+        return rackRepository.findAll();
     }
 }

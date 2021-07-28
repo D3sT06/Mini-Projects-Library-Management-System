@@ -1,12 +1,11 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.model.book.Rack;
+import com.sahin.library_management.infra.entity.jpa.RackEntity;
 import com.sahin.library_management.service.RackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,14 +16,14 @@ public class RackController {
     private RackService rackService;
 
     @PostMapping("create")
-    public ResponseEntity<Rack> createRack(@RequestBody @Valid Rack rack) {
-        Rack createdRack = rackService.createRack(rack);
+    public ResponseEntity<RackEntity> createRack(@RequestBody RackEntity rack) {
+        RackEntity createdRack = rackService.createRack(rack);
         return ResponseEntity.ok(createdRack);
     }
 
     @PutMapping("update")
-    public ResponseEntity<Rack> updateRack(@RequestBody @Valid Rack rack) {
-        Rack updatedRack = rackService.updateRack(rack);
+    public ResponseEntity<RackEntity> updateRack(@RequestBody RackEntity rack) {
+        RackEntity updatedRack = rackService.updateRack(rack);
         return ResponseEntity.ok(updatedRack);
     }
 
@@ -35,12 +34,12 @@ public class RackController {
     }
 
     @GetMapping("get/{rackId}")
-    public ResponseEntity<Rack> getRackById(@PathVariable Long rackId) {
+    public ResponseEntity<RackEntity> getRackById(@PathVariable Long rackId) {
         return ResponseEntity.ok(rackService.getRackById(rackId));
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<Rack>> getAll() {
+    public ResponseEntity<List<RackEntity>> getAll() {
         return ResponseEntity.ok(rackService.getAll());
     }
 }

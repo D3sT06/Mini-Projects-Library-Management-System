@@ -1,12 +1,11 @@
 package com.sahin.library_management.restcontroller;
 
-import com.sahin.library_management.infra.model.book.BookItem;
+import com.sahin.library_management.infra.entity.jpa.BookItemEntity;
 import com.sahin.library_management.service.BookItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,14 +16,14 @@ public class BookItemController {
     private BookItemService bookItemService;
 
     @PostMapping("create")
-    public ResponseEntity<BookItem> createBookItem(@RequestBody @Valid BookItem bookItem) {
-        BookItem createdItem = bookItemService.createBookItem(bookItem);
+    public ResponseEntity<BookItemEntity> createBookItem(@RequestBody BookItemEntity bookItem) {
+        BookItemEntity createdItem = bookItemService.createBookItem(bookItem);
         return ResponseEntity.ok(createdItem);
     }
 
     @PutMapping("update")
-    public ResponseEntity<BookItem> updateBookItem(@RequestBody @Valid BookItem bookItem) {
-        BookItem updatedItem = bookItemService.updateBookItem(bookItem);
+    public ResponseEntity<BookItemEntity> updateBookItem(@RequestBody BookItemEntity bookItem) {
+        BookItemEntity updatedItem = bookItemService.updateBookItem(bookItem);
         return ResponseEntity.ok(updatedItem);
     }
 
@@ -35,14 +34,14 @@ public class BookItemController {
     }
 
     @GetMapping("get/{barcode}")
-    public ResponseEntity<BookItem> getBookItemByBarcode(@PathVariable String barcode) {
-        BookItem bookItem = bookItemService.getBookItemByBarcode(barcode);
+    public ResponseEntity<BookItemEntity> getBookItemByBarcode(@PathVariable String barcode) {
+        BookItemEntity bookItem = bookItemService.getBookItemByBarcode(barcode);
         return ResponseEntity.ok(bookItem);
     }
 
     @GetMapping("get-by-book/{bookId}")
-    public ResponseEntity<List<BookItem>> getBookItemsByBook(@PathVariable Long bookId) {
-        List<BookItem> bookItems = bookItemService.getBookItemByBookId(bookId);
+    public ResponseEntity<List<BookItemEntity>> getBookItemsByBook(@PathVariable Long bookId) {
+        List<BookItemEntity> bookItems = bookItemService.getBookItemByBookId(bookId);
         return ResponseEntity.ok(bookItems);
     }
 }
