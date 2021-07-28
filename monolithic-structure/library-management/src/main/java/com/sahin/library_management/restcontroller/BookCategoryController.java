@@ -27,13 +27,13 @@ public class BookCategoryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete/{categoryId}")
+    @DeleteMapping("delete/{barcode}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable String barcode) {
         categoryService.deleteCategoryById(barcode);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("get/{categoryId}")
+    @GetMapping("get/{barcode}")
     public ResponseEntity<BookCategoryEntity> getCategoryById(@PathVariable String barcode) {
         return ResponseEntity.ok(categoryService.getCategoryById(barcode));
     }

@@ -27,13 +27,13 @@ public class AuthorController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete/{authorId}")
+    @DeleteMapping("delete/{barcode}")
     public ResponseEntity<Void> deleteAuthorById(@PathVariable String barcode) {
         authorService.deleteAuthorById(barcode);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("get/{authorId}")
+    @GetMapping("get/{barcode}")
     public ResponseEntity<AuthorEntity> getAuthorById(@PathVariable String barcode) {
         return ResponseEntity.ok(authorService.getAuthorById(barcode));
     }
