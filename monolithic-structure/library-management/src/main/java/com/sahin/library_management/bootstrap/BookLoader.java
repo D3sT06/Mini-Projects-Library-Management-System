@@ -65,11 +65,6 @@ public class BookLoader implements Loader<BookEntity> {
     }
 
     @Override
-    public void clearDb() {
-        bookRepository.deleteAll();
-    }
-
-    @Override
     public List<BookEntity> getAll() {
         return (ArrayList<BookEntity>) bookRepository.findAll();
     }
