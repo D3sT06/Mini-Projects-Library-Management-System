@@ -10,17 +10,82 @@ and in which classes they are used.
 # **PROJECT MODULES AND CONTENT OF BRANCHES**
 
 **MODULE-1: SPRING BASICS**
+
 *1-Spring Boot*
+
 *2-Lombok*
+
 *3-Web MVC*
+
 *4-Thymeleaf*
+
 *5-Data JPA*
+
 *6-Mapstruct & Jackson*
+
 *7-Validation*
+
 *8-Security*
+
 *9-Exception Handling & Logging*
+
 *10-AOP*
+
 *11-Testing*
+
+**MODULE-2: SPRING INTERMEDIATE
+
+*1-Data JPA*
+
+*2-Auditing*
+
+*3-Mapstruct & Jackson*
+
+*4-Validation*
+
+*5-Security*
+
+*6-Configuration*
+
+*7-Caching*
+
+*8-Testing*
+
+*9-Swagger*
+
+**MODULE-3: SPRING ADVANCED**
+
+*1-AMQP*
+
+*2-Docker*
+
+*3-Scheduling*
+
+*4-Mongo DB*
+
+*5-Data JPA*
+
+*6-Redis*
+
+*7-JMS*
+
+*8-Mail*
+
+**MODULE-4: MICROSERVICES WITH SPRING CLOUD**
+
+*1-Infrastructure*
+
+*2-First Microservice*
+
+*3-Service Discovery*
+
+*4-API Gateway*
+
+*5-Multiple Databases*
+
+*6-OpenFeign & API Composition*
+
+*7-Other Service*
 
 
 #
