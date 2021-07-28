@@ -44,12 +44,6 @@ public class AccountLoader implements Loader<MemberEntity> {
     }
 
     @Override
-    public void clearDb() {
-        List<MemberEntity> memberEntities = this.getAll();
-        memberEntities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), MemberEntity.class));
-    }
-
-    @Override
     public List<MemberEntity> getAll() {
         return libraryRepository.findAll(MemberEntity.class)
                 .stream()

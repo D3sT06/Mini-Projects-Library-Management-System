@@ -67,12 +67,6 @@ public class BookLoader implements Loader<BookEntity> {
         libraryRepository.save(book5);
     }
 
-    @Override
-    public void clearDb() {
-        List<BookEntity> entities = this.getAll();
-        entities.forEach(entity -> libraryRepository.deleteById(entity.getBarcode(), BookEntity.class));
-    }
-
     public List<BookEntity> getAll() {
         return libraryRepository.findAll(BookEntity.class)
                 .stream()

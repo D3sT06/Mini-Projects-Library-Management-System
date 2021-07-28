@@ -21,7 +21,7 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
           accountLoader.loadDb();
           authorLoader.loadDb();
           categoryLoader.loadDb();

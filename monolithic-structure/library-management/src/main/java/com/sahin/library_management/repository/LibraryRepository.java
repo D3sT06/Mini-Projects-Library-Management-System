@@ -31,23 +31,8 @@ public class LibraryRepository {
         map.put(entity.getBarcode(), entity);
     }
 
-    public void update(EntityWithUUID entity) {
-        Map map = classMap.get(entity.getClass());
-        map.put(entity.getBarcode(), entity);
-    }
-
-    public void deleteById(String barcode, Class clazz) {
-        Map map = classMap.get(clazz);
-        map.remove(barcode);
-    }
-
     public List<EntityWithUUID> findAll(Class clazz) {
         Map map = classMap.get(clazz);
         return new ArrayList<EntityWithUUID>(map.values());
-    }
-
-    public EntityWithUUID findById(String barcode, Class clazz) {
-        Map map = classMap.get(clazz);
-        return (EntityWithUUID) map.get(barcode);
     }
 }

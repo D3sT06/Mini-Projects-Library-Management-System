@@ -6,7 +6,6 @@ public class AuthorEntity extends EntityWithUUID {
 
     private String name;
     private String surname;
-    private List<BookEntity> books;
 
     public String getName() {
         return name;
@@ -22,13 +21,5 @@ public class AuthorEntity extends EntityWithUUID {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public List<BookEntity> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookEntity> books) {
-        this.books = books;
     }
 }
